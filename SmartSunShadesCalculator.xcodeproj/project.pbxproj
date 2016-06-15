@@ -7,24 +7,85 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		47459DEB1CE941A000E5EA65 /* CartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47459DEA1CE941A000E5EA65 /* CartViewController.swift */; };
+		47459DF21CE942AB00E5EA65 /* CartTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47459DF01CE942AB00E5EA65 /* CartTableViewCell.swift */; };
+		47459DF31CE942AB00E5EA65 /* CartTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 47459DF11CE942AB00E5EA65 /* CartTableViewCell.xib */; };
+		476495B51CE953F000430A94 /* ShoppingCart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476495B41CE953F000430A94 /* ShoppingCart.swift */; };
+		476495B71CE9540F00430A94 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476495B61CE9540F00430A94 /* Item.swift */; };
+		476495B91CE954CD00430A94 /* ShoppingCartController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476495B81CE954CD00430A94 /* ShoppingCartController.swift */; };
+		6408F5631CE66F24000E1149 /* Customer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6408F5621CE66F24000E1149 /* Customer.swift */; };
+		640C15631CEF58A9005CD779 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 640C15611CEF58A9005CD779 /* Main.storyboard */; };
+		640C156E1CEF69AB005CD779 /* dual_solar_shades_4.csv in Resources */ = {isa = PBXBuildFile; fileRef = 640C15671CEF69AB005CD779 /* dual_solar_shades_4.csv */; };
+		640C156F1CEF69AB005CD779 /* dual_solar_shades_5.csv in Resources */ = {isa = PBXBuildFile; fileRef = 640C15681CEF69AB005CD779 /* dual_solar_shades_5.csv */; };
+		640C15711CEF69AB005CD779 /* roller_shades_3.csv in Resources */ = {isa = PBXBuildFile; fileRef = 640C156A1CEF69AB005CD779 /* roller_shades_3.csv */; };
+		640C15721CEF69AB005CD779 /* triple_shades_sapphire_100.csv in Resources */ = {isa = PBXBuildFile; fileRef = 640C156B1CEF69AB005CD779 /* triple_shades_sapphire_100.csv */; };
+		640C15751CEF6A56005CD779 /* dual_solar_shades_3.csv in Resources */ = {isa = PBXBuildFile; fileRef = 640C15741CEF6A56005CD779 /* dual_solar_shades_3.csv */; };
+		640C15771CEF6BB7005CD779 /* triple_shades_sapphire_75.csv in Resources */ = {isa = PBXBuildFile; fileRef = 640C15761CEF6BB7005CD779 /* triple_shades_sapphire_75.csv */; };
+		641295101CF499FE001EFB98 /* SmartSunShadesCalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6412950F1CF499FE001EFB98 /* SmartSunShadesCalculatorTests.swift */; };
 		64218EB71CD9447E005AE58A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64218EB61CD9447E005AE58A /* AppDelegate.swift */; };
-		64218EB91CD9447E005AE58A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64218EB81CD9447E005AE58A /* ViewController.swift */; };
-		64218EBC1CD9447E005AE58A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 64218EBA1CD9447E005AE58A /* Main.storyboard */; };
+		64218EB91CD9447E005AE58A /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64218EB81CD9447E005AE58A /* CategoryViewController.swift */; };
 		64218EBE1CD9447E005AE58A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 64218EBD1CD9447E005AE58A /* Assets.xcassets */; };
 		64218EC11CD9447E005AE58A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 64218EBF1CD9447E005AE58A /* LaunchScreen.storyboard */; };
+		648677181CE0F64100EDF8FD /* LocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 648677171CE0F64100EDF8FD /* LocationViewController.swift */; };
+		6486776A1CE4D90D00EDF8FD /* PriceTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 648677691CE4D90D00EDF8FD /* PriceTable.swift */; };
+		64A8FC8C1CE0ED330001AFE4 /* CustomerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A8FC8B1CE0ED330001AFE4 /* CustomerViewController.swift */; };
+		64B47E0E1CDD0316009C5792 /* WidthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64B47E0D1CDD0316009C5792 /* WidthViewController.swift */; };
+		64B47E101CDD32AF009C5792 /* HeightViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64B47E0F1CDD32AF009C5792 /* HeightViewController.swift */; };
+		64B47E121CDD3693009C5792 /* QuantityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64B47E111CDD3693009C5792 /* QuantityViewController.swift */; };
+		64B47E141CDD3862009C5792 /* ColorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64B47E131CDD3862009C5792 /* ColorViewController.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		641295121CF499FE001EFB98 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 64218EAB1CD9447E005AE58A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 64218EB21CD9447E005AE58A;
+			remoteInfo = SmartSunShadesCalculator;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		47459DEA1CE941A000E5EA65 /* CartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartViewController.swift; sourceTree = "<group>"; };
+		47459DF01CE942AB00E5EA65 /* CartTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartTableViewCell.swift; sourceTree = "<group>"; };
+		47459DF11CE942AB00E5EA65 /* CartTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CartTableViewCell.xib; sourceTree = "<group>"; };
+		476495B41CE953F000430A94 /* ShoppingCart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShoppingCart.swift; sourceTree = "<group>"; };
+		476495B61CE9540F00430A94 /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		476495B81CE954CD00430A94 /* ShoppingCartController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShoppingCartController.swift; sourceTree = "<group>"; };
+		6408F5621CE66F24000E1149 /* Customer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Customer.swift; sourceTree = "<group>"; };
+		640C15621CEF58A9005CD779 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		640C15671CEF69AB005CD779 /* dual_solar_shades_4.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dual_solar_shades_4.csv; sourceTree = "<group>"; };
+		640C15681CEF69AB005CD779 /* dual_solar_shades_5.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dual_solar_shades_5.csv; sourceTree = "<group>"; };
+		640C156A1CEF69AB005CD779 /* roller_shades_3.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = roller_shades_3.csv; sourceTree = "<group>"; };
+		640C156B1CEF69AB005CD779 /* triple_shades_sapphire_100.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = triple_shades_sapphire_100.csv; sourceTree = "<group>"; };
+		640C15741CEF6A56005CD779 /* dual_solar_shades_3.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dual_solar_shades_3.csv; sourceTree = "<group>"; };
+		640C15761CEF6BB7005CD779 /* triple_shades_sapphire_75.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = triple_shades_sapphire_75.csv; sourceTree = "<group>"; };
+		6412950D1CF499FE001EFB98 /* SmartSunShadesCalculatorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SmartSunShadesCalculatorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6412950F1CF499FE001EFB98 /* SmartSunShadesCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartSunShadesCalculatorTests.swift; sourceTree = "<group>"; };
+		641295111CF499FE001EFB98 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		64218EB31CD9447E005AE58A /* SmartSunShadesCalculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SmartSunShadesCalculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		64218EB61CD9447E005AE58A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		64218EB81CD9447E005AE58A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		64218EBB1CD9447E005AE58A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		64218EB81CD9447E005AE58A /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
 		64218EBD1CD9447E005AE58A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		64218EC01CD9447E005AE58A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		64218EC21CD9447E005AE58A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		648677171CE0F64100EDF8FD /* LocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationViewController.swift; sourceTree = "<group>"; };
+		648677691CE4D90D00EDF8FD /* PriceTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PriceTable.swift; sourceTree = "<group>"; };
+		64A8FC8B1CE0ED330001AFE4 /* CustomerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomerViewController.swift; sourceTree = "<group>"; };
+		64B47E0D1CDD0316009C5792 /* WidthViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidthViewController.swift; sourceTree = "<group>"; };
+		64B47E0F1CDD32AF009C5792 /* HeightViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeightViewController.swift; sourceTree = "<group>"; };
+		64B47E111CDD3693009C5792 /* QuantityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuantityViewController.swift; sourceTree = "<group>"; };
+		64B47E131CDD3862009C5792 /* ColorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		6412950A1CF499FE001EFB98 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		64218EB01CD9447E005AE58A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -35,10 +96,55 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		47459DEC1CE9423000E5EA65 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				47459DF01CE942AB00E5EA65 /* CartTableViewCell.swift */,
+				47459DF11CE942AB00E5EA65 /* CartTableViewCell.xib */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		47459DED1CE9423500E5EA65 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				64218EB81CD9447E005AE58A /* CategoryViewController.swift */,
+				47459DEA1CE941A000E5EA65 /* CartViewController.swift */,
+				64B47E131CDD3862009C5792 /* ColorViewController.swift */,
+				64A8FC8B1CE0ED330001AFE4 /* CustomerViewController.swift */,
+				476495B81CE954CD00430A94 /* ShoppingCartController.swift */,
+				64B47E0F1CDD32AF009C5792 /* HeightViewController.swift */,
+				648677171CE0F64100EDF8FD /* LocationViewController.swift */,
+				64B47E111CDD3693009C5792 /* QuantityViewController.swift */,
+				64B47E0D1CDD0316009C5792 /* WidthViewController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		6408F5611CE66F0E000E1149 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				6408F5621CE66F24000E1149 /* Customer.swift */,
+				476495B41CE953F000430A94 /* ShoppingCart.swift */,
+				476495B61CE9540F00430A94 /* Item.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		6412950E1CF499FE001EFB98 /* SmartSunShadesCalculatorTests */ = {
+			isa = PBXGroup;
+			children = (
+				6412950F1CF499FE001EFB98 /* SmartSunShadesCalculatorTests.swift */,
+				641295111CF499FE001EFB98 /* Info.plist */,
+			);
+			path = SmartSunShadesCalculatorTests;
+			sourceTree = "<group>";
+		};
 		64218EAA1CD9447E005AE58A = {
 			isa = PBXGroup;
 			children = (
 				64218EB51CD9447E005AE58A /* SmartSunShadesCalculator */,
+				6412950E1CF499FE001EFB98 /* SmartSunShadesCalculatorTests */,
 				64218EB41CD9447E005AE58A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -47,6 +153,7 @@
 			isa = PBXGroup;
 			children = (
 				64218EB31CD9447E005AE58A /* SmartSunShadesCalculator.app */,
+				6412950D1CF499FE001EFB98 /* SmartSunShadesCalculatorTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -54,9 +161,12 @@
 		64218EB51CD9447E005AE58A /* SmartSunShadesCalculator */ = {
 			isa = PBXGroup;
 			children = (
+				640C15611CEF58A9005CD779 /* Main.storyboard */,
+				47459DED1CE9423500E5EA65 /* Controllers */,
+				47459DEC1CE9423000E5EA65 /* Views */,
+				6408F5611CE66F0E000E1149 /* Models */,
+				6486776B1CE4E2AE00EDF8FD /* data */,
 				64218EB61CD9447E005AE58A /* AppDelegate.swift */,
-				64218EB81CD9447E005AE58A /* ViewController.swift */,
-				64218EBA1CD9447E005AE58A /* Main.storyboard */,
 				64218EBD1CD9447E005AE58A /* Assets.xcassets */,
 				64218EBF1CD9447E005AE58A /* LaunchScreen.storyboard */,
 				64218EC21CD9447E005AE58A /* Info.plist */,
@@ -64,9 +174,41 @@
 			path = SmartSunShadesCalculator;
 			sourceTree = "<group>";
 		};
+		6486776B1CE4E2AE00EDF8FD /* data */ = {
+			isa = PBXGroup;
+			children = (
+				640C15741CEF6A56005CD779 /* dual_solar_shades_3.csv */,
+				640C15671CEF69AB005CD779 /* dual_solar_shades_4.csv */,
+				640C15681CEF69AB005CD779 /* dual_solar_shades_5.csv */,
+				640C156A1CEF69AB005CD779 /* roller_shades_3.csv */,
+				640C156B1CEF69AB005CD779 /* triple_shades_sapphire_100.csv */,
+				640C15761CEF6BB7005CD779 /* triple_shades_sapphire_75.csv */,
+				648677691CE4D90D00EDF8FD /* PriceTable.swift */,
+			);
+			name = data;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		6412950C1CF499FE001EFB98 /* SmartSunShadesCalculatorTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 641295161CF499FE001EFB98 /* Build configuration list for PBXNativeTarget "SmartSunShadesCalculatorTests" */;
+			buildPhases = (
+				641295091CF499FE001EFB98 /* Sources */,
+				6412950A1CF499FE001EFB98 /* Frameworks */,
+				6412950B1CF499FE001EFB98 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				641295131CF499FE001EFB98 /* PBXTargetDependency */,
+			);
+			name = SmartSunShadesCalculatorTests;
+			productName = SmartSunShadesCalculatorTests;
+			productReference = 6412950D1CF499FE001EFB98 /* SmartSunShadesCalculatorTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		64218EB21CD9447E005AE58A /* SmartSunShadesCalculator */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 64218EC51CD9447E005AE58A /* Build configuration list for PBXNativeTarget "SmartSunShadesCalculator" */;
@@ -94,8 +236,13 @@
 				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = "Ramdeen, Rashaad";
 				TargetAttributes = {
+					6412950C1CF499FE001EFB98 = {
+						CreatedOnToolsVersion = 7.3;
+						TestTargetID = 64218EB21CD9447E005AE58A;
+					};
 					64218EB21CD9447E005AE58A = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = AGES4C3QAB;
 					};
 				};
 			};
@@ -113,40 +260,84 @@
 			projectRoot = "";
 			targets = (
 				64218EB21CD9447E005AE58A /* SmartSunShadesCalculator */,
+				6412950C1CF499FE001EFB98 /* SmartSunShadesCalculatorTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		6412950B1CF499FE001EFB98 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		64218EB11CD9447E005AE58A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				640C15751CEF6A56005CD779 /* dual_solar_shades_3.csv in Resources */,
+				640C15721CEF69AB005CD779 /* triple_shades_sapphire_100.csv in Resources */,
+				47459DF31CE942AB00E5EA65 /* CartTableViewCell.xib in Resources */,
+				640C15631CEF58A9005CD779 /* Main.storyboard in Resources */,
+				640C156F1CEF69AB005CD779 /* dual_solar_shades_5.csv in Resources */,
+				640C156E1CEF69AB005CD779 /* dual_solar_shades_4.csv in Resources */,
+				640C15771CEF6BB7005CD779 /* triple_shades_sapphire_75.csv in Resources */,
+				640C15711CEF69AB005CD779 /* roller_shades_3.csv in Resources */,
 				64218EC11CD9447E005AE58A /* LaunchScreen.storyboard in Resources */,
 				64218EBE1CD9447E005AE58A /* Assets.xcassets in Resources */,
-				64218EBC1CD9447E005AE58A /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		641295091CF499FE001EFB98 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				641295101CF499FE001EFB98 /* SmartSunShadesCalculatorTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		64218EAF1CD9447E005AE58A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				64218EB91CD9447E005AE58A /* ViewController.swift in Sources */,
+				64218EB91CD9447E005AE58A /* CategoryViewController.swift in Sources */,
+				64B47E101CDD32AF009C5792 /* HeightViewController.swift in Sources */,
+				6486776A1CE4D90D00EDF8FD /* PriceTable.swift in Sources */,
+				64B47E121CDD3693009C5792 /* QuantityViewController.swift in Sources */,
+				476495B91CE954CD00430A94 /* ShoppingCartController.swift in Sources */,
+				6408F5631CE66F24000E1149 /* Customer.swift in Sources */,
+				476495B51CE953F000430A94 /* ShoppingCart.swift in Sources */,
+				47459DF21CE942AB00E5EA65 /* CartTableViewCell.swift in Sources */,
 				64218EB71CD9447E005AE58A /* AppDelegate.swift in Sources */,
+				64B47E141CDD3862009C5792 /* ColorViewController.swift in Sources */,
+				47459DEB1CE941A000E5EA65 /* CartViewController.swift in Sources */,
+				476495B71CE9540F00430A94 /* Item.swift in Sources */,
+				64B47E0E1CDD0316009C5792 /* WidthViewController.swift in Sources */,
+				64A8FC8C1CE0ED330001AFE4 /* CustomerViewController.swift in Sources */,
+				648677181CE0F64100EDF8FD /* LocationViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		641295131CF499FE001EFB98 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 64218EB21CD9447E005AE58A /* SmartSunShadesCalculator */;
+			targetProxy = 641295121CF499FE001EFB98 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
-		64218EBA1CD9447E005AE58A /* Main.storyboard */ = {
+		640C15611CEF58A9005CD779 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				64218EBB1CD9447E005AE58A /* Base */,
+				640C15621CEF58A9005CD779 /* Base */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -162,6 +353,30 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		641295141CF499FE001EFB98 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = SmartSunShadesCalculatorTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.SmartSunShadesCalculatorTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SmartSunShadesCalculator.app/SmartSunShadesCalculator";
+			};
+			name = Debug;
+		};
+		641295151CF499FE001EFB98 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = SmartSunShadesCalculatorTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.SmartSunShadesCalculatorTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SmartSunShadesCalculator.app/SmartSunShadesCalculator";
+			};
+			name = Release;
+		};
 		64218EC31CD9447E005AE58A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -249,9 +464,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = SmartSunShadesCalculator/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.SmartSunShadesCalculator;
+				PRODUCT_BUNDLE_IDENTIFIER = com.aaa.iphone.discounts.enterprise;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -260,9 +477,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = SmartSunShadesCalculator/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.SmartSunShadesCalculator;
+				PRODUCT_BUNDLE_IDENTIFIER = com.aaa.iphone.discounts.enterprise;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -270,6 +489,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		641295161CF499FE001EFB98 /* Build configuration list for PBXNativeTarget "SmartSunShadesCalculatorTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				641295141CF499FE001EFB98 /* Debug */,
+				641295151CF499FE001EFB98 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		64218EAE1CD9447E005AE58A /* Build configuration list for PBXProject "SmartSunShadesCalculator" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -286,6 +513,7 @@
 				64218EC71CD9447E005AE58A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
