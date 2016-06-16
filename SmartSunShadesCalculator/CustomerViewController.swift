@@ -42,19 +42,18 @@ class CustomerViewController: UIViewController, UITextFieldDelegate {
     }
     
     func initData() {
-        self.shoppingCartController.customer = Customer(firstName: "Rashaad", lastName: "Ramdeen", address: "123 Anywherer", email: "rashaad.ramdeen@gmail.com")
-        
-        let emptyItem = Item(location: nil, width: nil, height: nil, quantity: nil)
-        
-        self.shoppingCartController.shoppingCart.addTempItem(emptyItem)
+        self.shoppingCartController.customer = Customer(firstName: self.firstNameField.text!, lastName: self.lastNameField.text!, address: self.addressField.text!, email: self.emailField.text!)
     }
     
     @IBAction func showShoppingCart(sender: AnyObject) {
-        
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewControllerWithIdentifier("cartViewController") as! CartViewController
-        self.presentViewController(vc, animated: true, completion: nil)
-        
+        if self.shoppingCartController.shoppingCart.cartItems.count > 0 {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyboard.instantiateViewControllerWithIdentifier("cartViewController") as! CartViewController
+            self.presentViewController(vc, animated: true, completion: nil)
+        }else {
+            var alert = UIAlertView(title: "Cart Empty", message: "Please add items to your card", delegate: nil, cancelButtonTitle: "Done")
+            alert.show()
+        }
     }
     
     func dismissKeyboard() {

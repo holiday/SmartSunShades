@@ -43,6 +43,11 @@ class CategoryViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         
     }
     
+    override func viewDidAppear(animated: Bool) {
+        //compute the item price
+        self.computeItemPrice()
+    }
+    
     @IBAction func didPressAddToCart(sender: UIButton) {
         
         //add the temp item to the shopping cart
@@ -59,7 +64,10 @@ class CategoryViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         let vc = storyboard.instantiateViewControllerWithIdentifier("cartViewController") as! CartViewController
         
         self.presentViewController(vc, animated: true) {
-            self.navigationController?.popToRootViewControllerAnimated(false)
+            
+            //self.navigationController?.popToRootViewControllerAnimated(false)
+            var vc = self.navigationController?.viewControllers[1]
+            self.navigationController?.popToViewController(vc!, animated: true)
         }
         
     }
@@ -84,6 +92,11 @@ class CategoryViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         
         self.currentSelectedCategoryIndex = row
+        self.computeItemPrice()
+        
+    }
+    
+    func computeItemPrice() {
         self.currentSelectedCategory = self.categoryTitles[self.currentSelectedCategoryIndex]
         
         let pt = PriceTable(fileName: self.categoryFileNames[self.currentSelectedCategoryIndex], fileExtension: "csv")
@@ -98,7 +111,6 @@ class CategoryViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         let price = pt.getPrice(tempItem.getItemWidth(), widthFineInchIndex: tempItem.getWidthFineInch().index, height: tempItem.getItemHeight(), heightFineInchIndex: tempItem.getHeightFineInch().index)
         
         tempItem.price = Double(tempItem.quantity!) * price
-        
     }
     
 

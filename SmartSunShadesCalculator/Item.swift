@@ -87,6 +87,10 @@ class Item: NSObject {
         return 0.00
     }
     
+    func getHTMLTableString() -> String {
+        return "<tr><td>\(self.groupName!)</td><td>\(self.getLocation())</td><td>\(self.getItemWidth())\" \(self.getWidthFineInch().stringValue)\" inches</td><td>\(self.getItemHeight())\" \(self.getHeightFineInch().stringValue)\" inches</td><td>\(self.getQuantity())</td></tr>"
+    }
+    
     func getWidthFineInch() -> (index:Int, stringValue:String) {
         if self.itemWidthFineInchIndex != nil {
             return (self.itemWidthFineInchIndex!, WidthViewController.inchData[self.itemWidthFineInchIndex!])

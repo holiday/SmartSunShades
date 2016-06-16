@@ -16,6 +16,7 @@ class Customer: NSObject {
     var email:String?
     
     init(firstName:String, lastName:String, address:String, email:String) {
+        
         self.firstName = firstName
         self.lastName = lastName
         self.address = address

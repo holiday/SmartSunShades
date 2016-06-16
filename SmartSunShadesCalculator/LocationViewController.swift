@@ -17,6 +17,8 @@ class LocationViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     var currentLocation:Int = 0
     var currentLocationNumber:Int = 1
     
+    let shoppingCartController = ShoppingCartController.sharedInstance
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -39,7 +41,19 @@ class LocationViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
                           "Master Bedroom",
                           "Ensuite",
                           "Washroom"]
+        
     }
+    
+    override func viewDidAppear(animated: Bool) {
+        
+        if self.shoppingCartController.shoppingCart.tempItem == nil {
+            let emptyItem = Item(location: nil, width: nil, height: nil, quantity: nil)
+            
+            self.shoppingCartController.shoppingCart.addTempItem(emptyItem)
+        }
+        
+    }
+    
     @IBAction func didPressNext(sender: AnyObject) {
         
         self.saveItemLocation()

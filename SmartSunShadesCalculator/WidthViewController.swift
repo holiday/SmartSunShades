@@ -13,7 +13,7 @@ class WidthViewController: UIViewController, UIPickerViewDelegate, UIPickerViewD
     @IBOutlet weak var widthPickerView: UIPickerView!
     var currentPickerView:UIPickerView!
     var inchesData:[Double] = [Double]()
-    static var inchData:[String] = ["0", "1/8 inch", "2/8 inch", "3/8 inch", "4/8 inch", "5/8 inch", "6/8 inch", "7/8 inch"]
+    static var inchData:[String] = ["0", "1/8", "2/8", "3/8", "4/8", "5/8", "6/8", "7/8"]
     
     var currentIndex:Int = 0
     var currentInchIndex:Int = 0

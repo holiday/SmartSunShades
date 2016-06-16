@@ -22,11 +22,11 @@ class CartTableViewCell: UITableViewCell {
         }
         
         if item.itemWidth != nil {
-            self.widthLabel.text = "Width: \(item.itemWidth!) \(WidthViewController.inchData[item.itemWidthFineInchIndex!])"
+            self.widthLabel.text = "Width: \(Int(item.itemWidth!))\" \(WidthViewController.inchData[item.itemWidthFineInchIndex!])\" inches"
         }
         
         if item.itemHeight != nil {
-            self.heightLabel.text = "Height: \(item.itemHeight!) \(WidthViewController.inchData[item.itemHeightFineInchIndex!])"
+            self.heightLabel.text = "Height: \(Int(item.itemHeight!))\" \(WidthViewController.inchData[item.itemHeightFineInchIndex!])\" inches"
         }
         
         if item.quantity != nil {
