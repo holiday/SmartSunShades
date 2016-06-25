@@ -13,6 +13,8 @@ class ShoppingCart: NSObject {
     var tempItem:Item!
     var cartItems:[Item] = [Item]()
     var subTotal:Double = 0.0
+    var discountPercent:Double = 0.0
+    var discountedTotal:Double = 0.0
     
     func updateTotal() {
         subTotal = 0.0
@@ -46,5 +48,19 @@ class ShoppingCart: NSObject {
     func addItem(item:Item) {
         self.cartItems.append(item)
         self.updateTotal()
+    }
+    
+    func getTotalSaved() -> Double{
+        self.calculateDiscountedTotal()
+        return self.subTotal - self.discountedTotal
+    }
+    
+    func getDiscountedTotal() -> Double {
+        self.calculateDiscountedTotal()
+        return self.discountedTotal
+    }
+    
+    func calculateDiscountedTotal() {
+        self.discountedTotal = self.subTotal * (1.0 - (self.discountPercent/100))
     }
 }

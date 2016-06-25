@@ -14,7 +14,6 @@
 		47ED76BF1D11D9E5003653C6 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47ED76BE1D11D9E5003653C6 /* MessageUI.framework */; };
 		47ED76C41D11E90E003653C6 /* Customer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47ED76C11D11E90E003653C6 /* Customer.swift */; };
 		47ED76C51D11E90E003653C6 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47ED76C21D11E90E003653C6 /* Item.swift */; };
-		47ED76C81D11E957003653C6 /* ShoppingCart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47ED76C71D11E957003653C6 /* ShoppingCart.swift */; };
 		640C15631CEF58A9005CD779 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 640C15611CEF58A9005CD779 /* Main.storyboard */; };
 		640C156E1CEF69AB005CD779 /* dual_solar_shades_4.csv in Resources */ = {isa = PBXBuildFile; fileRef = 640C15671CEF69AB005CD779 /* dual_solar_shades_4.csv */; };
 		640C156F1CEF69AB005CD779 /* dual_solar_shades_5.csv in Resources */ = {isa = PBXBuildFile; fileRef = 640C15681CEF69AB005CD779 /* dual_solar_shades_5.csv */; };
@@ -30,6 +29,7 @@
 		648677181CE0F64100EDF8FD /* LocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 648677171CE0F64100EDF8FD /* LocationViewController.swift */; };
 		6486776A1CE4D90D00EDF8FD /* PriceTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 648677691CE4D90D00EDF8FD /* PriceTable.swift */; };
 		64A8FC8C1CE0ED330001AFE4 /* CustomerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A8FC8B1CE0ED330001AFE4 /* CustomerViewController.swift */; };
+		64A9CB031D13011800BB9AFF /* ShoppingCart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64A9CB021D13011800BB9AFF /* ShoppingCart.swift */; };
 		64B47E0E1CDD0316009C5792 /* WidthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64B47E0D1CDD0316009C5792 /* WidthViewController.swift */; };
 		64B47E101CDD32AF009C5792 /* HeightViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64B47E0F1CDD32AF009C5792 /* HeightViewController.swift */; };
 		64B47E121CDD3693009C5792 /* QuantityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64B47E111CDD3693009C5792 /* QuantityViewController.swift */; };
@@ -54,7 +54,6 @@
 		47ED76BE1D11D9E5003653C6 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		47ED76C11D11E90E003653C6 /* Customer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Customer.swift; sourceTree = "<group>"; };
 		47ED76C21D11E90E003653C6 /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
-		47ED76C71D11E957003653C6 /* ShoppingCart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShoppingCart.swift; path = ../../../Desktop/ShoppingCart.swift; sourceTree = "<group>"; };
 		640C15621CEF58A9005CD779 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		640C15671CEF69AB005CD779 /* dual_solar_shades_4.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dual_solar_shades_4.csv; sourceTree = "<group>"; };
 		640C15681CEF69AB005CD779 /* dual_solar_shades_5.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dual_solar_shades_5.csv; sourceTree = "<group>"; };
@@ -74,6 +73,7 @@
 		648677171CE0F64100EDF8FD /* LocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationViewController.swift; sourceTree = "<group>"; };
 		648677691CE4D90D00EDF8FD /* PriceTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PriceTable.swift; sourceTree = "<group>"; };
 		64A8FC8B1CE0ED330001AFE4 /* CustomerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomerViewController.swift; sourceTree = "<group>"; };
+		64A9CB021D13011800BB9AFF /* ShoppingCart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShoppingCart.swift; sourceTree = "<group>"; };
 		64B47E0D1CDD0316009C5792 /* WidthViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidthViewController.swift; sourceTree = "<group>"; };
 		64B47E0F1CDD32AF009C5792 /* HeightViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeightViewController.swift; sourceTree = "<group>"; };
 		64B47E111CDD3693009C5792 /* QuantityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuantityViewController.swift; sourceTree = "<group>"; };
@@ -129,7 +129,7 @@
 			children = (
 				47ED76C11D11E90E003653C6 /* Customer.swift */,
 				47ED76C21D11E90E003653C6 /* Item.swift */,
-				47ED76C71D11E957003653C6 /* ShoppingCart.swift */,
+				64A9CB021D13011800BB9AFF /* ShoppingCart.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -319,7 +319,7 @@
 				64218EB71CD9447E005AE58A /* AppDelegate.swift in Sources */,
 				64B47E141CDD3862009C5792 /* ColorViewController.swift in Sources */,
 				47459DEB1CE941A000E5EA65 /* CartViewController.swift in Sources */,
-				47ED76C81D11E957003653C6 /* ShoppingCart.swift in Sources */,
+				64A9CB031D13011800BB9AFF /* ShoppingCart.swift in Sources */,
 				47ED76C41D11E90E003653C6 /* Customer.swift in Sources */,
 				64B47E0E1CDD0316009C5792 /* WidthViewController.swift in Sources */,
 				64A8FC8C1CE0ED330001AFE4 /* CustomerViewController.swift in Sources */,
