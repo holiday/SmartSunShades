@@ -18,6 +18,7 @@ class Item: NSObject {
     var itemHeightFineInchIndex:Int?
     var quantity:Int?
     var price:Double?
+    var sqft:Double?
     
     init(location:String?, width:Double?, height:Double?, quantity:Int?) {
         

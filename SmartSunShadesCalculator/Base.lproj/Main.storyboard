@@ -853,6 +853,30 @@
                                             </mask>
                                         </variation>
                                     </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total Sqft:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RJn-uP-9QN">
+                                        <rect key="frame" x="8" y="37" width="185" height="26"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="21" id="0eB-nL-1So"/>
+                                            <constraint firstAttribute="width" constant="185" id="K7f-Wj-poO"/>
+                                            <constraint firstAttribute="width" constant="154" id="kNN-VI-Nk6"/>
+                                            <constraint firstAttribute="height" constant="26" id="ziO-Gy-BY7"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="16"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="0eB-nL-1So"/>
+                                                <exclude reference="kNN-VI-Nk6"/>
+                                            </mask>
+                                        </variation>
+                                        <variation key="widthClass=compact">
+                                            <mask key="constraints">
+                                                <include reference="0eB-nL-1So"/>
+                                                <include reference="kNN-VI-Nk6"/>
+                                            </mask>
+                                        </variation>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" red="0.22209092247643597" green="0.75506085078936169" blue="0.29143501755980017" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -867,6 +891,7 @@
                                         <variation key="widthClass=compact" constant="231"/>
                                     </constraint>
                                     <constraint firstItem="JN2-nz-kJi" firstAttribute="top" secondItem="v54-bh-D3P" secondAttribute="top" constant="24" id="HL2-3s-oj1"/>
+                                    <constraint firstItem="RJn-uP-9QN" firstAttribute="top" secondItem="v54-bh-D3P" secondAttribute="top" constant="37" id="HV8-Mq-4RW"/>
                                     <constraint firstItem="gUT-fQ-tM2" firstAttribute="top" secondItem="Tqf-Zt-3M6" secondAttribute="bottom" constant="5" id="IZm-uM-JfG"/>
                                     <constraint firstItem="Foh-ip-gdL" firstAttribute="leading" secondItem="kHs-YN-Y38" secondAttribute="trailing" constant="24" id="K5D-gO-opY"/>
                                     <constraint firstAttribute="trailing" secondItem="JN2-nz-kJi" secondAttribute="trailing" constant="114" id="LsS-yK-lMv"/>
@@ -875,6 +900,7 @@
                                     <constraint firstAttribute="trailing" secondItem="SYn-mP-P05" secondAttribute="trailing" constant="8" id="PiT-RU-rwi"/>
                                     <constraint firstItem="8yt-Nj-QfZ" firstAttribute="leading" secondItem="v54-bh-D3P" secondAttribute="leading" id="Rc5-3S-gSU"/>
                                     <constraint firstItem="SYn-mP-P05" firstAttribute="leading" secondItem="ngS-cf-zIi" secondAttribute="trailing" constant="24" id="S9T-Zr-rlQ"/>
+                                    <constraint firstItem="RJn-uP-9QN" firstAttribute="leading" secondItem="v54-bh-D3P" secondAttribute="leading" constant="8" id="SEM-AU-Y0c"/>
                                     <constraint firstItem="kHs-YN-Y38" firstAttribute="top" secondItem="zXa-w4-3tH" secondAttribute="bottom" constant="10" id="Shb-5E-KCk"/>
                                     <constraint firstItem="pfm-IC-dZe" firstAttribute="leading" secondItem="zXa-w4-3tH" secondAttribute="trailing" constant="22" id="TiR-Z3-iX3"/>
                                     <constraint firstItem="Foh-ip-gdL" firstAttribute="top" secondItem="pfm-IC-dZe" secondAttribute="bottom" constant="10" id="Wzq-dC-FoY"/>
@@ -1049,6 +1075,7 @@
                         <outlet property="subTotalField" destination="pfm-IC-dZe" id="SDr-JM-ci7"/>
                         <outlet property="tableView" destination="PCE-hs-uOA" id="8JD-RY-jKx"/>
                         <outlet property="totalDiscountsField" destination="d5M-3T-rgz" id="hUp-Uw-0W3"/>
+                        <outlet property="totalSqftField" destination="RJn-uP-9QN" id="aYH-be-TYD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PVb-Tu-uOn" userLabel="First Responder" sceneMemberID="firstResponder"/>

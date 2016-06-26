@@ -15,6 +15,7 @@ class CartTableViewCell: UITableViewCell {
     @IBOutlet weak var heightLabel: UILabel!
     @IBOutlet weak var priceLabel: UILabel!
     @IBOutlet weak var quantityLabel: UILabel!
+    @IBOutlet weak var sqftLabel:UILabel!
     
     func populateTableCell(item:Item){
         if item.groupName != nil {
@@ -35,6 +36,10 @@ class CartTableViewCell: UITableViewCell {
         
         if item.price != nil {
             self.priceLabel.text = "$\(item.price!)"
+        }
+        
+        if item.sqft != nil {
+            self.sqftLabel.text = "Sqft: \(item.sqft!)"
         }
     }
     

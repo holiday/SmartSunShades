@@ -21,6 +21,7 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var subTotalField: UILabel!
     @IBOutlet weak var discountedTotal:UILabel!
     @IBOutlet weak var enterDiscountField: UITextField!
+    @IBOutlet weak var totalSqftField:UILabel!
     
     override func viewDidLoad() {
         
@@ -107,6 +108,8 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         subTotalField.text = "$\(self.shoppingCart.getDiscountedTotal())"
         self.discountedTotal.text = "$\(self.shoppingCart.getDiscountedTotal())"
         self.enterDiscountField.text = "\(self.shoppingCart.discountPercent)"
+        let roundedSqft = Double(round(self.shoppingCart.getTotalSqft()*1000)/1000)
+        self.totalSqftField.text = "Total Sqft: \(roundedSqft)"
         self.updateDiscount()
     }
     
@@ -186,7 +189,7 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 120
+        return 150
     }
 
 }

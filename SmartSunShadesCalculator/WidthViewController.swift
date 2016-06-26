@@ -14,6 +14,7 @@ class WidthViewController: UIViewController, UIPickerViewDelegate, UIPickerViewD
     var currentPickerView:UIPickerView!
     var inchesData:[Double] = [Double]()
     static var inchData:[String] = ["0", "1/8", "2/8", "3/8", "4/8", "5/8", "6/8", "7/8"]
+    static var inchValues:[Double] = [0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.875]
     
     var currentIndex:Int = 0
     var currentInchIndex:Int = 0

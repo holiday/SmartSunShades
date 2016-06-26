@@ -50,6 +50,15 @@ class ShoppingCart: NSObject {
         self.updateTotal()
     }
     
+    func getTotalSqft() -> Double {
+        var totalSqft = 0.0
+        for item in cartItems{
+            totalSqft += item.sqft!
+        }
+        
+        return totalSqft
+    }
+    
     func getTotalSaved() -> Double{
         self.calculateDiscountedTotal()
         return self.subTotal - self.discountedTotal
