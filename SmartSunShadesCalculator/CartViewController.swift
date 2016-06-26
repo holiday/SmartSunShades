@@ -9,7 +9,7 @@
 import UIKit
 import MessageUI
 
-class CartViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIAlertViewDelegate, MFMailComposeViewControllerDelegate {
+class CartViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIAlertViewDelegate, MFMailComposeViewControllerDelegate, ColorViewControllerDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -22,7 +22,7 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var subTotalField: UILabel!
     @IBOutlet weak var discountedTotal:UILabel!
     @IBOutlet weak var enterDiscountField: UITextField!
-    @IBOutlet weak var totalSqftField:UILabel!
+    @IBOutlet weak var totalSqInchesField:UILabel!
     
     override func viewDidLoad() {
         
@@ -109,8 +109,8 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         subTotalField.text = "$\(self.shoppingCart.getDiscountedTotal())"
         self.discountedTotal.text = "$\(self.shoppingCart.getDiscountedTotal())"
         self.enterDiscountField.text = "\(self.shoppingCart.discountPercent)"
-        let roundedSqft = Double(round(self.shoppingCart.getTotalSqft()*1000)/1000)
-        self.totalSqftField.text = "Total Sqft: \(roundedSqft)"
+        let roundedSqft = Double(round(self.shoppingCart.getTotalSqInches()*1000)/1000)
+        self.totalSqInchesField.text = "Total Sqft: \(roundedSqft)"
         self.updateDiscount()
     }
     
@@ -203,12 +203,30 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         return 150
     }
     
-    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return true
+    func didSelectColor(color: String, indexPath: NSIndexPath) {
+        let item = self.shoppingCart.getItem(indexPath.row)
+        if item != nil {
+            self.shoppingCart.setColorForItem(item!, color: color)
+            self.tableView.reloadData()
+        }
     }
     
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == UITableViewCellEditingStyle.Delete {
+    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        
+        let color = UITableViewRowAction(style: .Normal, title: "Color") { (action, indexPath) in
+            //Show color picker controller
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            
+            let colorVc = storyboard.instantiateViewControllerWithIdentifier("colorViewController") as! ColorViewController
+            colorVc.delegate = self
+            colorVc.indexPath = indexPath
+            self.presentViewController(colorVc, animated: true, completion: nil)
+            
+        }
+        
+        color.backgroundColor = UIColor.blueColor()
+        
+        let delete = UITableViewRowAction(style: .Normal, title: "Delete") { (action, indexPath) in
             
             self.indexPathToDelete = indexPath
             
@@ -216,6 +234,14 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
             
             alert.show()
         }
+        
+        delete.backgroundColor = UIColor.redColor()
+        
+        return [delete, color]
+    }
+    
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
     }
     
     func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {

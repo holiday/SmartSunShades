@@ -15,7 +15,8 @@ class CartTableViewCell: UITableViewCell {
     @IBOutlet weak var heightLabel: UILabel!
     @IBOutlet weak var priceLabel: UILabel!
     @IBOutlet weak var quantityLabel: UILabel!
-    @IBOutlet weak var sqftLabel:UILabel!
+    @IBOutlet weak var sqInchesLabel:UILabel!
+    @IBOutlet weak var colorLabel:UILabel!
     
     func populateTableCell(item:Item){
         if item.groupName != nil {
@@ -23,11 +24,11 @@ class CartTableViewCell: UITableViewCell {
         }
         
         if item.itemWidth != nil {
-            self.widthLabel.text = "Width: \(Int(item.itemWidth!))\" \(WidthViewController.inchData[item.itemWidthFineInchIndex!])\" inches"
+            self.widthLabel.text = "Width: \(Int(item.itemWidth!))\" \(WidthViewController.inchData[item.itemWidthFineInchIndex!])\""
         }
         
         if item.itemHeight != nil {
-            self.heightLabel.text = "Height: \(Int(item.itemHeight!))\" \(WidthViewController.inchData[item.itemHeightFineInchIndex!])\" inches"
+            self.heightLabel.text = "Height: \(Int(item.itemHeight!))\" \(WidthViewController.inchData[item.itemHeightFineInchIndex!])\""
         }
         
         if item.quantity != nil {
@@ -38,8 +39,12 @@ class CartTableViewCell: UITableViewCell {
             self.priceLabel.text = "$\(item.price!)"
         }
         
-        if item.sqft != nil {
-            self.sqftLabel.text = "Sqft: \(item.sqft!)"
+        if item.sqInches != nil {
+            self.sqInchesLabel.text = "Sqft: \(item.sqInches!)"
+        }
+        
+        if item.color != nil {
+            self.colorLabel.text = "Color: \(item.color!)"
         }
     }
     

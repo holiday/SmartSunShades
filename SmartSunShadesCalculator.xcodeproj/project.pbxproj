@@ -165,8 +165,8 @@
 		64218EB51CD9447E005AE58A /* SmartSunShadesCalculator */ = {
 			isa = PBXGroup;
 			children = (
-				47ED76C01D11DDFE003653C6 /* Models */,
 				640C15611CEF58A9005CD779 /* Main.storyboard */,
+				47ED76C01D11DDFE003653C6 /* Models */,
 				47459DED1CE9423500E5EA65 /* Controllers */,
 				47459DEC1CE9423000E5EA65 /* Views */,
 				6486776B1CE4E2AE00EDF8FD /* data */,

@@ -115,7 +115,7 @@ class CategoryViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         let sqft:Double =  width * height * Double(tempItem.quantity!)
         let roundedSqft = Double(round(sqft*100)/100)
         
-        tempItem.sqft = roundedSqft
+        tempItem.sqInches = roundedSqft
         tempItem.price = Double(tempItem.quantity!) * price
     }
     

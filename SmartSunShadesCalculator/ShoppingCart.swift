@@ -50,19 +50,31 @@ class ShoppingCart: NSObject {
         self.updateTotal()
     }
     
+    func getItem(index:Int) -> Item? {
+        if index <= self.cartItems.count-1 && index >= 0{
+            return self.cartItems[index]
+        }
+        
+        return nil
+    }
+    
+    func setColorForItem(item:Item, color:String){
+        item.color = color
+    }
+    
     func deleteItem(index:Int) {
         if index <= self.cartItems.count-1 && index >= 0{
             self.cartItems.removeAtIndex(index)
         }
     }
     
-    func getTotalSqft() -> Double {
+    func getTotalSqInches() -> Double {
         var totalSqft = 0.0
         for item in cartItems{
-            totalSqft += item.sqft!
+            totalSqft += item.sqInches!
         }
         
-        return totalSqft
+        return totalSqft / 144.0
     }
     
     func getTotalSaved() -> Double{

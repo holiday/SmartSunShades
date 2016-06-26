@@ -8,11 +8,17 @@
 
 import UIKit
 
+protocol ColorViewControllerDelegate {
+    func didSelectColor(color:String, indexPath:NSIndexPath)
+}
+
 class ColorViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
     
     
     @IBOutlet weak var colorPickerView: UIPickerView!
     var colorData:[String] = [String]()
+    var delegate:ColorViewControllerDelegate?
+    var indexPath:NSIndexPath?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,6 +29,11 @@ class ColorViewController: UIViewController, UIPickerViewDataSource, UIPickerVie
         self.colorPickerView.dataSource = self
     }
     
+    @IBAction func didPressDone(sender: AnyObject) {
+        
+        self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+        
+    }
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
         return 1
     }
@@ -39,6 +50,12 @@ class ColorViewController: UIViewController, UIPickerViewDataSource, UIPickerVie
         
         let title = self.colorData[row]
         return NSAttributedString(string: title, attributes: [NSForegroundColorAttributeName:UIColor.whiteColor()])
+    }
+    
+    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        if (self.delegate != nil && self.indexPath != nil) {
+            self.delegate?.didSelectColor(self.colorData[row], indexPath: self.indexPath!)
+        }
     }
     
 }
