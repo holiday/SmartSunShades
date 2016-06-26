@@ -50,6 +50,12 @@ class ShoppingCart: NSObject {
         self.updateTotal()
     }
     
+    func deleteItem(index:Int) {
+        if index <= self.cartItems.count-1 && index >= 0{
+            self.cartItems.removeAtIndex(index)
+        }
+    }
+    
     func getTotalSqft() -> Double {
         var totalSqft = 0.0
         for item in cartItems{

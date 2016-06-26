@@ -16,6 +16,7 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
     let shoppingCartController = ShoppingCartController.sharedInstance
     let shoppingCart:ShoppingCart = ShoppingCartController.sharedInstance.shoppingCart
     var isKeyboardVisible:Bool = false
+    var indexPathToDelete:NSIndexPath?
     
     @IBOutlet weak var totalDiscountsField: UILabel!
     @IBOutlet weak var subTotalField: UILabel!
@@ -177,6 +178,16 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        //If there are no items in the shopping cart, dismiss the cart and show a message
+        if self.shoppingCart.cartItems.count <= 0 {
+            self.presentingViewController?.dismissViewControllerAnimated(true, completion: { 
+                let alert = UIAlertView(title: "Cart Empty", message: "There are no items in the shopping cart to display", delegate: self, cancelButtonTitle: "ok")
+                
+                alert.show()
+            })
+        }
+        
         return self.shoppingCart.cartItems.count
     }
     
@@ -190,6 +201,43 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 150
+    }
+    
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == UITableViewCellEditingStyle.Delete {
+            
+            self.indexPathToDelete = indexPath
+            
+            let alert = UIAlertView(title: "Delete item", message: "Are you sure you want to delete this item?", delegate: self, cancelButtonTitle: "cancel", otherButtonTitles: "delete")
+            
+            alert.show()
+        }
+    }
+    
+    func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
+        print(buttonIndex)
+        if alertView.title == "Delete item" {
+            if buttonIndex == 1 {
+                
+                //delete item
+                if self.indexPathToDelete != nil {
+                    tableView.beginUpdates()
+                    
+                    self.shoppingCart.deleteItem(self.indexPathToDelete!.row)
+                    
+                    tableView.deleteRowsAtIndexPaths([self.indexPathToDelete!], withRowAnimation: UITableViewRowAnimation.Fade)
+                    
+                    tableView.endUpdates()
+                }
+                
+            }else{
+                
+            }
+        }
     }
 
 }
