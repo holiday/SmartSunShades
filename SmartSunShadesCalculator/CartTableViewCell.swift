@@ -17,6 +17,7 @@ class CartTableViewCell: UITableViewCell {
     @IBOutlet weak var quantityLabel: UILabel!
     @IBOutlet weak var sqInchesLabel:UILabel!
     @IBOutlet weak var colorLabel:UILabel!
+    @IBOutlet weak var fabricNameLabel:UILabel!
     
     func populateTableCell(item:Item){
         if item.groupName != nil {
@@ -45,6 +46,10 @@ class CartTableViewCell: UITableViewCell {
         
         if item.color != nil {
             self.colorLabel.text = "Color: \(item.color!)"
+        }
+        
+        if item.fabricName != nil {
+            self.fabricNameLabel.text = "Fabric Name: \(item.fabricName!)"
         }
     }
     

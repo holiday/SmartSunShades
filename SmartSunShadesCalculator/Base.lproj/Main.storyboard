@@ -40,12 +40,12 @@
                             </pickerView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sXq-VJ-E6f">
                                 <rect key="frame" x="0.0" y="486" width="600" height="50"/>
-                                <color key="backgroundColor" red="0.34584553439999999" green="0.75506211010000002" blue="0.35778805549999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.90196078430000004" green="0.47058823529999999" blue="0.090196078430000007" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="CO2-2A-VDs"/>
                                     <constraint firstAttribute="height" constant="50" id="oXR-BS-iZ8"/>
                                 </constraints>
-                                <state key="normal" title="Add to Cart">
+                                <state key="normal" title="Next">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <variation key="default">
@@ -59,7 +59,7 @@
                                     </mask>
                                 </variation>
                                 <connections>
-                                    <action selector="didPressAddToCart:" destination="BYZ-38-t0r" eventType="touchUpInside" id="f1x-mD-1ou"/>
+                                    <segue destination="maJ-B3-aGZ" kind="show" id="dR9-Lz-64p"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -577,7 +577,6 @@
                                         </state>
                                         <connections>
                                             <action selector="didPressAddMoreItems:" destination="rUf-GL-Yt4" eventType="touchUpInside" id="JrY-hP-W2i"/>
-                                            <action selector="didPressAddToCart:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8GV-FK-IqM"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Iz1-ah-r2f">
@@ -1055,7 +1054,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PVb-Tu-uOn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4668" y="445"/>
+            <point key="canvasLocation" x="5304" y="445"/>
         </scene>
         <!--Color-->
         <scene sceneID="jQl-bm-3E3">
@@ -1227,7 +1226,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Cmf-t8-sc5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4658" y="1171"/>
+            <point key="canvasLocation" x="5304" y="1135"/>
         </scene>
         <!--Width-->
         <scene sceneID="NH3-Ky-TWZ">
@@ -1666,6 +1665,136 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OhF-af-vi8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="405" y="445"/>
+        </scene>
+        <!--Fabric-->
+        <scene sceneID="9Pb-YO-lSG">
+            <objects>
+                <viewController id="maJ-B3-aGZ" customClass="FabricViewController" customModule="SmartSunShadesCalculator" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="yEZ-KP-dqT"/>
+                        <viewControllerLayoutGuide type="bottom" id="qVs-Jw-orK"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="VFC-T5-sPw">
+                        <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background" translatesAutoresizingMaskIntoConstraints="NO" id="YcN-2v-tqa">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
+                            </imageView>
+                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LCa-gd-lSq">
+                                <rect key="frame" x="0.0" y="160" width="600" height="216"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="216" id="gp1-bh-BnR"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="gp1-bh-BnR"/>
+                                    </mask>
+                                </variation>
+                                <variation key="widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="gp1-bh-BnR"/>
+                                    </mask>
+                                </variation>
+                            </pickerView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BiU-Fc-7Q1">
+                                <rect key="frame" x="0.0" y="486" width="600" height="50"/>
+                                <color key="backgroundColor" red="0.34584553439999999" green="0.75506211010000002" blue="0.35778805549999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="h73-WU-Eke"/>
+                                    <constraint firstAttribute="height" constant="50" id="yZs-RX-UcS"/>
+                                </constraints>
+                                <state key="normal" title="Add to Cart">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="yZs-RX-UcS"/>
+                                    </mask>
+                                </variation>
+                                <variation key="widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="yZs-RX-UcS"/>
+                                    </mask>
+                                </variation>
+                                <connections>
+                                    <action selector="didPressAddToCart:" destination="maJ-B3-aGZ" eventType="touchUpInside" id="dsC-4U-RlH"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="LCa-gd-lSq" firstAttribute="leading" secondItem="VFC-T5-sPw" secondAttribute="leading" id="3ld-3S-dG5"/>
+                            <constraint firstItem="BiU-Fc-7Q1" firstAttribute="leading" secondItem="VFC-T5-sPw" secondAttribute="leading" id="6mf-nz-Qjy"/>
+                            <constraint firstItem="qVs-Jw-orK" firstAttribute="top" secondItem="YcN-2v-tqa" secondAttribute="bottom" id="Ci6-vG-28j"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="BiU-Fc-7Q1" secondAttribute="trailing" constant="-20" id="EmC-wn-VwZ"/>
+                            <constraint firstItem="LCa-gd-lSq" firstAttribute="leading" secondItem="VFC-T5-sPw" secondAttribute="leading" id="Hb3-0o-dMz"/>
+                            <constraint firstItem="qVs-Jw-orK" firstAttribute="top" secondItem="BiU-Fc-7Q1" secondAttribute="bottom" id="Kk1-zf-W3V"/>
+                            <constraint firstAttribute="trailing" secondItem="LCa-gd-lSq" secondAttribute="trailing" id="NsA-mJ-LVP"/>
+                            <constraint firstItem="qVs-Jw-orK" firstAttribute="top" secondItem="BiU-Fc-7Q1" secondAttribute="bottom" id="OUX-ZD-ghh"/>
+                            <constraint firstAttribute="trailing" secondItem="YcN-2v-tqa" secondAttribute="trailing" id="R2z-3u-DLF"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="YcN-2v-tqa" secondAttribute="trailing" constant="-20" id="SfS-Kg-y3t"/>
+                            <constraint firstItem="qVs-Jw-orK" firstAttribute="top" secondItem="YcN-2v-tqa" secondAttribute="bottom" id="TLU-81-Fub"/>
+                            <constraint firstItem="LCa-gd-lSq" firstAttribute="top" secondItem="yEZ-KP-dqT" secondAttribute="bottom" constant="128" id="V7x-4U-Yht"/>
+                            <constraint firstItem="YcN-2v-tqa" firstAttribute="leading" secondItem="VFC-T5-sPw" secondAttribute="leading" id="WNu-6f-1t0"/>
+                            <constraint firstItem="BiU-Fc-7Q1" firstAttribute="leading" secondItem="VFC-T5-sPw" secondAttribute="leadingMargin" constant="-20" id="eym-VY-2u8"/>
+                            <constraint firstItem="YcN-2v-tqa" firstAttribute="leading" secondItem="VFC-T5-sPw" secondAttribute="leadingMargin" constant="-20" id="f4W-wR-VhU"/>
+                            <constraint firstAttribute="trailing" secondItem="BiU-Fc-7Q1" secondAttribute="trailing" id="jgV-7x-7nB"/>
+                            <constraint firstItem="YcN-2v-tqa" firstAttribute="top" secondItem="VFC-T5-sPw" secondAttribute="topMargin" id="m4B-Ul-wrt"/>
+                            <constraint firstAttribute="trailing" secondItem="LCa-gd-lSq" secondAttribute="trailing" id="mMM-yo-eMt"/>
+                            <constraint firstItem="LCa-gd-lSq" firstAttribute="centerY" secondItem="VFC-T5-sPw" secondAttribute="centerY" id="rTm-cK-ghC"/>
+                            <constraint firstItem="YcN-2v-tqa" firstAttribute="top" secondItem="VFC-T5-sPw" secondAttribute="top" id="zuq-Mx-P8a"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="zuq-Mx-P8a"/>
+                                <exclude reference="R2z-3u-DLF"/>
+                                <exclude reference="WNu-6f-1t0"/>
+                                <exclude reference="Hb3-0o-dMz"/>
+                                <exclude reference="NsA-mJ-LVP"/>
+                                <exclude reference="V7x-4U-Yht"/>
+                                <exclude reference="eym-VY-2u8"/>
+                                <exclude reference="EmC-wn-VwZ"/>
+                                <exclude reference="OUX-ZD-ghh"/>
+                                <exclude reference="Ci6-vG-28j"/>
+                            </mask>
+                        </variation>
+                        <variation key="widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="LCa-gd-lSq"/>
+                                <include reference="BiU-Fc-7Q1"/>
+                            </mask>
+                            <mask key="constraints">
+                                <include reference="zuq-Mx-P8a"/>
+                                <include reference="R2z-3u-DLF"/>
+                                <exclude reference="f4W-wR-VhU"/>
+                                <include reference="WNu-6f-1t0"/>
+                                <exclude reference="m4B-Ul-wrt"/>
+                                <exclude reference="SfS-Kg-y3t"/>
+                                <exclude reference="mMM-yo-eMt"/>
+                                <exclude reference="rTm-cK-ghC"/>
+                                <include reference="Hb3-0o-dMz"/>
+                                <include reference="NsA-mJ-LVP"/>
+                                <exclude reference="3ld-3S-dG5"/>
+                                <include reference="V7x-4U-Yht"/>
+                                <include reference="eym-VY-2u8"/>
+                                <include reference="EmC-wn-VwZ"/>
+                                <include reference="OUX-ZD-ghh"/>
+                                <include reference="Ci6-vG-28j"/>
+                                <exclude reference="TLU-81-Fub"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <navigationItem key="navigationItem" title="Fabric" id="PZr-Cj-SZi"/>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
+                    <connections>
+                        <outlet property="fabricPickerView" destination="LCa-gd-lSq" id="PAH-yw-P0c"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ehA-Ge-kpP" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4657" y="445"/>
         </scene>
     </scenes>
     <resources>

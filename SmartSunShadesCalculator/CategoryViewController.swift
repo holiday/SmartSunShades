@@ -47,30 +47,6 @@ class CategoryViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         //compute the item price
         self.computeItemPrice()
     }
-    
-    @IBAction func didPressAddToCart(sender: UIButton) {
-        
-        //add the temp item to the shopping cart
-        //updated the width in shopping cart
-        let shoppingCart = ShoppingCartController.sharedInstance.shoppingCart
-        
-        if shoppingCart.moveTempItemToCart() == true {
-            
-            print("Successfully added tempItem to cart")
-            
-        }
-        
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewControllerWithIdentifier("cartViewController") as! CartViewController
-        
-        self.presentViewController(vc, animated: true) {
-            
-            //self.navigationController?.popToRootViewControllerAnimated(false)
-            let vc = self.navigationController?.viewControllers[1]
-            self.navigationController?.popToViewController(vc!, animated: true)
-        }
-        
-    }
 
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
         return 1
@@ -113,6 +89,7 @@ class CategoryViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         tempItem.calculateSqFootage()
         
         tempItem.price = Double(tempItem.quantity!) * price
+        print(tempItem.price)
     }
     
 

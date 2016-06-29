@@ -12,6 +12,7 @@
 		47459DF31CE942AB00E5EA65 /* CartTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 47459DF11CE942AB00E5EA65 /* CartTableViewCell.xib */; };
 		476495B91CE954CD00430A94 /* ShoppingCartController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476495B81CE954CD00430A94 /* ShoppingCartController.swift */; };
 		47D79BD11D2419860016AD22 /* SmartSunShadesCalculator.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 47D79BCF1D2419860016AD22 /* SmartSunShadesCalculator.xcdatamodeld */; };
+		47D79BD31D241F000016AD22 /* FabricViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D79BD21D241F000016AD22 /* FabricViewController.swift */; };
 		47ED76BF1D11D9E5003653C6 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47ED76BE1D11D9E5003653C6 /* MessageUI.framework */; };
 		47ED76C41D11E90E003653C6 /* Customer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47ED76C11D11E90E003653C6 /* Customer.swift */; };
 		47ED76C51D11E90E003653C6 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47ED76C21D11E90E003653C6 /* Item.swift */; };
@@ -53,6 +54,7 @@
 		47459DF11CE942AB00E5EA65 /* CartTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CartTableViewCell.xib; sourceTree = "<group>"; };
 		476495B81CE954CD00430A94 /* ShoppingCartController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShoppingCartController.swift; sourceTree = "<group>"; };
 		47D79BD01D2419860016AD22 /* SmartSunShadesCalculator.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SmartSunShadesCalculator.xcdatamodel; sourceTree = "<group>"; };
+		47D79BD21D241F000016AD22 /* FabricViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FabricViewController.swift; sourceTree = "<group>"; };
 		47ED76BE1D11D9E5003653C6 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		47ED76C11D11E90E003653C6 /* Customer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Customer.swift; sourceTree = "<group>"; };
 		47ED76C21D11E90E003653C6 /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 				47459DEA1CE941A000E5EA65 /* CartViewController.swift */,
 				64B47E131CDD3862009C5792 /* ColorViewController.swift */,
 				64A8FC8B1CE0ED330001AFE4 /* CustomerViewController.swift */,
+				47D79BD21D241F000016AD22 /* FabricViewController.swift */,
 				476495B81CE954CD00430A94 /* ShoppingCartController.swift */,
 				64B47E0F1CDD32AF009C5792 /* HeightViewController.swift */,
 				648677171CE0F64100EDF8FD /* LocationViewController.swift */,
@@ -317,6 +320,7 @@
 				64B47E121CDD3693009C5792 /* QuantityViewController.swift in Sources */,
 				47ED76C51D11E90E003653C6 /* Item.swift in Sources */,
 				476495B91CE954CD00430A94 /* ShoppingCartController.swift in Sources */,
+				47D79BD31D241F000016AD22 /* FabricViewController.swift in Sources */,
 				47459DF21CE942AB00E5EA65 /* CartTableViewCell.swift in Sources */,
 				64218EB71CD9447E005AE58A /* AppDelegate.swift in Sources */,
 				64B47E141CDD3862009C5792 /* ColorViewController.swift in Sources */,

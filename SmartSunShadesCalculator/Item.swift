@@ -33,6 +33,7 @@ class Item: NSObject {
     var price:Double?
     var sqInches:Double?
     var color:String?
+    var fabricName:String?
     
     init(location:String?, width:Double?, height:Double?, quantity:Int?) {
         
