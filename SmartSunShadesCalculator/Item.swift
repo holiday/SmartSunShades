@@ -7,8 +7,21 @@
 //
 
 import UIKit
+import CoreData
 
 class Item: NSObject {
+    
+//    @NSManaged var groupName: String?
+//    @NSManaged var location: String?
+//    @NSManaged var itemWidth: String?
+//    @NSManaged var itemWidthFineInchIndex: String?
+//    @NSManaged var itemHeight: String?
+//    @NSManaged var itemHeightFineInchIndex: String?
+//    @NSManaged var quantity: String?
+//    @NSManaged var price: String?
+//    @NSManaged var sqFootage: String?
+//    @NSManaged var color: String?
+    
     
     var groupName:String?
     var location:String?
@@ -90,7 +103,7 @@ class Item: NSObject {
     }
     
     func getHTMLTableString() -> String {
-        return "<tr><td>\(self.groupName!)</td><td>\(self.getLocation())</td><td>\(self.getItemWidth())\" \(self.getWidthFineInch().stringValue)\" inches</td><td>\(self.getItemHeight())\" \(self.getHeightFineInch().stringValue)\" inches</td><td>\(self.getQuantity())</td></tr>"
+        return "<tr><td>\(self.groupName!)</td><td>\(self.getLocation())</td><td>\(Int(self.getItemWidth()))\" \(self.getWidthFineInch().stringValue)\" inches</td><td>\(Int(self.getItemHeight()))\" \(self.getHeightFineInch().stringValue)\" inches</td><td>\(self.getQuantity())</td></tr>"
     }
     
     func getWidthFineInch() -> (index:Int, stringValue:String) {
@@ -109,6 +122,15 @@ class Item: NSObject {
         
         print("Height fine inches data unavailable")
         return (0, "N/A")
+    }
+    
+    func calculateSqFootage() {
+        let width = self.getItemWidth()+WidthViewController.inchValues[self.getWidthFineInch().index]
+        let height = self.getItemHeight()+WidthViewController.inchValues[self.getHeightFineInch().index]
+        let sqInches:Double =  ((width * height) / 144.0) * Double(self.quantity!)
+        let roundedSqft = Double(round(sqInches*100)/100)
+        
+        self.sqInches = roundedSqft
     }
 
 }

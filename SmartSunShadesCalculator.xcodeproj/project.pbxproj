@@ -11,6 +11,7 @@
 		47459DF21CE942AB00E5EA65 /* CartTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47459DF01CE942AB00E5EA65 /* CartTableViewCell.swift */; };
 		47459DF31CE942AB00E5EA65 /* CartTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 47459DF11CE942AB00E5EA65 /* CartTableViewCell.xib */; };
 		476495B91CE954CD00430A94 /* ShoppingCartController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476495B81CE954CD00430A94 /* ShoppingCartController.swift */; };
+		47D79BD11D2419860016AD22 /* SmartSunShadesCalculator.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 47D79BCF1D2419860016AD22 /* SmartSunShadesCalculator.xcdatamodeld */; };
 		47ED76BF1D11D9E5003653C6 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47ED76BE1D11D9E5003653C6 /* MessageUI.framework */; };
 		47ED76C41D11E90E003653C6 /* Customer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47ED76C11D11E90E003653C6 /* Customer.swift */; };
 		47ED76C51D11E90E003653C6 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47ED76C21D11E90E003653C6 /* Item.swift */; };
@@ -51,6 +52,7 @@
 		47459DF01CE942AB00E5EA65 /* CartTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartTableViewCell.swift; sourceTree = "<group>"; };
 		47459DF11CE942AB00E5EA65 /* CartTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CartTableViewCell.xib; sourceTree = "<group>"; };
 		476495B81CE954CD00430A94 /* ShoppingCartController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShoppingCartController.swift; sourceTree = "<group>"; };
+		47D79BD01D2419860016AD22 /* SmartSunShadesCalculator.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SmartSunShadesCalculator.xcdatamodel; sourceTree = "<group>"; };
 		47ED76BE1D11D9E5003653C6 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		47ED76C11D11E90E003653C6 /* Customer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Customer.swift; sourceTree = "<group>"; };
 		47ED76C21D11E90E003653C6 /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 			isa = PBXGroup;
 			children = (
 				640C15611CEF58A9005CD779 /* Main.storyboard */,
+				47D79BCF1D2419860016AD22 /* SmartSunShadesCalculator.xcdatamodeld */,
 				47ED76C01D11DDFE003653C6 /* Models */,
 				47459DED1CE9423500E5EA65 /* Controllers */,
 				47459DEC1CE9423000E5EA65 /* Views */,
@@ -320,6 +323,7 @@
 				47459DEB1CE941A000E5EA65 /* CartViewController.swift in Sources */,
 				64A9CB031D13011800BB9AFF /* ShoppingCart.swift in Sources */,
 				47ED76C41D11E90E003653C6 /* Customer.swift in Sources */,
+				47D79BD11D2419860016AD22 /* SmartSunShadesCalculator.xcdatamodeld in Sources */,
 				64B47E0E1CDD0316009C5792 /* WidthViewController.swift in Sources */,
 				64A8FC8C1CE0ED330001AFE4 /* CustomerViewController.swift in Sources */,
 				648677181CE0F64100EDF8FD /* LocationViewController.swift in Sources */,
@@ -522,6 +526,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		47D79BCF1D2419860016AD22 /* SmartSunShadesCalculator.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				47D79BD01D2419860016AD22 /* SmartSunShadesCalculator.xcdatamodel */,
+			);
+			currentVersion = 47D79BD01D2419860016AD22 /* SmartSunShadesCalculator.xcdatamodel */;
+			path = SmartSunShadesCalculator.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 64218EAB1CD9447E005AE58A /* Project object */;
 }

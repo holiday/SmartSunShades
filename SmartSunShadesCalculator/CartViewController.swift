@@ -23,6 +23,7 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var discountedTotal:UILabel!
     @IBOutlet weak var enterDiscountField: UITextField!
     @IBOutlet weak var totalSqInchesField:UILabel!
+    @IBOutlet weak var fiftyPercentOffField:UILabel!
     
     override func viewDidLoad() {
         
@@ -94,9 +95,9 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func updateDiscount() {
         if self.shoppingCart.subTotal > 0 {
-            self.totalDiscountsField.text = "-$\(self.shoppingCart.getTotalSaved())"
+            self.totalDiscountsField.text = "-$\(self.shoppingCart.getDiscountedTotal())"
             self.subTotalField.text = "$\(self.shoppingCart.subTotal)"
-            self.discountedTotal.text = "$\(self.shoppingCart.getDiscountedTotal())"
+            self.discountedTotal.text = "$\(self.shoppingCart.getTotal())"
         }
     }
     
@@ -107,10 +108,11 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     override func viewWillAppear(animated: Bool) {
         subTotalField.text = "$\(self.shoppingCart.getDiscountedTotal())"
-        self.discountedTotal.text = "$\(self.shoppingCart.getDiscountedTotal())"
+        self.discountedTotal.text = "$\(self.shoppingCart.getTotal())"
         self.enterDiscountField.text = "\(self.shoppingCart.discountPercent)"
         let roundedSqft = Double(round(self.shoppingCart.getTotalSqInches()*1000)/1000)
-        self.totalSqInchesField.text = "Total Sqft: \(roundedSqft)"
+        self.totalSqInchesField.text = "Total Sq Footage: \(roundedSqft)"
+        self.fiftyPercentOffField.text = "-$\(self.shoppingCart.getFiftyOff())"
         self.updateDiscount()
     }
     
@@ -145,7 +147,7 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
             customerLastName = "Customer"
         }
         
-        htmlTable = "Dear \(customerFirstName!) \(customerLastName!),<br/><br/> Here the quote you requested. <br/><br/> <table border=\"1\"><col width=\"100\"><thead><tr><th>Category</th><th>Location</th><th>Width</th><th>Height</th><th>Quantity</th></tr></thead>\(htmlTable)</table><br/>Total-Discounts: $\(self.shoppingCart.getTotalSaved())<br/>Sub-Total: $\(self.shoppingCart.subTotal)<br/>Total: $\(self.shoppingCart.getDiscountedTotal())"
+        htmlTable = "Dear \(customerFirstName!) \(customerLastName!),<br/><br/> Here the quote you requested. <br/><br/> <table border=\"1\"><col width=\"100\"><thead><tr><th>Category</th><th>Location</th><th>Width</th><th>Height</th><th>Quantity</th></tr></thead>\(htmlTable)</table><br/>Total-Discounts: $\(self.shoppingCart.getDiscountedTotal())<br/>Sub-Total: $\(self.shoppingCart.subTotal)<br/>Total: $\(self.shoppingCart.getTotal())"
         
         mailComposerVC.setMessageBody(htmlTable, isHTML: true)
         

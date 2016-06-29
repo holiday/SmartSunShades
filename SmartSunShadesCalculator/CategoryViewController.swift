@@ -110,12 +110,8 @@ class CategoryViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         
         let price = pt.getPrice(tempItem.getItemWidth(), widthFineInchIndex: tempItem.getWidthFineInch().index, height: tempItem.getItemHeight(), heightFineInchIndex: tempItem.getHeightFineInch().index)
         
-        let width = tempItem.getItemWidth()+WidthViewController.inchValues[tempItem.getWidthFineInch().index]
-        let height = tempItem.getItemHeight()+WidthViewController.inchValues[tempItem.getHeightFineInch().index]
-        let sqft:Double =  width * height * Double(tempItem.quantity!)
-        let roundedSqft = Double(round(sqft*100)/100)
+        tempItem.calculateSqFootage()
         
-        tempItem.sqInches = roundedSqft
         tempItem.price = Double(tempItem.quantity!) * price
     }
     

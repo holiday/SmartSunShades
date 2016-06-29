@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class ShoppingCart: NSObject {
     
@@ -68,16 +69,20 @@ class ShoppingCart: NSObject {
         }
     }
     
-    func getTotalSqInches() -> Double {
-        var totalSqft = 0.0
-        for item in cartItems{
-            totalSqft += item.sqInches!
-        }
-        
-        return totalSqft / 144.0
+    func getFiftyOff() -> Double {
+        return self.subTotal / 2.00
     }
     
-    func getTotalSaved() -> Double{
+    func getTotalSqInches() -> Double {
+        var totalSqInches = 0.0
+        for item in cartItems{
+            totalSqInches += item.sqInches!
+        }
+        
+        return totalSqInches
+    }
+    
+    func getTotal() -> Double{
         self.calculateDiscountedTotal()
         return self.subTotal - self.discountedTotal
     }
@@ -88,6 +93,7 @@ class ShoppingCart: NSObject {
     }
     
     func calculateDiscountedTotal() {
-        self.discountedTotal = self.subTotal * (1.0 - (self.discountPercent/100))
+        
+        self.discountedTotal = (self.subTotal/2.0) + ((self.discountPercent/100) * (self.subTotal/2.0))
     }
 }

@@ -40,7 +40,7 @@ class CartTableViewCell: UITableViewCell {
         }
         
         if item.sqInches != nil {
-            self.sqInchesLabel.text = "Sqft: \(item.sqInches!)"
+            self.sqInchesLabel.text = "Square Footage: \(item.sqInches!)"
         }
         
         if item.color != nil {
