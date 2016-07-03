@@ -40,15 +40,14 @@ class WidthViewController: UIViewController, UIPickerViewDelegate, UIPickerViewD
     }
     
     func saveWidthData() {
-        //updated the width in shopping cart
-        let shoppingCart = ShoppingCartController.sharedInstance.shoppingCart
         
-        let tempItem:Item = shoppingCart.getTempItem()
+        if let tempItem:Item = ShoppingCartController.sharedInstance.tempItem {
+            tempItem.itemWidth = self.inchesData[self.currentIndex]
+            tempItem.itemWidthFineInchIndex = self.currentInchIndex
+            
+            print("Width: \(tempItem.itemWidth) , \(tempItem.getWidthFineInch().stringValue)")
+        }
         
-        tempItem.itemWidth = self.inchesData[self.currentIndex]
-        tempItem.itemWidthFineInchIndex = self.currentInchIndex
-        
-        print("Width: \(tempItem.getItemWidth()) , \(tempItem.getWidthFineInch().stringValue)")
     }
     
     override func viewDidAppear(animated: Bool) {

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class LocationViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
 
@@ -46,11 +47,8 @@ class LocationViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     
     override func viewDidAppear(animated: Bool) {
         
-        if self.shoppingCartController.shoppingCart.tempItem == nil {
-            let emptyItem = Item(location: nil, width: nil, height: nil, quantity: nil)
-            
-            self.shoppingCartController.shoppingCart.addTempItem(emptyItem)
-        }
+        //Create a temp Item
+        ShoppingCartController.sharedInstance.createTempItem()
         
     }
     
@@ -61,13 +59,13 @@ class LocationViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     }
     
     func saveItemLocation() {
-        //updated the location in shopping cart
-        let shoppingCart = ShoppingCartController.sharedInstance.shoppingCart
         
-        let tempItem = shoppingCart.getTempItem()
-        tempItem.location = "\(self.locations[self.currentLocation]) \(self.currentLocationNumber)"
+        if let tempItem = self.shoppingCartController.tempItem {
+            tempItem.location = "\(self.locations[self.currentLocation]) \(self.currentLocationNumber)"
+            
+            print(tempItem.location)
+        }
         
-        print(tempItem.getLocation())
     }
     
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {

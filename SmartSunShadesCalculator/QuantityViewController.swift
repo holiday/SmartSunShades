@@ -26,14 +26,17 @@ class QuantityViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     }
     
     func saveQuantityData() {
+        
         //updated the width in shopping cart
-        let shoppingCart = ShoppingCartController.sharedInstance.shoppingCart
         
-        let tempItem:Item = shoppingCart.getTempItem()
+        if let tempItem:Item = ShoppingCartController.sharedInstance.tempItem {
+            tempItem.quantity = self.currentQuantity
+            
+            print("Quantity: \(tempItem.quantity)")
+        }else {
+            print("Error getting tempItem: saveQuantityData")
+        }
         
-        tempItem.quantity = self.currentQuantity
-        
-        print("Quantity: \(tempItem.getQuantity())")
     }
     
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {

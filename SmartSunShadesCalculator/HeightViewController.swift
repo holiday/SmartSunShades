@@ -26,15 +26,15 @@ class HeightViewController: WidthViewController {
     }
     
     func saveHeightData() {
-        //updated the width in shopping cart
-        let shoppingCart = ShoppingCartController.sharedInstance.shoppingCart
         
-        let tempItem:Item = shoppingCart.getTempItem()
-        
-        tempItem.itemHeight = self.inchesData[self.currentIndex]
-        tempItem.itemHeightFineInchIndex = self.currentInchIndex
-        
-        print("Width: \(tempItem.getItemHeight()) , \(tempItem.getHeightFineInch().stringValue)")
+        if let tempItem:Item = ShoppingCartController.sharedInstance.tempItem {
+            tempItem.itemHeight = self.inchesData[self.currentIndex]
+            tempItem.itemHeightFineInchIndex = self.currentInchIndex
+            
+            print("Height: \(tempItem.itemHeight) , \(tempItem.getHeightFineInch().stringValue)")
+        }else{
+            print("Error getting tempItem: saveHeightData")
+        }
     }
     
     override func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {

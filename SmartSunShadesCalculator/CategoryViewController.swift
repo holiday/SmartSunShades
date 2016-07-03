@@ -79,17 +79,18 @@ class CategoryViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         
         
         //updated the category in shopping cart
-        let shoppingCart = ShoppingCartController.sharedInstance.shoppingCart
         
-        let tempItem = shoppingCart.getTempItem()
-        tempItem.groupName = self.categoryTitles[self.currentSelectedCategoryIndex]
+        if let tempItem = ShoppingCartController.sharedInstance.tempItem {
+            tempItem.groupName = self.categoryTitles[self.currentSelectedCategoryIndex]
+            
+            let price = pt.getPrice(Double(tempItem.itemWidth!), widthFineInchIndex: tempItem.getWidthFineInch().index, height: Double(tempItem.itemHeight!), heightFineInchIndex: tempItem.getHeightFineInch().index)
+            
+            tempItem.calculateSqFootage()
+            
+            tempItem.price = Double(tempItem.quantity!) * price
+            print(tempItem.price)
+        }
         
-        let price = pt.getPrice(tempItem.getItemWidth(), widthFineInchIndex: tempItem.getWidthFineInch().index, height: tempItem.getItemHeight(), heightFineInchIndex: tempItem.getHeightFineInch().index)
-        
-        tempItem.calculateSqFootage()
-        
-        tempItem.price = Double(tempItem.quantity!) * price
-        print(tempItem.price)
     }
     
 

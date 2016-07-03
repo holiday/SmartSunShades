@@ -1,18 +1,44 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15E65" minimumToolsVersion="Xcode 7.0">
-    <entity name="Item" syncable="YES">
+    <entity name="Cart" representedClassName=".Cart" syncable="YES">
+        <attribute name="discountedTotal" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="discountPercent" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="subTotal" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="customers" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Customers" inverseName="cart" inverseEntity="Customers" syncable="YES"/>
+        <relationship name="items" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Item" inverseName="cart" inverseEntity="Item" syncable="YES"/>
+    </entity>
+    <entity name="Customers" representedClassName="Customers" syncable="YES">
+        <attribute name="address" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="phoneNumber" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="cart" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="Cart" inverseName="customers" inverseEntity="Cart" syncable="YES"/>
+        <relationship name="order" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Orders" inverseName="customers" inverseEntity="Orders" syncable="YES"/>
+    </entity>
+    <entity name="Item" representedClassName=".Item" syncable="YES">
         <attribute name="color" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="fabricName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="groupName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="itemHeight" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="itemHeightFineInchIndex" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="itemHeightFineInchIndex" optional="YES" attributeType="Integer 16" defaultValueString="0.0" syncable="YES"/>
         <attribute name="itemWidth" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="itemWidthFineInchIndex" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="itemWidthFineInchIndex" optional="YES" attributeType="Integer 16" defaultValueString="0.0" syncable="YES"/>
         <attribute name="location" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="price" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="quantity" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="sqFootage" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="cart" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Cart" inverseName="items" inverseEntity="Cart" syncable="YES"/>
+    </entity>
+    <entity name="Orders" representedClassName=".Orders" syncable="YES">
+        <attribute name="expectedDelivery" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="orderDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <relationship name="customers" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Customers" inverseName="order" inverseEntity="Customers" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Item" positionX="-63" positionY="-18" width="128" height="195"/>
+        <element name="Cart" positionX="-54" positionY="63" width="128" height="120"/>
+        <element name="Customers" positionX="-36" positionY="90" width="128" height="150"/>
+        <element name="Item" positionX="-63" positionY="-18" width="128" height="225"/>
+        <element name="Orders" positionX="-45" positionY="90" width="128" height="90"/>
     </elements>
 </model>

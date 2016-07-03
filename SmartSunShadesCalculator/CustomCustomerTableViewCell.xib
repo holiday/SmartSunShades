@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="customersTableViewCell" rowHeight="113" id="KGk-i7-Jjw" customClass="CustomCustomerTableViewCell" customModule="SmartSunShadesCalculator" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="480" height="113"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="480" height="112"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="John Doe" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iAo-NN-b4X">
+                        <rect key="frame" x="8" y="8" width="281" height="25"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="25" id="PIm-2f-gOp"/>
+                            <constraint firstAttribute="width" constant="281" id="n5L-ko-b0H"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="17"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="407-929-0568" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lx5-1p-Cyk">
+                        <rect key="frame" x="347" y="12" width="125" height="25"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="125" id="SIQ-Zp-OAY"/>
+                            <constraint firstAttribute="height" constant="25" id="ZNg-AZ-SmG"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="17"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="rashaad.ramdeen@gmail.com" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Rw-7m-kXS">
+                        <rect key="frame" x="8" y="41" width="464" height="25"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="25" id="BC7-dA-o1P"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3234 St. Croix lane, Clermont Fl, 34711" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jJF-2b-WNP">
+                        <rect key="frame" x="8" y="74" width="464" height="25"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="25" id="Tjz-7K-eML"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <color key="backgroundColor" red="0.10980392160000001" green="0.33333333329999998" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
+                <constraints>
+                    <constraint firstItem="jJF-2b-WNP" firstAttribute="top" secondItem="8Rw-7m-kXS" secondAttribute="bottom" constant="8" id="6L2-NV-HpX"/>
+                    <constraint firstItem="iAo-NN-b4X" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="75c-PA-fm5"/>
+                    <constraint firstItem="8Rw-7m-kXS" firstAttribute="top" secondItem="Lx5-1p-Cyk" secondAttribute="bottom" constant="4" id="B8H-zt-FXF"/>
+                    <constraint firstItem="8Rw-7m-kXS" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="Bo7-lb-3jK"/>
+                    <constraint firstItem="iAo-NN-b4X" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="DCB-kF-6T3"/>
+                    <constraint firstItem="Lx5-1p-Cyk" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="4" id="PbO-yJ-wli"/>
+                    <constraint firstItem="jJF-2b-WNP" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="fi7-q5-ehQ"/>
+                    <constraint firstItem="Lx5-1p-Cyk" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="vFL-wt-Zug"/>
+                    <constraint firstItem="jJF-2b-WNP" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="vTt-09-YSi"/>
+                    <constraint firstItem="8Rw-7m-kXS" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="xf7-jv-yyd"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" red="0.10980392160000001" green="0.33333333329999998" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
+            <connections>
+                <outlet property="addressLabel" destination="jJF-2b-WNP" id="G85-pa-Qk5"/>
+                <outlet property="backgroundView" destination="H2p-sc-9uM" id="ndR-Fq-MbM"/>
+                <outlet property="emailLabel" destination="8Rw-7m-kXS" id="bkl-CK-hTa"/>
+                <outlet property="nameLabel" destination="iAo-NN-b4X" id="6sZ-ft-t6p"/>
+                <outlet property="phoneLabel" destination="Lx5-1p-Cyk" id="usb-VQ-cZz"/>
+            </connections>
+            <point key="canvasLocation" x="253" y="312.5"/>
+        </tableViewCell>
+    </objects>
+</document>

@@ -8,15 +8,16 @@
 
 import UIKit
 import MessageUI
+import CoreData
 
 class CartViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIAlertViewDelegate, MFMailComposeViewControllerDelegate, ColorViewControllerDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     
     let shoppingCartController = ShoppingCartController.sharedInstance
-    let shoppingCart:ShoppingCart = ShoppingCartController.sharedInstance.shoppingCart
     var isKeyboardVisible:Bool = false
     var indexPathToDelete:NSIndexPath?
+    var estimatedDelivery:String?
     
     @IBOutlet weak var totalDiscountsField: UILabel!
     @IBOutlet weak var subTotalField: UILabel!
@@ -24,6 +25,9 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var enterDiscountField: UITextField!
     @IBOutlet weak var totalSqInchesField:UILabel!
     @IBOutlet weak var fiftyPercentOffField:UILabel!
+    @IBOutlet weak var datePickerView:UIView!
+    @IBOutlet weak var datePicker:UIDatePicker!
+    @IBOutlet weak var dateTextField:UITextField!
     
     override func viewDidLoad() {
         
@@ -36,12 +40,27 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.tableView.dataSource = self
         self.enterDiscountField.delegate = self
         
+        self.dateTextField.delegate = self
+        self.datePickerView.hidden = true
+        self.datePicker.date = NSDate()
+        self.datePicker.setValue(UIColor.whiteColor(), forKeyPath: "textColor")
+        self.datePicker.addTarget(self, action: #selector(CartViewController.didSelectDate), forControlEvents: .ValueChanged)
+        
+        
         let nib = UINib(nibName: "CartTableViewCell", bundle: nil)
         
         self.tableView.registerNib(nib, forCellReuseIdentifier: "cartTableViewCell")
     }
     
-    
+    func didSelectDate(datepicker:UIDatePicker) {
+        let dateFormatter = NSDateFormatter()
+        
+        dateFormatter.dateStyle = NSDateFormatterStyle.MediumStyle
+        
+        let strDate = dateFormatter.stringFromDate(datePicker.date)
+        self.dateTextField.text = strDate
+        self.estimatedDelivery = strDate
+    }
     
     func dismissKeyboard() {
         
@@ -50,10 +69,24 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
             view.endEditing(true)
         }
         
+        if self.datePickerView.hidden == false {
+            dispatch_async(dispatch_get_main_queue(), {
+                self.datePickerView.hidden = true
+            })
+        }
     }
     
     func textFieldDidBeginEditing(textField: UITextField) {
-        dispatch_async(dispatch_get_main_queue()) { 
+        
+        if textField == self.dateTextField {
+            self.textFieldShouldReturn(self.dateTextField)
+            dispatch_async(dispatch_get_main_queue(), {
+                self.datePickerView.hidden = false
+            })
+            return
+        }
+        
+        dispatch_async(dispatch_get_main_queue()) {
             self.view.frame.origin.y -= 150
         }
         
@@ -61,6 +94,11 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
+        
+        if textField == self.dateTextField {
+            self.dateTextField.resignFirstResponder()
+            return false
+        }
         
         dispatch_async(dispatch_get_main_queue()) {
             self.view.frame.origin.y += 150
@@ -94,70 +132,127 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func updateDiscount() {
-        if self.shoppingCart.subTotal > 0 {
-            self.totalDiscountsField.text = "-$\(self.shoppingCart.getDiscountedTotal())"
-            self.subTotalField.text = "$\(self.shoppingCart.subTotal)"
-            self.discountedTotal.text = "$\(self.shoppingCart.getTotal())"
+        
+        if let customer:Customers = DataController.sharedInstance.customer {
+            if let cart:Cart = customer.cart as? Cart {
+                if cart.subTotal!.intValue > 0 {
+                    dispatch_async(dispatch_get_main_queue(), { 
+                        self.totalDiscountsField.text = "-$\(cart.getDiscountedTotal())"
+                        self.subTotalField.text = "$\(cart.subTotal!)"
+                        self.discountedTotal.text = "$\(cart.getTotal())"
+                    })
+                }
+            }
         }
     }
     
     func setDiscount(discount:Double) {
-        self.shoppingCart.discountPercent = discount
-        self.updateDiscount()
+        
+        if let customer:Customers = DataController.sharedInstance.customer {
+            if let cart:Cart = customer.cart as? Cart {
+                cart.discountPercent = discount
+                self.updateDiscount()
+            }
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
-        subTotalField.text = "$\(self.shoppingCart.getDiscountedTotal())"
-        self.discountedTotal.text = "$\(self.shoppingCart.getTotal())"
-        self.enterDiscountField.text = "\(self.shoppingCart.discountPercent)"
-        let roundedSqft = Double(round(self.shoppingCart.getTotalSqInches()*1000)/1000)
-        self.totalSqInchesField.text = "Total Sq Footage: \(roundedSqft)"
-        self.fiftyPercentOffField.text = "-$\(self.shoppingCart.getFiftyOff())"
-        self.updateDiscount()
+        
+        if let customer:Customers = DataController.sharedInstance.customer {
+            if let cart:Cart = customer.cart as? Cart {
+                subTotalField.text = "$\(cart.getDiscountedTotal())"
+                self.discountedTotal.text = "$\(cart.getTotal())"
+                self.enterDiscountField.text = "\(cart.discountPercent!)"
+                let roundedSqft = Double(round(self.shoppingCartController.getTotalSqFootage()!*1000)/1000)
+                self.totalSqInchesField.text = "Total Sq Footage: \(roundedSqft)"
+                self.fiftyPercentOffField.text = "-$\(cart.getFiftyOff())"
+                self.updateDiscount()
+            }
+        }
+        
+        
     }
     
     @IBAction func didPressEmailQuote(sender: AnyObject) {
         
-        let mailComposerVC = MFMailComposeViewController()
-        mailComposerVC.mailComposeDelegate = self
-        if self.shoppingCartController.customer.email != nil {
-            mailComposerVC.setToRecipients([self.shoppingCartController.customer.email!])
+        
+        
+        if let customer = DataController.sharedInstance.customer {
+            
+            let mailComposerVC = MFMailComposeViewController()
+            mailComposerVC.mailComposeDelegate = self
+            mailComposerVC.setToRecipients(["innovativewc@gmail.com", "smartsunshades@gmail.com"])
+            
+            mailComposerVC.setSubject("Quote for \(customer.email!)")
+            
+            var htmlTable = ""
+            var alert:UIAlertView
+            
+            if let cart:Cart = customer.cart as? Cart {
+                
+                if let items:NSOrderedSet = cart.items {
+                    
+                    let itemsArray = Array(items)
+                    
+                    for item in itemsArray {
+                        htmlTable += (item as! Item).getHTMLTableString()
+                    }
+                    
+                    var customerFirstName = customer.firstName
+                    var customerLastName = customer.lastName
+                    
+                    if customerFirstName == nil || customerFirstName == "" {
+                        customerFirstName = "Valued"
+                        customerLastName = "Customer"
+                    }
+                    
+                    if self.estimatedDelivery == nil {
+                        self.estimatedDelivery = "N/A"
+                    }
+                    
+                    htmlTable = "Dear \(customerFirstName!) \(customerLastName!),<br/><br/>" +
+                        "Email: \(customer.email!) <br/>" +
+                        "Address: \(customer.address!) <br/>" +
+                        "Phone: \(customer.phoneNumber!) <br/>" +
+                        
+                        "Expected delivery: \(self.estimatedDelivery!) <br/><br/>" +
+                        
+                        "Here the quote you requested. <br/><br/>" +
+                        "<table border=\"1\"><col width=\"100\"><thead><tr><th>Category</th><th>Location</th><th>Width</th><th>Height</th><th>Color</th><th>Fabric</th><th>Quantity</th></tr></thead>\(htmlTable)</table><br/>" +
+                        "Total Quantity: \(cart.items!.count)<br/>" +
+                        "Sub-Total: $\(cart.subTotal!)<br/>" +
+                        "50% Discount: -\(cart.getFiftyOff())<br/>" +
+                        "Additional Discount (%): \(cart.discountPercent!)%<br/>" +
+                        "Total Discounts: $\(cart.getDiscountedTotal())<br/>" +
+                        "Total: $\(cart.getTotal()) <br/></br/>" +
+                        
+                        "Thank you, <br/> SmartSunShades"
+                    
+                    mailComposerVC.setMessageBody(htmlTable, isHTML: true)
+                    
+                    if MFMailComposeViewController.canSendMail() {
+                        self.presentViewController(mailComposerVC, animated: true, completion: nil)
+                    } else {
+                        alert = UIAlertView(title: "Mail not setup", message: "It appears your mail app is not setup to send emails. Please add your email address into the mail app and try this again.", delegate: nil, cancelButtonTitle: "Done")
+                        alert.show()
+                    }
+                    
+                }else{
+                    print("No items in this customer's cart")
+                    alert = UIAlertView(title: "No items in cart", message: "Please add items in the cart first", delegate: nil, cancelButtonTitle: "Done")
+                    alert.show()
+                    return
+                }
+                
+            }else{
+                print("Failed to load customer cart")
+            }
+            
+            
+            
+        }else{
+            print("Error: Failed to retrieve customer information")
         }
-        mailComposerVC.setSubject("Quote")
-        
-        var htmlTable = ""
-        var alert:UIAlertView
-        
-        //Check if the cart is empty
-        if self.shoppingCart.cartItems.count <= 0 {
-            alert = UIAlertView(title: "No items in cart", message: "Please add items in the cart first", delegate: nil, cancelButtonTitle: "Done")
-            alert.show()
-            return
-        }
-        
-        for item in self.shoppingCart.cartItems {
-            htmlTable += item.getHTMLTableString()
-        }
-        
-        var customerFirstName = self.shoppingCartController.customer.firstName
-        var customerLastName = self.shoppingCartController.customer.lastName
-        
-        if customerFirstName == nil || customerFirstName == "" {
-            customerFirstName = "Valued"
-            customerLastName = "Customer"
-        }
-        
-        htmlTable = "Dear \(customerFirstName!) \(customerLastName!),<br/><br/> Here the quote you requested. <br/><br/> <table border=\"1\"><col width=\"100\"><thead><tr><th>Category</th><th>Location</th><th>Width</th><th>Height</th><th>Quantity</th></tr></thead>\(htmlTable)</table><br/>Total-Discounts: $\(self.shoppingCart.getDiscountedTotal())<br/>Sub-Total: $\(self.shoppingCart.subTotal)<br/>Total: $\(self.shoppingCart.getTotal())"
-        
-        mailComposerVC.setMessageBody(htmlTable, isHTML: true)
-        
-        if MFMailComposeViewController.canSendMail() {
-            self.presentViewController(mailComposerVC, animated: true, completion: nil)
-        } else {
-            alert = UIAlertView(title: "Mail not setup", message: "It appears your mail app is not setup to send emails. Please add your email address into the mail app and try this again.", delegate: nil, cancelButtonTitle: "Done")
-            alert.show()
-        }
-        
     }
     
     @IBAction func didPressAddMoreItems(sender: AnyObject) {
@@ -181,24 +276,51 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        //If there are no items in the shopping cart, dismiss the cart and show a message
-        if self.shoppingCart.cartItems.count <= 0 {
-            self.presentingViewController?.dismissViewControllerAnimated(true, completion: { 
-                let alert = UIAlertView(title: "Cart Empty", message: "There are no items in the shopping cart to display", delegate: self, cancelButtonTitle: "ok")
-                
-                alert.show()
-            })
+        if let customer = DataController.sharedInstance.customer {
+            if let cart:Cart = customer.cart as? Cart {
+                if let items:NSOrderedSet = cart.items {
+                    if items.count <= 0 {
+                        self.presentingViewController?.dismissViewControllerAnimated(true, completion: {
+                            let alert = UIAlertView(title: "Cart Empty", message: "There are no items in the shopping cart to display", delegate: self, cancelButtonTitle: "ok")
+                            
+                            alert.show()
+                        })
+                    }else{
+                        return items.count
+                    }
+                }
+            }
         }
         
-        return self.shoppingCart.cartItems.count
+        return 0
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell:CartTableViewCell = self.tableView.dequeueReusableCellWithIdentifier("cartTableViewCell") as! CartTableViewCell
         
-        cell.populateTableCell(self.shoppingCart.cartItems[indexPath.row])
+        if let customer = DataController.sharedInstance.customer {
+            if let cart:Cart = customer.cart as? Cart {
+                if let items:NSOrderedSet = cart.items {
+                    let itemsArray:NSArray = Array(items)
+                    cell.populateTableCell(itemsArray[indexPath.row] as! Item)
+                }
+            }
+        }
         
         return cell
+    }
+    
+    func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
+        let cell:CartTableViewCell = tableView.cellForRowAtIndexPath(indexPath) as! CartTableViewCell
+        
+        cell.contentView.backgroundColor = UIColor(red: 28.0/255, green: 85.0/255, blue: 121.0/255, alpha: 1.0)
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let cell:CartTableViewCell = tableView.cellForRowAtIndexPath(indexPath) as! CartTableViewCell
+        
+        cell.contentView.backgroundColor = UIColor(red: 31.0/255, green: 96.0/255, blue: 137.0/255, alpha: 1.0)
+        
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -206,10 +328,22 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func didSelectColor(color: String, indexPath: NSIndexPath) {
-        let item = self.shoppingCart.getItem(indexPath.row)
-        if item != nil {
-            self.shoppingCart.setColorForItem(item!, color: color)
-            self.tableView.reloadData()
+        
+        if let customer = DataController.sharedInstance.customer {
+            if let cart:Cart = customer.cart as? Cart {
+                if let items:NSOrderedSet = cart.items {
+                    let itemsArray:NSArray = Array(items)
+                    let item:Item = itemsArray[indexPath.row] as! Item
+                    item.color = color
+                    do {
+                        try DataController.sharedInstance.managedObjectContext?.save()
+                        self.tableView.reloadData()
+                    }catch {
+                        print("Error: Failed to save color: \(error)")
+                    }
+                    
+                }
+            }
         }
     }
     
@@ -247,22 +381,33 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
-        print(buttonIndex)
+        
+        if self.indexPathToDelete == nil {
+            return
+        }
+        
         if alertView.title == "Delete item" {
             if buttonIndex == 1 {
                 
-                //delete item
-                if self.indexPathToDelete != nil {
-                    tableView.beginUpdates()
-                    
-                    self.shoppingCart.deleteItem(self.indexPathToDelete!.row)
-                    
-                    tableView.deleteRowsAtIndexPaths([self.indexPathToDelete!], withRowAnimation: UITableViewRowAnimation.Fade)
-                    
-                    tableView.endUpdates()
+                //Delete item
+                if let customer = DataController.sharedInstance.customer {
+                    if let cart:Cart = customer.cart as? Cart {
+                        if let items:NSOrderedSet = cart.items {
+                            let itemsArray:NSArray = Array(items)
+                            let item:Item = itemsArray[self.indexPathToDelete!.row] as! Item
+                            
+                            DataController.sharedInstance.managedObjectContext?.deleteObject(item)
+                            do {
+                                try DataController.sharedInstance.managedObjectContext?.save()
+                                self.tableView.reloadData()
+                                self.updateDiscount()
+                            }catch {
+                                print("Error deleting item from cart: \(error)")
+                            }
+                            
+                        }
+                    }
                 }
-                
-            }else{
                 
             }
         }

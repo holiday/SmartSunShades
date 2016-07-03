@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class FabricViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     
@@ -31,32 +32,47 @@ class FabricViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     
     override func viewDidAppear(animated: Bool) {
         //updated the category in shopping cart
-        let shoppingCart = ShoppingCartController.sharedInstance.shoppingCart
-        let tempItem = shoppingCart.getTempItem()
-        tempItem.fabricName = self.fabricNames[0]
+        if let tempItem = ShoppingCartController.sharedInstance.tempItem {
+            tempItem.fabricName = self.fabricNames[0]
+        }
     }
     
     @IBAction func didPressAddToCart(sender: UIButton) {
         
         //add the temp item to the shopping cart
         //updated the width in shopping cart
-        let shoppingCart = ShoppingCartController.sharedInstance.shoppingCart
-        
-        if shoppingCart.moveTempItemToCart() == true {
-            
-            print("Successfully added tempItem to cart")
-            
+        if let customer:Customers = DataController.sharedInstance.customer {
+            if let cart:Cart = customer.cart as? Cart{
+                if let context = DataController.sharedInstance.managedObjectContext {
+                    if let tempItem = ShoppingCartController.sharedInstance.tempItem {
+                        context.insertObject(tempItem)
+                        tempItem.cart = cart
+                        do {
+                            try context.save()
+                            
+                            //Cleanup, remove temp item
+                            ShoppingCartController.sharedInstance.tempItem = nil
+                            
+                            //Show the shopping cart
+                            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                            let vc = storyboard.instantiateViewControllerWithIdentifier("cartViewController") as! CartViewController
+                            
+                            self.presentViewController(vc, animated: true) {
+                                
+                                //self.navigationController?.popToRootViewControllerAnimated(false)
+                                let vc = self.navigationController?.viewControllers[1]
+                                self.navigationController?.popToViewController(vc!, animated: true)
+                            }
+                            
+                        }catch {
+                            "Error saving tempItem: \(error)"
+                        }
+                    }
+                }
+            }
         }
         
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewControllerWithIdentifier("cartViewController") as! CartViewController
         
-        self.presentViewController(vc, animated: true) {
-            
-            //self.navigationController?.popToRootViewControllerAnimated(false)
-            let vc = self.navigationController?.viewControllers[1]
-            self.navigationController?.popToViewController(vc!, animated: true)
-        }
         
     }
     
@@ -80,9 +96,9 @@ class FabricViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         
         //updated the category in shopping cart
-        let shoppingCart = ShoppingCartController.sharedInstance.shoppingCart
-        let tempItem = shoppingCart.getTempItem()
-        tempItem.fabricName = self.fabricNames[row]
+        if let tempItem = ShoppingCartController.sharedInstance.tempItem {
+            tempItem.fabricName = self.fabricNames[row]
+        }
     }
     
 }
