@@ -17,7 +17,9 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
     let shoppingCartController = ShoppingCartController.sharedInstance
     var isKeyboardVisible:Bool = false
     var indexPathToDelete:NSIndexPath?
-    var estimatedDelivery:String?
+    
+    static var estimatedDeliveryDate:NSDate = NSDate()
+    static var estimatedDelivery:String?
     
     @IBOutlet weak var totalDiscountsField: UILabel!
     @IBOutlet weak var subTotalField: UILabel!
@@ -43,8 +45,12 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.dateTextField.delegate = self
         self.datePickerView.hidden = true
         self.datePicker.date = NSDate()
-        self.datePicker.setValue(UIColor.whiteColor(), forKeyPath: "textColor")
+        self.datePicker.setValue(UIColor.blackColor(), forKeyPath: "textColor")
         self.datePicker.addTarget(self, action: #selector(CartViewController.didSelectDate), forControlEvents: .ValueChanged)
+        
+        
+        CartViewController.estimatedDeliveryDate = NSDate()
+        self.updateEstimatedDeliveryDate(CartViewController.estimatedDeliveryDate)
         
         
         let nib = UINib(nibName: "CartTableViewCell", bundle: nil)
@@ -53,13 +59,18 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func didSelectDate(datepicker:UIDatePicker) {
+        CartViewController.estimatedDeliveryDate = datepicker.date
+        self.updateEstimatedDeliveryDate(datepicker.date)
+    }
+    
+    func updateEstimatedDeliveryDate(date:NSDate) {
         let dateFormatter = NSDateFormatter()
         
         dateFormatter.dateStyle = NSDateFormatterStyle.MediumStyle
         
-        let strDate = dateFormatter.stringFromDate(datePicker.date)
+        let strDate = dateFormatter.stringFromDate(date)
         self.dateTextField.text = strDate
-        self.estimatedDelivery = strDate
+        CartViewController.estimatedDelivery = strDate
     }
     
     func dismissKeyboard() {
@@ -206,8 +217,8 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
                         customerLastName = "Customer"
                     }
                     
-                    if self.estimatedDelivery == nil {
-                        self.estimatedDelivery = "N/A"
+                    if CartViewController.estimatedDelivery == nil {
+                        CartViewController.estimatedDelivery = "N/A"
                     }
                     
                     htmlTable = "Dear \(customerFirstName!) \(customerLastName!),<br/><br/>" +
@@ -215,11 +226,12 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
                         "Address: \(customer.address!) <br/>" +
                         "Phone: \(customer.phoneNumber!) <br/>" +
                         
-                        "Expected delivery: \(self.estimatedDelivery!) <br/><br/>" +
+                        "Expected delivery: \(CartViewController.estimatedDelivery!) <br/><br/>" +
                         
                         "Here the quote you requested. <br/><br/>" +
                         "<table border=\"1\"><col width=\"100\"><thead><tr><th>Category</th><th>Location</th><th>Width</th><th>Height</th><th>Color</th><th>Fabric</th><th>Quantity</th></tr></thead>\(htmlTable)</table><br/>" +
-                        "Total Quantity: \(cart.items!.count)<br/>" +
+                        "Total Square Footage: \(cart.getTotalSquareFootage())<br/>" +
+                        "Total Quantity: \(cart.getTotalQuantity())<br/>" +
                         "Sub-Total: $\(cart.subTotal!)<br/>" +
                         "50% Discount: -\(cart.getFiftyOff())<br/>" +
                         "Additional Discount (%): \(cart.discountPercent!)%<br/>" +

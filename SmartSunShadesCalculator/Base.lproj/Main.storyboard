@@ -1014,7 +1014,7 @@
                                         </date>
                                     </datePicker>
                                 </subviews>
-                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.80405031028368801" green="0.80405031028368801" blue="0.80405031028368801" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="225" id="3lV-uw-oLn"/>
                                     <constraint firstAttribute="width" constant="456" id="Hmu-PD-zB8"/>

@@ -52,6 +52,34 @@ class Cart: NSManagedObject {
 //        }
 //    }
     
+    func getTotalSquareFootage() -> Double {
+        var totalSqFootage:Double = 0.0
+        
+        for item in self.items! {
+            if let item = item as? Item {
+                if item.sqFootage != nil {
+                    totalSqFootage += Double(item.sqFootage!)
+                }
+            }
+        }
+        
+        return totalSqFootage
+    }
+    
+    func getTotalQuantity() -> Int {
+        var totalQuantity:Int = 0
+        
+        for item in self.items! {
+            if let item = item as? Item {
+                if item.quantity != nil {
+                    totalQuantity += Int(item.quantity!)
+                }
+            }
+        }
+        
+        return totalQuantity
+    }
+    
     func calculateSubtotal(){
         self.subTotal = NSNumber(double: 0.0)
         
