@@ -12,13 +12,14 @@ protocol CategoryViewDelegate {
     func getCurrentSelectedCategory() -> String;
 }
 
-class CategoryViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+class CategoryViewController: BaseViewController, UIPickerViewDelegate, UIPickerViewDataSource {
 
     @IBOutlet weak var categoryPickerView: UIPickerView!
     var categoryTitles: [String]!
     var categoryFileNames: [String]!
     var currentSelectedCategory:String?
     var currentSelectedCategoryIndex:Int = 0
+    var delegate:ShoppingCartControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,6 +48,10 @@ class CategoryViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         //compute the item price
         self.computeItemPrice()
     }
+    
+    override func viewWillDisappear(animated: Bool) {
+        self.delegate?.didGetCategory(self.categoryTitles[self.currentSelectedCategoryIndex], groupFileName: self.categoryFileNames[self.currentSelectedCategoryIndex])
+    }
 
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
         return 1
@@ -56,8 +61,8 @@ class CategoryViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         return self.categoryTitles.count
     }
     
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return self.categoryTitles[row]
+    func pickerView(pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusingView view: UIView?) -> UIView {
+        return self.changePickerViewFontSize(self.categoryTitles[row])
     }
     
     func pickerView(pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
@@ -68,6 +73,8 @@ class CategoryViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         
         self.currentSelectedCategoryIndex = row
+        
+        self.delegate?.didGetCategory(self.categoryTitles[self.currentSelectedCategoryIndex], groupFileName: self.categoryFileNames[self.currentSelectedCategoryIndex])
         self.computeItemPrice()
         
     }
@@ -75,12 +82,14 @@ class CategoryViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     func computeItemPrice() {
         self.currentSelectedCategory = self.categoryTitles[self.currentSelectedCategoryIndex]
         
-        let pt = PriceTable(fileName: self.categoryFileNames[self.currentSelectedCategoryIndex], fileExtension: "csv")
-        
-        
         //updated the category in shopping cart
         
         if let tempItem = ShoppingCartController.sharedInstance.tempItem {
+            
+            let pt = PriceTable(fileName: self.categoryFileNames[self.currentSelectedCategoryIndex], fileExtension: "csv")
+            
+            tempItem.groupFileName = self.categoryFileNames[self.currentSelectedCategoryIndex]
+            
             tempItem.groupName = self.categoryTitles[self.currentSelectedCategoryIndex]
             
             let price = pt.getPrice(Double(tempItem.itemWidth!), widthFineInchIndex: tempItem.getWidthFineInch().index, height: Double(tempItem.itemHeight!), heightFineInchIndex: tempItem.getHeightFineInch().index)
@@ -89,6 +98,8 @@ class CategoryViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
             
             tempItem.price = Double(tempItem.quantity!) * price
             print(tempItem.price)
+        }else{
+            print("Failed to compute price, temp item not available")
         }
         
     }

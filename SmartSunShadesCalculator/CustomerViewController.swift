@@ -97,14 +97,29 @@ class CustomerViewController: UIViewController, UITextFieldDelegate, CustomersVi
         }
     }
     
+    func validateCustomer() -> Bool {
+        if let email = self.emailField.text {
+            if email != "" && email.characters.count > 8 && email.rangeOfString("@") != nil {
+                return true
+            }
+        }
+        
+        return false
+    }
+    
     func createNewCustomer() {
-        if self.emailField.text != "" {
+        if self.validateCustomer() != false {
             if let customer = DataController.sharedInstance.loadCustomerByEmail(self.emailField.text!) {
                 print("Using existing customer")
                 self.updateCustomer()
                 DataController.sharedInstance.customer = customer
                 return
             }
+        }else{
+            let alert = UIAlertController(title: "Invalid Data", message: "Please ensure that the customer has a valid firstname, lastname, email and phone number", preferredStyle: .Alert)
+            let okAction = UIAlertAction(title: "ok", style: UIAlertActionStyle.Default, handler: nil)
+            alert.addAction(okAction)
+            self.presentViewController(alert, animated: true, completion: nil)
         }
         
         
@@ -116,6 +131,8 @@ class CustomerViewController: UIViewController, UITextFieldDelegate, CustomersVi
                 let customer = Customers(entity: ent!, insertIntoManagedObjectContext: context)
                 let cart = Cart(entity: cartEnt!, insertIntoManagedObjectContext: context)
                 
+                cart.tax = 0.0
+                cart.deposit = 0.0
                 cart.subTotal = 0.0
                 cart.discountPercent = 0.0
                 cart.discountedTotal = 0.0

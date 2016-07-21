@@ -10,17 +10,22 @@ import UIKit
 import MessageUI
 import CoreData
 
-class CartViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIAlertViewDelegate, MFMailComposeViewControllerDelegate, ColorViewControllerDelegate {
+class CartViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UITextViewDelegate, UIAlertViewDelegate, MFMailComposeViewControllerDelegate, ColorViewControllerDelegate, ShoppingCartControllerDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     
     let shoppingCartController = ShoppingCartController.sharedInstance
     var isKeyboardVisible:Bool = false
     var indexPathToDelete:NSIndexPath?
+    var indexPathToEdit:NSIndexPath?
+    var didMoveUpScreen:Bool = false
     
     static var estimatedDeliveryDate:NSDate = NSDate()
     static var estimatedDelivery:String?
     
+    @IBOutlet weak var commentField: UITextView!
+    @IBOutlet weak var depositField: UITextField!
+    @IBOutlet weak var taxField: UITextField!
     @IBOutlet weak var totalDiscountsField: UILabel!
     @IBOutlet weak var subTotalField: UILabel!
     @IBOutlet weak var discountedTotal:UILabel!
@@ -41,6 +46,9 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.enterDiscountField.delegate = self
+        self.taxField.delegate = self
+        self.depositField.delegate = self
+        self.commentField.delegate = self
         
         self.dateTextField.delegate = self
         self.datePickerView.hidden = true
@@ -85,6 +93,39 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
                 self.datePickerView.hidden = true
             })
         }
+        
+        self.textViewShouldEndEditing(self.commentField)
+    }
+    
+    func moveUpScreen() {
+        dispatch_async(dispatch_get_main_queue()) {
+            if self.didMoveUpScreen == false {
+                self.view.frame.origin.y -= 150
+                self.didMoveUpScreen = true
+            }
+        }
+    }
+    
+    func moveDownScreen() {
+        dispatch_async(dispatch_get_main_queue()) {
+            if self.didMoveUpScreen == true {
+                self.didMoveUpScreen = false
+                self.view.frame.origin.y += 150
+            }
+        }
+    }
+    
+    func textViewDidBeginEditing(textView: UITextView) {
+        self.moveUpScreen()
+    }
+    
+    func textViewDidEndEditing(textView: UITextView) {
+        self.moveDownScreen()
+    }
+    
+    func textViewShouldEndEditing(textView: UITextView) -> Bool {
+        self.commentField.resignFirstResponder()
+        return true
     }
     
     func textFieldDidBeginEditing(textField: UITextField) {
@@ -97,9 +138,7 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
             return
         }
         
-        dispatch_async(dispatch_get_main_queue()) {
-            self.view.frame.origin.y -= 150
-        }
+        self.moveUpScreen()
         
         isKeyboardVisible = true
     }
@@ -111,13 +150,15 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
             return false
         }
         
-        dispatch_async(dispatch_get_main_queue()) {
-            self.view.frame.origin.y += 150
-        }
+        self.moveDownScreen()
         
         enterDiscountField.resignFirstResponder()
+        taxField.resignFirstResponder()
+        depositField.resignFirstResponder()
         
         self.handleEnteredDiscount()
+        self.setTax(Double(self.taxField.text!)!)
+        self.setDepositAmount((Double(self.depositField.text!)!))
         
         isKeyboardVisible = false
         
@@ -142,7 +183,7 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
-    func updateDiscount() {
+    func updateCart() {
         
         if let customer:Customers = DataController.sharedInstance.customer {
             if let cart:Cart = customer.cart as? Cart {
@@ -157,12 +198,42 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
+    func setDepositAmount(deposit:Double) {
+        if let customer:Customers = DataController.sharedInstance.customer {
+            if let cart:Cart = customer.cart as? Cart {
+                cart.deposit = deposit
+                DataController.sharedInstance.save()
+                self.updateCart()
+            }
+        }
+    }
+    
+    func setTax(tax:Double) {
+        if let customer:Customers = DataController.sharedInstance.customer {
+            if let cart:Cart = customer.cart as? Cart {
+                cart.tax = tax
+                DataController.sharedInstance.save()
+                self.updateCart()
+            }
+        }
+    }
+    
+    func setComments(comment:String) {
+        if let customer:Customers = DataController.sharedInstance.customer {
+            if let cart:Cart = customer.cart as? Cart {
+                cart.comments = comment
+                DataController.sharedInstance.save()
+            }
+        }
+    }
+    
     func setDiscount(discount:Double) {
         
         if let customer:Customers = DataController.sharedInstance.customer {
             if let cart:Cart = customer.cart as? Cart {
                 cart.discountPercent = discount
-                self.updateDiscount()
+                DataController.sharedInstance.save()
+                self.updateCart()
             }
         }
     }
@@ -171,22 +242,21 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         if let customer:Customers = DataController.sharedInstance.customer {
             if let cart:Cart = customer.cart as? Cart {
-                subTotalField.text = "$\(cart.getDiscountedTotal())"
+                self.commentField.text = "\(cart.comments!)"
+                self.subTotalField.text = "$\(cart.getDiscountedTotal())"
+                self.taxField.text = "\(cart.tax!)"
+                self.depositField.text = "\(cart.deposit!)"
                 self.discountedTotal.text = "$\(cart.getTotal())"
                 self.enterDiscountField.text = "\(cart.discountPercent!)"
                 let roundedSqft = Double(round(self.shoppingCartController.getTotalSqFootage()!*1000)/1000)
                 self.totalSqInchesField.text = "Total Sq Footage: \(roundedSqft)"
                 self.fiftyPercentOffField.text = "-$\(cart.getFiftyOff())"
-                self.updateDiscount()
+                self.updateCart()
             }
         }
-        
-        
     }
     
     @IBAction func didPressEmailQuote(sender: AnyObject) {
-        
-        
         
         if let customer = DataController.sharedInstance.customer {
             
@@ -200,6 +270,8 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
             var alert:UIAlertView
             
             if let cart:Cart = customer.cart as? Cart {
+                
+                self.setComments(self.commentField.text)
                 
                 if let items:NSOrderedSet = cart.items {
                     
@@ -229,14 +301,17 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
                         "Expected delivery: \(CartViewController.estimatedDelivery!) <br/><br/>" +
                         
                         "Here the quote you requested. <br/><br/>" +
-                        "<table border=\"1\"><col width=\"100\"><thead><tr><th>Category</th><th>Location</th><th>Width</th><th>Height</th><th>Color</th><th>Fabric</th><th>Quantity</th></tr></thead>\(htmlTable)</table><br/>" +
+                        "<table border=\"1\"><col width=\"100\"><thead><tr><th>Category</th><th>Location</th><th>Width</th><th>Height</th><th>Quantity</th><th>Color</th><th>Fabric</th></tr></thead>\(htmlTable)</table><br/>" +
                         "Total Square Footage: \(cart.getTotalSquareFootage())<br/>" +
                         "Total Quantity: \(cart.getTotalQuantity())<br/>" +
                         "Sub-Total: $\(cart.subTotal!)<br/>" +
                         "50% Discount: -\(cart.getFiftyOff())<br/>" +
                         "Additional Discount (%): \(cart.discountPercent!)%<br/>" +
+                        "Taxes (%): \(cart.tax!)% <br/>" +
                         "Total Discounts: $\(cart.getDiscountedTotal())<br/>" +
                         "Total: $\(cart.getTotal()) <br/></br/>" +
+                        
+                        "Comments: \(cart.comments!) <br/><br/>" +
                         
                         "Thank you, <br/> SmartSunShades"
                     
@@ -279,6 +354,7 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     @IBAction func didPressHide(sender: AnyObject) {
         
+        self.setComments(self.commentField.text)
         self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
         
     }
@@ -336,25 +412,125 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 150
+        return 170
     }
     
-    func didSelectColor(color: String, indexPath: NSIndexPath) {
-        
+    func getItemAtIndexPath(indexPath:NSIndexPath) -> Item? {
         if let customer = DataController.sharedInstance.customer {
             if let cart:Cart = customer.cart as? Cart {
                 if let items:NSOrderedSet = cart.items {
                     let itemsArray:NSArray = Array(items)
                     let item:Item = itemsArray[indexPath.row] as! Item
-                    item.color = color
-                    do {
-                        try DataController.sharedInstance.managedObjectContext?.save()
-                        self.tableView.reloadData()
-                    }catch {
-                        print("Error: Failed to save color: \(error)")
-                    }
+                    return item
                     
                 }
+            }
+        }
+        
+        return nil
+    }
+    
+    func updateItemPrice(item:Item) {
+        let pt = PriceTable(fileName: item.groupFileName!, fileExtension: "csv")
+        
+        let price = pt.getPrice(Double(item.itemWidth!), widthFineInchIndex: item.getWidthFineInch().index, height: Double(item.itemHeight!), heightFineInchIndex: item.getHeightFineInch().index)
+        
+        item.calculateSqFootage()
+        
+        item.price = Double(item.quantity!) * price
+        
+        self.updateCart()
+    }
+    
+    func didSelectColor(color: String, indexPath: NSIndexPath) {
+        
+        if let item = self.getItemAtIndexPath(indexPath) {
+            item.color = color
+            DataController.sharedInstance.save()
+            self.tableView.reloadData()
+        }
+    }
+    
+    func didGetLocation(location: String) {
+        if let indexPath = self.indexPathToEdit {
+            if let item = self.getItemAtIndexPath(indexPath) {
+                item.location = location
+                DataController.sharedInstance.save()
+                self.tableView.reloadData()
+            }
+        }
+    }
+    
+    func didGetWidthData(itemWidth: Double, itemWidthIndex: Int) {
+        
+        if let indexPath = self.indexPathToEdit {
+            if let item = self.getItemAtIndexPath(indexPath) {
+                
+                item.itemWidth = itemWidth
+                item.itemWidthFineInchIndex = itemWidthIndex
+                
+                self.updateItemPrice(item)
+                
+                DataController.sharedInstance.save()
+                self.tableView.reloadData()
+            }
+        }
+    }
+    
+    func didGetHeightData(itemHeight: Double, itemHeightIndex: Int) {
+        
+        if let indexPath = self.indexPathToEdit {
+            if let item = self.getItemAtIndexPath(indexPath) {
+                item.itemHeight = itemHeight
+                item.itemHeightFineInchIndex = itemHeightIndex
+                
+                self.updateItemPrice(item)
+                
+                DataController.sharedInstance.save()
+                self.tableView.reloadData()
+            }
+        }
+    }
+    
+    func didGetQuantity(quantity: Int) {
+        if let indexPath = self.indexPathToEdit {
+            if let item = self.getItemAtIndexPath(indexPath) {
+                item.quantity = quantity
+                
+                DataController.sharedInstance.save()
+                self.tableView.reloadData()
+            }
+        }
+    }
+    
+    func didGetFabric(fabric: String) {
+        if let indexPath = self.indexPathToEdit {
+            if let item = self.getItemAtIndexPath(indexPath) {
+                item.fabricName = fabric
+                
+                DataController.sharedInstance.save()
+                self.tableView.reloadData()
+            }
+        }
+    }
+    
+    func didGetCategory(groupName: String, groupFileName: String) {
+        if let indexPath = self.indexPathToEdit {
+            if let item = self.getItemAtIndexPath(indexPath) {
+                
+                let cell:CartTableViewCell = tableView.cellForRowAtIndexPath(indexPath) as! CartTableViewCell
+                
+                dispatch_async(dispatch_get_main_queue(), { 
+                    cell.groupName.text = groupName
+                })
+                
+                item.groupName = groupName
+                item.groupFileName = groupFileName
+                
+                self.updateItemPrice(item)
+                
+                DataController.sharedInstance.save()
+                self.tableView.reloadData()
             }
         }
     }
@@ -372,8 +548,6 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
             
         }
         
-        color.backgroundColor = UIColor.blueColor()
-        
         let delete = UITableViewRowAction(style: .Normal, title: "Delete") { (action, indexPath) in
             
             self.indexPathToDelete = indexPath
@@ -383,9 +557,61 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
             alert.show()
         }
         
-        delete.backgroundColor = UIColor.redColor()
+        let location = UITableViewRowAction(style: .Normal, title: "Location") { (action, indexPath) in
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            
+            let locationVC = storyboard.instantiateViewControllerWithIdentifier("locationViewController") as! LocationViewController
+            self.indexPathToEdit = indexPath
+            locationVC.delegate = self
+            self.presentViewController(locationVC, animated: true, completion: nil)
+        }
         
-        return [delete, color]
+        
+        let width = UITableViewRowAction(style: .Normal, title: "Width") { (action, indexPath) in
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            
+            let widthVC = storyboard.instantiateViewControllerWithIdentifier("widthViewController") as! WidthViewController
+            self.indexPathToEdit = indexPath
+            widthVC.delegate = self
+            self.presentViewController(widthVC, animated: true, completion: nil)
+        }
+        
+        let height = UITableViewRowAction(style: .Normal, title: "Height") { (action, indexPath) in
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            
+            let heightVC = storyboard.instantiateViewControllerWithIdentifier("heightViewController") as! HeightViewController
+            self.indexPathToEdit = indexPath
+            heightVC.delegate = self
+            self.presentViewController(heightVC, animated: true, completion: nil)
+        }
+        
+        let category = UITableViewRowAction(style: .Normal, title: "Category") { (action, indexPath) in
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            
+            let categoryVC = storyboard.instantiateViewControllerWithIdentifier("categoryViewController") as! CategoryViewController
+            self.indexPathToEdit = indexPath
+            categoryVC.delegate = self
+            self.presentViewController(categoryVC, animated: true, completion: nil)
+        }
+        
+        let fabric = UITableViewRowAction(style: .Normal, title: "Fabric") { (action, indexPath) in
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            
+            let fabricVC = storyboard.instantiateViewControllerWithIdentifier("fabricViewController") as! FabricViewController
+            self.indexPathToEdit = indexPath
+            fabricVC.delegate = self
+            self.presentViewController(fabricVC, animated: true, completion: nil)
+        }
+        
+        delete.backgroundColor = UIColor.redColor()
+        color.backgroundColor = UIColor(red: 147.0/255, green: 193.0/255, blue: 149.0/255, alpha: 1)
+        location.backgroundColor = UIColor(red: 88.0/255, green: 193.0/255, blue: 91.0/255, alpha: 1)
+        width.backgroundColor = UIColor(red: 147.0/255, green: 193.0/255, blue: 149.0/255, alpha: 1)
+        height.backgroundColor = UIColor(red: 88.0/255, green: 193.0/255, blue: 91.0/255, alpha: 1)
+        category.backgroundColor = UIColor(red: 147.0/255, green: 193.0/255, blue: 149.0/255, alpha: 1)
+        fabric.backgroundColor = UIColor(red: 88.0/255, green: 193.0/255, blue: 91.0/255, alpha: 1)
+        
+        return [delete, color, location, width, height, category, fabric]
     }
     
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
@@ -412,7 +638,7 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
                             do {
                                 try DataController.sharedInstance.managedObjectContext?.save()
                                 self.tableView.reloadData()
-                                self.updateDiscount()
+                                self.updateCart()
                             }catch {
                                 print("Error deleting item from cart: \(error)")
                             }

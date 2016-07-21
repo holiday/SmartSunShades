@@ -35,6 +35,14 @@ class DataController: NSObject {
         managedObjectContext = appDel.managedObjectContext
     }
     
+    func save() {
+        do {
+            try self.managedObjectContext?.save()
+        }catch {
+            print("Error: Failed to save color: \(error)")
+        }
+    }
+    
     func loadCustomerByEmail(email:String) -> Customers? {
         
         if let context = self.managedObjectContext {

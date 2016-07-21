@@ -8,16 +8,18 @@
 
 import UIKit
 
-class WidthViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+class WidthViewController: BaseViewController, UIPickerViewDelegate, UIPickerViewDataSource {
 
     @IBOutlet weak var widthPickerView: UIPickerView!
     var currentPickerView:UIPickerView!
     var inchesData:[Double] = [Double]()
-    static var inchData:[String] = ["0", "1/8", "2/8", "3/8", "4/8", "5/8", "6/8", "7/8"]
-    static var inchValues:[Double] = [0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.875]
+    static var inchData:[String] = ["0", "1/8", "1/4", "3/8", "1/2", "5/8", "3/4", "7/8"]
+    static var inchValues:[Double] = [0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875]
     
     var currentIndex:Int = 0
     var currentInchIndex:Int = 0
+    
+    var delegate:ShoppingCartControllerDelegate = ShoppingCartController.sharedInstance
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,7 +28,7 @@ class WidthViewController: UIViewController, UIPickerViewDelegate, UIPickerViewD
             self.currentPickerView = widthPickerView
         }
         
-        self.populateInchesData(&self.inchesData, from: 12, to: 96)
+        self.populateInchesData(&self.inchesData, from: 12, to: 108)
         
         self.currentPickerView.delegate = self
         self.currentPickerView.dataSource = self
@@ -41,12 +43,7 @@ class WidthViewController: UIViewController, UIPickerViewDelegate, UIPickerViewD
     
     func saveWidthData() {
         
-        if let tempItem:Item = ShoppingCartController.sharedInstance.tempItem {
-            tempItem.itemWidth = self.inchesData[self.currentIndex]
-            tempItem.itemWidthFineInchIndex = self.currentInchIndex
-            
-            print("Width: \(tempItem.itemWidth) , \(tempItem.getWidthFineInch().stringValue)")
-        }
+        self.delegate.didGetWidthData(self.inchesData[self.currentIndex], itemWidthIndex: self.currentInchIndex)
         
     }
     
@@ -65,12 +62,12 @@ class WidthViewController: UIViewController, UIPickerViewDelegate, UIPickerViewD
         return WidthViewController.inchData.count
     }
     
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    func pickerView(pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusingView view: UIView?) -> UIView {
         if component == 0 {
-            return "\(Int(self.inchesData[row])) inches"
+            return self.changePickerViewFontSize("\(Int(self.inchesData[row])) inches")
         }
         
-        return WidthViewController.inchData[row]
+        return self.changePickerViewFontSize("\(WidthViewController.inchData[row])")
     }
     
     func pickerView(pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {

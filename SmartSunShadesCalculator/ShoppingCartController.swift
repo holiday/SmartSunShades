@@ -9,7 +9,17 @@
 import UIKit
 import CoreData
 
-class ShoppingCartController: NSObject {
+protocol ShoppingCartControllerDelegate {
+    func didGetLocation(location:String)
+    func didGetFabric(fabric:String)
+    func didGetWidthData(itemWidth:Double, itemWidthIndex:Int)
+    func didGetHeightData(itemHeight:Double, itemHeightIndex:Int)
+    func didGetQuantity(quantity:Int)
+    func didGetCategory(groupName:String, groupFileName:String)
+    
+}
+
+public class ShoppingCartController: NSObject, ShoppingCartControllerDelegate {
     
     static let sharedInstance = ShoppingCartController()
     
@@ -17,9 +27,10 @@ class ShoppingCartController: NSObject {
     
     override init() {
         super.init()
+        self.createTempItem()
     }
     
-    func createTempItem() -> Item? {
+    public func createTempItem() -> Bool {
         
         if self.tempItem == nil {
         
@@ -32,13 +43,64 @@ class ShoppingCartController: NSObject {
                 newItem.sqFootage = 0.0
                 newItem.color = "N/A"
                 self.tempItem = newItem
-                return self.tempItem
+                return true
             }else{
                 print("Failed to get managed object context: viewDidAppear")
             }
         }
         
-        return nil
+        return false
+    }
+    
+    func didGetLocation(location: String) {
+        if let tempItem:Item = ShoppingCartController.sharedInstance.tempItem {
+            tempItem.location = location
+            
+            print("Item Location updated: \(location)")
+        }
+    }
+    
+    func didGetFabric(fabric: String) {
+        if let tempItem:Item = ShoppingCartController.sharedInstance.tempItem {
+            tempItem.fabricName = fabric
+            
+            print("Fabric Name updated: \(fabric)")
+        }
+    }
+    
+    func didGetWidthData(itemWidth: Double, itemWidthIndex: Int) {
+        if let tempItem:Item = ShoppingCartController.sharedInstance.tempItem {
+            tempItem.itemWidth = itemWidth
+            tempItem.itemWidthFineInchIndex = itemWidthIndex
+            
+            print("Width Changed: \(tempItem.itemWidth) , \(tempItem.getWidthFineInch().stringValue)")
+        }
+    }
+    
+    func didGetHeightData(itemHeight: Double, itemHeightIndex: Int) {
+        if let tempItem:Item = ShoppingCartController.sharedInstance.tempItem {
+            tempItem.itemHeight = itemHeight
+            tempItem.itemHeightFineInchIndex = itemHeightIndex
+            
+            print("Height Changed: \(tempItem.itemHeight) , \(tempItem.getHeightFineInch().stringValue)")
+        }
+    }
+    
+    func didGetQuantity(quantity: Int) {
+        if let tempItem:Item = ShoppingCartController.sharedInstance.tempItem {
+            tempItem.quantity = quantity
+            
+            print("Quantity updated: \(quantity)")
+        }
+    }
+    
+    func didGetCategory(groupName: String, groupFileName: String) {
+        if let tempItem:Item = ShoppingCartController.sharedInstance.tempItem {
+            tempItem.groupFileName = groupFileName
+            tempItem.groupName = groupName
+            
+            print("Category updated: \(groupName)")
+        }
     }
     
     func getTotalSqFootage() -> Double? {

@@ -7,9 +7,11 @@
 //
 
 import UIKit
+import CoreData
 
 class CartTableViewCell: UITableViewCell {
     
+    @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var groupName: UILabel!
     @IBOutlet weak var widthLabel: UILabel!
     @IBOutlet weak var heightLabel: UILabel!
@@ -18,6 +20,7 @@ class CartTableViewCell: UITableViewCell {
     @IBOutlet weak var sqInchesLabel:UILabel!
     @IBOutlet weak var colorLabel:UILabel!
     @IBOutlet weak var fabricNameLabel:UILabel!
+    var itemId:NSManagedObjectID!
     
 //    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
 //        super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -30,8 +33,13 @@ class CartTableViewCell: UITableViewCell {
 //    }
     
     func populateTableCell(item:Item){
-        if item.groupName != nil {
-            self.groupName.text = item.groupName!
+        
+        if let location = item.location {
+            self.locationLabel.text = "Location: \(location)"
+        }
+        
+        if let groupName = item.groupName {
+            self.groupName.text = groupName
         }
         
         if item.itemWidth != nil {
@@ -46,8 +54,8 @@ class CartTableViewCell: UITableViewCell {
             self.quantityLabel.text = "Qty: \(item.quantity!)"
         }
         
-        if item.price != nil {
-            self.priceLabel.text = "$\(item.price!)"
+        if let price = item.price {
+            self.priceLabel.text = "$\(price)"
         }
         
         if item.sqFootage != nil {
@@ -61,6 +69,8 @@ class CartTableViewCell: UITableViewCell {
         if item.fabricName != nil {
             self.fabricNameLabel.text = "Fabric Name: \(item.fabricName!)"
         }
+        
+        self.itemId = item.objectID
     }
     
 }

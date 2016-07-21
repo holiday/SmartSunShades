@@ -8,11 +8,13 @@
 
 import UIKit
 
-class QuantityViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+class QuantityViewController: BaseViewController, UIPickerViewDelegate, UIPickerViewDataSource {
 
     @IBOutlet weak var quantityPickerView: UIPickerView!
     
     var currentQuantity:Int = 1
+    
+    var delegate:ShoppingCartControllerDelegate = ShoppingCartController.sharedInstance
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,14 +30,7 @@ class QuantityViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     func saveQuantityData() {
         
         //updated the width in shopping cart
-        
-        if let tempItem:Item = ShoppingCartController.sharedInstance.tempItem {
-            tempItem.quantity = self.currentQuantity
-            
-            print("Quantity: \(tempItem.quantity)")
-        }else {
-            print("Error getting tempItem: saveQuantityData")
-        }
+        self.delegate.didGetQuantity(self.currentQuantity)
         
     }
     
@@ -47,8 +42,8 @@ class QuantityViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         return 50
     }
     
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return "\(row+1)"
+    func pickerView(pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusingView view: UIView?) -> UIView {
+        return self.changePickerViewFontSize("\(row+1)")
     }
     
     func pickerView(pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {

@@ -10,47 +10,6 @@ import Foundation
 import CoreData
 
 class Cart: NSManagedObject {
-//
-//    func updateTotal() {
-//        subTotal = 0.0
-//        for item in cartItems {
-//            if item.price != nil {
-//                subTotal += item.price!
-//            }
-//        }
-//    }
-//    
-//    func addTempItem(item:Item) {
-//        self.tempItem = item
-//    }
-//    
-//    func getTempItem() -> Item {
-//        return self.tempItem!
-//    }
-//    
-//
-//    func addItem(item:Item) {
-//        self.cartItems.append(item)
-//        self.updateTotal()
-//    }
-//    
-//    func getItem(index:Int) -> Item? {
-//        if index <= self.cartItems.count-1 && index >= 0{
-//            return self.cartItems[index]
-//        }
-//        
-//        return nil
-//    }
-//    
-//    func setColorForItem(item:Item, color:String){
-//        item.color = color
-//    }
-//    
-//    func deleteItem(index:Int) {
-//        if index <= self.cartItems.count-1 && index >= 0{
-//            self.cartItems.removeAtIndex(index)
-//        }
-//    }
     
     func getTotalSquareFootage() -> Double {
         var totalSqFootage:Double = 0.0
@@ -97,21 +56,24 @@ class Cart: NSManagedObject {
     }
     
     func getTotal() -> Double{
-        self.calculateDiscountedTotal()
-        return self.subTotal!.doubleValue - self.discountedTotal!.doubleValue
+        self.getDiscountedTotal()
+        
+        let priceBeforeTax = self.subTotal!.doubleValue - self.discountedTotal!.doubleValue
+        let priceAfterTax = priceBeforeTax * (1 + (self.tax!.doubleValue/100.0))
+        let priceAfterDeposit = priceAfterTax - self.deposit!.doubleValue
+        
+        return priceAfterDeposit
+        
+//        return ((self.subTotal!.doubleValue - self.discountedTotal!.doubleValue) * (1.0+(self.tax!.doubleValue/100.0))) - self.deposit!.doubleValue
     }
 
     func getDiscountedTotal() -> Double {
-        self.calculateDiscountedTotal()
-        return self.discountedTotal!.doubleValue
-    }
-    
-    func calculateDiscountedTotal() {
         self.calculateSubtotal()
         
         let dt:Double = (self.subTotal!.doubleValue/2.0) + ((self.discountPercent!.doubleValue/100) * (self.subTotal!.doubleValue/2.0))
         
         self.discountedTotal = NSNumber(double: dt)
+        return self.discountedTotal!.doubleValue
     }
 
 }

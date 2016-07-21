@@ -9,10 +9,11 @@
 import UIKit
 import CoreData
 
-class FabricViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+class FabricViewController: BaseViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     
     @IBOutlet weak var fabricPickerView: UIPickerView!
     var fabricNames: [String]!
+    var delegate:ShoppingCartControllerDelegate = ShoppingCartController.sharedInstance
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,6 +53,7 @@ class FabricViewController: UIViewController, UIPickerViewDelegate, UIPickerView
                             
                             //Cleanup, remove temp item
                             ShoppingCartController.sharedInstance.tempItem = nil
+                            ShoppingCartController.sharedInstance.createTempItem()
                             
                             //Show the shopping cart
                             let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -84,8 +86,8 @@ class FabricViewController: UIViewController, UIPickerViewDelegate, UIPickerView
         return self.fabricNames.count
     }
     
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return self.fabricNames[row]
+    func pickerView(pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusingView view: UIView?) -> UIView {
+        return self.changePickerViewFontSize(self.fabricNames[row])
     }
     
     func pickerView(pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
@@ -96,9 +98,7 @@ class FabricViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         
         //updated the category in shopping cart
-        if let tempItem = ShoppingCartController.sharedInstance.tempItem {
-            tempItem.fabricName = self.fabricNames[row]
-        }
+        self.delegate.didGetFabric(self.fabricNames[row])
     }
     
 }

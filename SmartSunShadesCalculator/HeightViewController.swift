@@ -26,15 +26,9 @@ class HeightViewController: WidthViewController {
     }
     
     func saveHeightData() {
+    
+        self.delegate.didGetHeightData(self.inchesData[self.currentIndex], itemHeightIndex: self.currentInchIndex)
         
-        if let tempItem:Item = ShoppingCartController.sharedInstance.tempItem {
-            tempItem.itemHeight = self.inchesData[self.currentIndex]
-            tempItem.itemHeightFineInchIndex = self.currentInchIndex
-            
-            print("Height: \(tempItem.itemHeight) , \(tempItem.getHeightFineInch().stringValue)")
-        }else{
-            print("Error getting tempItem: saveHeightData")
-        }
     }
     
     override func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {

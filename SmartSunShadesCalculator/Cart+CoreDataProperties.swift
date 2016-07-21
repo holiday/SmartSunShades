@@ -13,11 +13,14 @@ import Foundation
 import CoreData
 
 extension Cart {
-
+    
+    @NSManaged var deposit: NSNumber?
+    @NSManaged var tax: NSNumber?
     @NSManaged var discountedTotal: NSNumber?
     @NSManaged var discountPercent: NSNumber?
     @NSManaged var subTotal: NSNumber?
     @NSManaged var customers: Customers?
     @NSManaged var items: NSOrderedSet?
+    @NSManaged var comments:String?
 
 }

@@ -19,6 +19,7 @@ class ColorViewController: UIViewController, UIPickerViewDataSource, UIPickerVie
     var colorData:[String] = [String]()
     var delegate:ColorViewControllerDelegate?
     var indexPath:NSIndexPath?
+//    var delegate:ShoppingCartControllerDelegate = ShoppingCartController.sharedInstance
 
     override func viewDidLoad() {
         super.viewDidLoad()

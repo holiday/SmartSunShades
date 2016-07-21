@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15E65" minimumToolsVersion="Xcode 7.0">
     <entity name="Cart" representedClassName=".Cart" syncable="YES">
+        <attribute name="comments" optional="YES" attributeType="String" defaultValueString="No Comments" syncable="YES"/>
+        <attribute name="deposit" optional="YES" attributeType="Double" minValueString="0" defaultValueString="0.0" syncable="YES"/>
         <attribute name="discountedTotal" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="discountPercent" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="subTotal" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="tax" optional="YES" attributeType="Double" minValueString="0" defaultValueString="0.0" syncable="YES"/>
         <relationship name="customers" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Customers" inverseName="cart" inverseEntity="Customers" syncable="YES"/>
         <relationship name="items" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Item" inverseName="cart" inverseEntity="Item" syncable="YES"/>
     </entity>
@@ -19,6 +22,7 @@
     <entity name="Item" representedClassName=".Item" syncable="YES">
         <attribute name="color" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="fabricName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="groupFileName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="groupName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="itemHeight" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="itemHeightFineInchIndex" optional="YES" attributeType="Integer 16" defaultValueString="0.0" syncable="YES"/>
@@ -36,9 +40,9 @@
         <relationship name="customers" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Customers" inverseName="order" inverseEntity="Customers" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Cart" positionX="-54" positionY="63" width="128" height="120"/>
+        <element name="Cart" positionX="-54" positionY="63" width="128" height="165"/>
         <element name="Customers" positionX="-36" positionY="90" width="128" height="150"/>
-        <element name="Item" positionX="-63" positionY="-18" width="128" height="225"/>
+        <element name="Item" positionX="-63" positionY="-18" width="128" height="240"/>
         <element name="Orders" positionX="-45" positionY="90" width="128" height="90"/>
     </elements>
 </model>

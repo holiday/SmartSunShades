@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class LocationViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+class LocationViewController: BaseViewController, UIPickerViewDelegate, UIPickerViewDataSource {
 
     @IBOutlet weak var locationPicker: UIPickerView!
     var locations:[String] = [String]()
@@ -18,7 +18,8 @@ class LocationViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     var currentLocation:Int = 0
     var currentLocationNumber:Int = 1
     
-    let shoppingCartController = ShoppingCartController.sharedInstance
+    var delegate:ShoppingCartControllerDelegate = ShoppingCartController.sharedInstance
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,26 +46,14 @@ class LocationViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         
     }
     
-    override func viewDidAppear(animated: Bool) {
-        
-        //Create a temp Item
-        ShoppingCartController.sharedInstance.createTempItem()
-        
-    }
-    
     @IBAction func didPressNext(sender: AnyObject) {
-        
         self.saveItemLocation()
         
     }
     
     func saveItemLocation() {
         
-        if let tempItem = self.shoppingCartController.tempItem {
-            tempItem.location = "\(self.locations[self.currentLocation]) \(self.currentLocationNumber)"
-            
-            print(tempItem.location)
-        }
+        self.delegate.didGetLocation("\(self.locations[self.currentLocation]) \(self.currentLocationNumber)")
         
     }
     
@@ -80,25 +69,13 @@ class LocationViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         return 6
     }
     
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        if component == 0 {
-            return self.locations[row]
-        }
-        
-        return "\(row + 1)"
-    }
-    
-    func pickerView(pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
-        
-        var title = ""
+    func pickerView(pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusingView view: UIView?) -> UIView {
         
         if component == 0 {
-            title = self.locations[row]
-        }else{
-            title = "\(row + 1)"
+            return self.changePickerViewFontSize(self.locations[row])
         }
         
-        return NSAttributedString(string: title, attributes: [NSForegroundColorAttributeName:UIColor.whiteColor()])
+        return self.changePickerViewFontSize("\(row + 1)")
     }
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {

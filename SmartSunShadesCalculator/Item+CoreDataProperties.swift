@@ -16,6 +16,7 @@ extension Item {
 
     @NSManaged var fabricName:String?
     @NSManaged var color: String?
+    @NSManaged var groupFileName: String?
     @NSManaged var groupName: String?
     @NSManaged var itemHeight: NSNumber?
     @NSManaged var itemHeightFineInchIndex: NSNumber?
