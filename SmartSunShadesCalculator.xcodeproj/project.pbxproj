@@ -308,6 +308,7 @@
 					};
 					64218EB21CD9447E005AE58A = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = SHDJ6Q99N7;
 					};
 				};
 			};
@@ -570,8 +571,9 @@
 				INFOPLIST_FILE = SmartSunShadesCalculator/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.aaa.iphone.discounts.enterprise;
+				PRODUCT_BUNDLE_IDENTIFIER = com.aaa.iphone.discounts;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -586,8 +588,9 @@
 				INFOPLIST_FILE = SmartSunShadesCalculator/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.aaa.iphone.discounts.enterprise;
+				PRODUCT_BUNDLE_IDENTIFIER = com.aaa.iphone.discounts;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

@@ -14,8 +14,6 @@ class QuantityViewController: BaseViewController, UIPickerViewDelegate, UIPicker
     
     var currentQuantity:Int = 1
     
-    var delegate:ShoppingCartControllerDelegate = ShoppingCartController.sharedInstance
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -32,6 +30,11 @@ class QuantityViewController: BaseViewController, UIPickerViewDelegate, UIPicker
         //updated the width in shopping cart
         self.delegate.didGetQuantity(self.currentQuantity)
         
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.delegate.didGetQuantity(self.currentQuantity)
     }
     
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
@@ -59,7 +62,6 @@ class QuantityViewController: BaseViewController, UIPickerViewDelegate, UIPicker
         self.saveQuantityData()
         
     }
-
 }
     
 

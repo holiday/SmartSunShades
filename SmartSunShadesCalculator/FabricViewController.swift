@@ -13,7 +13,6 @@ class FabricViewController: BaseViewController, UIPickerViewDelegate, UIPickerVi
     
     @IBOutlet weak var fabricPickerView: UIPickerView!
     var fabricNames: [String]!
-    var delegate:ShoppingCartControllerDelegate = ShoppingCartController.sharedInstance
     
     override func viewDidLoad() {
         super.viewDidLoad()

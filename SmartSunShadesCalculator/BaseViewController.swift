@@ -12,6 +12,8 @@ class BaseViewController: UIViewController {
     
     @IBOutlet weak var next:UIButton!
     
+    var delegate:ShoppingCartControllerDelegate = ShoppingCartController.sharedInstance
+    
     override func viewWillAppear(animated: Bool) {
         if self.presentingViewController != nil {
             self.toggleNextButton()

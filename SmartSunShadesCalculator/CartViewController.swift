@@ -497,6 +497,8 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
             if let item = self.getItemAtIndexPath(indexPath) {
                 item.quantity = quantity
                 
+                self.updateItemPrice(item)
+                
                 DataController.sharedInstance.save()
                 self.tableView.reloadData()
             }
@@ -585,6 +587,15 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
             self.presentViewController(heightVC, animated: true, completion: nil)
         }
         
+        let quantity = UITableViewRowAction(style: .Normal, title: "Qty") { (action, indexPath) in
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            
+            let qtyVC = storyboard.instantiateViewControllerWithIdentifier("quantityViewController") as! QuantityViewController
+            self.indexPathToEdit = indexPath
+            qtyVC.delegate = self
+            self.presentViewController(qtyVC, animated: true, completion: nil)
+        }
+        
         let category = UITableViewRowAction(style: .Normal, title: "Category") { (action, indexPath) in
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             
@@ -608,10 +619,11 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         location.backgroundColor = UIColor(red: 88.0/255, green: 193.0/255, blue: 91.0/255, alpha: 1)
         width.backgroundColor = UIColor(red: 147.0/255, green: 193.0/255, blue: 149.0/255, alpha: 1)
         height.backgroundColor = UIColor(red: 88.0/255, green: 193.0/255, blue: 91.0/255, alpha: 1)
-        category.backgroundColor = UIColor(red: 147.0/255, green: 193.0/255, blue: 149.0/255, alpha: 1)
-        fabric.backgroundColor = UIColor(red: 88.0/255, green: 193.0/255, blue: 91.0/255, alpha: 1)
+        quantity.backgroundColor = UIColor(red: 147.0/255, green: 193.0/255, blue: 149.0/255, alpha: 1)
+        category.backgroundColor = UIColor(red: 88.0/255, green: 193.0/255, blue: 91.0/255, alpha: 1)
+        fabric.backgroundColor = UIColor(red: 147.0/255, green: 193.0/255, blue: 149.0/255, alpha: 1)
         
-        return [delete, color, location, width, height, category, fabric]
+        return [delete, color, location, width, height, quantity, category, fabric]
     }
     
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {

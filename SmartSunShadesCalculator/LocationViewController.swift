@@ -18,8 +18,6 @@ class LocationViewController: BaseViewController, UIPickerViewDelegate, UIPicker
     var currentLocation:Int = 0
     var currentLocationNumber:Int = 1
     
-    var delegate:ShoppingCartControllerDelegate = ShoppingCartController.sharedInstance
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()

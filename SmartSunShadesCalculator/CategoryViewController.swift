@@ -19,7 +19,6 @@ class CategoryViewController: BaseViewController, UIPickerViewDelegate, UIPicker
     var categoryFileNames: [String]!
     var currentSelectedCategory:String?
     var currentSelectedCategoryIndex:Int = 0
-    var delegate:ShoppingCartControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,7 +49,7 @@ class CategoryViewController: BaseViewController, UIPickerViewDelegate, UIPicker
     }
     
     override func viewWillDisappear(animated: Bool) {
-        self.delegate?.didGetCategory(self.categoryTitles[self.currentSelectedCategoryIndex], groupFileName: self.categoryFileNames[self.currentSelectedCategoryIndex])
+        self.delegate.didGetCategory(self.categoryTitles[self.currentSelectedCategoryIndex], groupFileName: self.categoryFileNames[self.currentSelectedCategoryIndex])
     }
 
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
@@ -74,7 +73,7 @@ class CategoryViewController: BaseViewController, UIPickerViewDelegate, UIPicker
         
         self.currentSelectedCategoryIndex = row
         
-        self.delegate?.didGetCategory(self.categoryTitles[self.currentSelectedCategoryIndex], groupFileName: self.categoryFileNames[self.currentSelectedCategoryIndex])
+        self.delegate.didGetCategory(self.categoryTitles[self.currentSelectedCategoryIndex], groupFileName: self.categoryFileNames[self.currentSelectedCategoryIndex])
         self.computeItemPrice()
         
     }

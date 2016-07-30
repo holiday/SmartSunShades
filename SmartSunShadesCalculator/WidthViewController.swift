@@ -19,16 +19,13 @@ class WidthViewController: BaseViewController, UIPickerViewDelegate, UIPickerVie
     var currentIndex:Int = 0
     var currentInchIndex:Int = 0
     
-    var delegate:ShoppingCartControllerDelegate = ShoppingCartController.sharedInstance
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         if widthPickerView != nil {
             self.currentPickerView = widthPickerView
+            self.populateInchesData(&self.inchesData, from: 12, to: 108)
         }
-        
-        self.populateInchesData(&self.inchesData, from: 12, to: 108)
         
         self.currentPickerView.delegate = self
         self.currentPickerView.dataSource = self
