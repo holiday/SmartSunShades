@@ -11,6 +11,10 @@ import CoreData
 
 class Cart: NSManagedObject {
     
+    func getRoundedDecimal(number:Double) -> Double {
+        return Double(round(number*100)/100)
+    }
+    
     func getTotalSquareFootage() -> Double {
         var totalSqFootage:Double = 0.0
         
@@ -55,7 +59,7 @@ class Cart: NSManagedObject {
         return self.subTotal!.doubleValue / 2.00
     }
     
-    func getTotal() -> Double{
+    func getBalance() -> Double{
         self.getDiscountedTotal()
         
         let priceBeforeTax = self.subTotal!.doubleValue - self.discountedTotal!.doubleValue
@@ -63,8 +67,15 @@ class Cart: NSManagedObject {
         let priceAfterDeposit = priceAfterTax - self.deposit!.doubleValue
         
         return priceAfterDeposit
+    }
+    
+    func getTotal() -> Double{
+        self.getDiscountedTotal()
         
-//        return ((self.subTotal!.doubleValue - self.discountedTotal!.doubleValue) * (1.0+(self.tax!.doubleValue/100.0))) - self.deposit!.doubleValue
+        let priceBeforeTax = self.subTotal!.doubleValue - self.discountedTotal!.doubleValue
+        let priceAfterTax = priceBeforeTax * (1 + (self.tax!.doubleValue/100.0))
+        
+        return priceAfterTax
     }
 
     func getDiscountedTotal() -> Double {

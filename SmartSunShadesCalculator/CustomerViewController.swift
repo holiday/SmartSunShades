@@ -65,6 +65,14 @@ class CustomerViewController: UIViewController, UITextFieldDelegate, CustomersVi
         self.emailField.text = customer.email
     }
     
+    @IBAction func didPressAddNewCustomer(sender:UIButton){
+        self.firstNameField.text = ""
+        self.lastNameField.text = ""
+        self.addressField.text = ""
+        self.phoneNumberField.text = ""
+        self.emailField.text = ""
+    }
+    
     @IBAction func didPressNext(sender: UIButton) {
         
         self.createNewCustomer()

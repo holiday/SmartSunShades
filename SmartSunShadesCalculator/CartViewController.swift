@@ -35,6 +35,7 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var datePickerView:UIView!
     @IBOutlet weak var datePicker:UIDatePicker!
     @IBOutlet weak var dateTextField:UITextField!
+    @IBOutlet weak var balanceField:UILabel!
     
     override func viewDidLoad() {
         
@@ -100,7 +101,7 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
     func moveUpScreen() {
         dispatch_async(dispatch_get_main_queue()) {
             if self.didMoveUpScreen == false {
-                self.view.frame.origin.y -= 150
+                self.view.frame.origin.y -= 250
                 self.didMoveUpScreen = true
             }
         }
@@ -110,7 +111,7 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         dispatch_async(dispatch_get_main_queue()) {
             if self.didMoveUpScreen == true {
                 self.didMoveUpScreen = false
-                self.view.frame.origin.y += 150
+                self.view.frame.origin.y += 250
             }
         }
     }
@@ -157,8 +158,13 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         depositField.resignFirstResponder()
         
         self.handleEnteredDiscount()
-        self.setTax(Double(self.taxField.text!)!)
-        self.setDepositAmount((Double(self.depositField.text!)!))
+        if let tax = Double(self.taxField.text!) {
+            self.setTax(tax)
+        }
+        
+        if let deposit = Double(self.depositField.text!) {
+            self.setDepositAmount(deposit)
+        }
         
         isKeyboardVisible = false
         
@@ -189,9 +195,10 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
             if let cart:Cart = customer.cart as? Cart {
                 if cart.subTotal!.intValue > 0 {
                     dispatch_async(dispatch_get_main_queue(), { 
-                        self.totalDiscountsField.text = "-$\(cart.getDiscountedTotal())"
-                        self.subTotalField.text = "$\(cart.subTotal!)"
-                        self.discountedTotal.text = "$\(cart.getTotal())"
+                        self.totalDiscountsField.text = "-$\(cart.getRoundedDecimal(cart.getDiscountedTotal()))"
+                        self.subTotalField.text = "$\(cart.getRoundedDecimal(cart.subTotal!.doubleValue))"
+                        self.discountedTotal.text = "$\(cart.getRoundedDecimal(cart.getTotal()))"
+                        self.balanceField.text = "$\(cart.getRoundedDecimal(cart.getBalance()))"
                     })
                 }
             }
@@ -243,14 +250,14 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         if let customer:Customers = DataController.sharedInstance.customer {
             if let cart:Cart = customer.cart as? Cart {
                 self.commentField.text = "\(cart.comments!)"
-                self.subTotalField.text = "$\(cart.getDiscountedTotal())"
+                self.subTotalField.text = "$\(cart.getRoundedDecimal(cart.getDiscountedTotal()))"
                 self.taxField.text = "\(cart.tax!)"
                 self.depositField.text = "\(cart.deposit!)"
-                self.discountedTotal.text = "$\(cart.getTotal())"
+                self.discountedTotal.text = "$\(cart.getRoundedDecimal(cart.getTotal()))"
                 self.enterDiscountField.text = "\(cart.discountPercent!)"
-                let roundedSqft = Double(round(self.shoppingCartController.getTotalSqFootage()!*1000)/1000)
+                let roundedSqft = cart.getRoundedDecimal(self.shoppingCartController.getTotalSqFootage()!)
                 self.totalSqInchesField.text = "Total Sq Footage: \(roundedSqft)"
-                self.fiftyPercentOffField.text = "-$\(cart.getFiftyOff())"
+                self.fiftyPercentOffField.text = "-$\(cart.getRoundedDecimal(cart.getFiftyOff()))"
                 self.updateCart()
             }
         }
@@ -307,9 +314,11 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
                         "Sub-Total: $\(cart.subTotal!)<br/>" +
                         "50% Discount: -\(cart.getFiftyOff())<br/>" +
                         "Additional Discount (%): \(cart.discountPercent!)%<br/>" +
+                        "You Saved: $\(cart.getDiscountedTotal())<br/>" +
                         "Taxes (%): \(cart.tax!)% <br/>" +
-                        "Total Discounts: $\(cart.getDiscountedTotal())<br/>" +
-                        "Total: $\(cart.getTotal()) <br/></br/>" +
+                        "Final Total: $\(cart.getTotal()) <br/>" +
+                        "Deposit: $\(cart.deposit!) <br/>" +
+                        "Balance: $\(cart.getBalance())</br/></br/>" +
                         
                         "Comments: \(cart.comments!) <br/><br/>" +
                         

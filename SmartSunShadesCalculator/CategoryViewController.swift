@@ -28,14 +28,16 @@ class CategoryViewController: BaseViewController, UIPickerViewDelegate, UIPicker
                                "Dual Solar Shades - Group 5",
                                "Roller Shades 3",
                                "Triple Shades Sapphire 75",
-                               "Triple Shades Sapphire 100"]
+                               "Triple Shades Sapphire 100",
+                               "2 Inch Faux Wood Blinds"]
         
         self.categoryFileNames = ["dual_solar_shades_3",
                                "dual_solar_shades_4",
                                "dual_solar_shades_5",
                                "roller_shades_3",
                                "triple_shades_sapphire_75",
-                               "triple_shades_sapphire_100"]
+                               "triple_shades_sapphire_100",
+                               "2_inch_faux_wood_blinds"]
         
         // Connect data:
         self.categoryPickerView.delegate = self
@@ -62,11 +64,6 @@ class CategoryViewController: BaseViewController, UIPickerViewDelegate, UIPicker
     
     func pickerView(pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusingView view: UIView?) -> UIView {
         return self.changePickerViewFontSize(self.categoryTitles[row])
-    }
-    
-    func pickerView(pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
-        let title = self.categoryTitles[row]
-        return NSAttributedString(string: title, attributes: [NSForegroundColorAttributeName:UIColor.whiteColor()])
     }
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {

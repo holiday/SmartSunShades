@@ -44,5 +44,9 @@ class BaseViewController: UIViewController {
         pickerLabel.textAlignment = NSTextAlignment.Center
         return pickerLabel
     }
+    
+    func pickerView(pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
+        return 50.0
+    }
 
 }
