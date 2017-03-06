@@ -24,7 +24,7 @@ class WidthViewController: BaseViewController, UIPickerViewDelegate, UIPickerVie
         
         if widthPickerView != nil {
             self.currentPickerView = widthPickerView
-            self.populateInchesData(&self.inchesData, from: 12, to: 108)
+            self.populateInchesData(&self.inchesData, from: 10, to: 108)
         }
         
         self.currentPickerView.delegate = self
@@ -32,7 +32,7 @@ class WidthViewController: BaseViewController, UIPickerViewDelegate, UIPickerVie
         
     }
     
-    @IBAction func didPressNext(sender: AnyObject) {
+    @IBAction func didPressNext(_ sender: AnyObject) {
         
         self.saveWidthData()
         
@@ -44,22 +44,22 @@ class WidthViewController: BaseViewController, UIPickerViewDelegate, UIPickerVie
         
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         //self.currentPickerView.selectRow(25, inComponent: 0, animated: true)
     }
     
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 2
     }
     
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         if component == 0 {
             return inchesData.count
         }
         return WidthViewController.inchData.count
     }
     
-    func pickerView(pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusingView view: UIView?) -> UIView {
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         if component == 0 {
             return self.changePickerViewFontSize("\(Int(self.inchesData[row])) inches")
         }
@@ -67,19 +67,19 @@ class WidthViewController: BaseViewController, UIPickerViewDelegate, UIPickerVie
         return self.changePickerViewFontSize("\(WidthViewController.inchData[row])")
     }
     
-    func pickerView(pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
+    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
         
         if component == 0 {
             let title = "\(Int(self.inchesData[row])) inches"
-            return NSAttributedString(string: title, attributes: [NSForegroundColorAttributeName:UIColor.whiteColor()])
+            return NSAttributedString(string: title, attributes: [NSForegroundColorAttributeName:UIColor.white])
         }
         
         let title = WidthViewController.inchData[row]
-        return NSAttributedString(string: title, attributes: [NSForegroundColorAttributeName:UIColor.whiteColor()])
+        return NSAttributedString(string: title, attributes: [NSForegroundColorAttributeName:UIColor.white])
         
     }
     
-    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         
         if component == 0 {
             self.currentIndex = row
@@ -90,7 +90,7 @@ class WidthViewController: BaseViewController, UIPickerViewDelegate, UIPickerVie
         self.saveWidthData()
     }
     
-    func populateInchesData(inout dataArray:[Double], from:Int, to:Int){
+    func populateInchesData(_ dataArray:inout [Double], from:Int, to:Int){
         //Populate the array of inches
         for i in from...to {
             dataArray.append(Double(i))

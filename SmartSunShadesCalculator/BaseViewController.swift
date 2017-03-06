@@ -10,11 +10,11 @@ import UIKit
 
 class BaseViewController: UIViewController {
     
-    @IBOutlet weak var next:UIButton!
+    @IBOutlet weak var nextBtn:UIButton!
     
     var delegate:ShoppingCartControllerDelegate = ShoppingCartController.sharedInstance
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         if self.presentingViewController != nil {
             self.toggleNextButton()
         }
@@ -22,30 +22,34 @@ class BaseViewController: UIViewController {
     
     func dismiss() {
         if self.presentingViewController != nil {
-            self.dismissViewControllerAnimated(true, completion: nil)
+            self.dismiss(animated: true, completion: nil)
         }
     }
     
     func toggleNextButton() {
-        dispatch_async(dispatch_get_main_queue()) { 
-            self.next.setTitle("Done", forState: UIControlState.Normal)
-            self.next.removeTarget(nil, action: nil, forControlEvents: UIControlEvents.AllEvents)
+        DispatchQueue.main.async { 
+            self.nextBtn.setTitle("Done", for: UIControlState())
+            self.nextBtn.removeTarget(nil, action: nil, for: UIControlEvents.allEvents)
             print("Do nothing")
             
-            self.next.addTarget(self, action: #selector(BaseViewController.dismiss), forControlEvents: UIControlEvents.TouchUpInside)
+//            self.nextBtn.addTarget(self, action: #selector(BaseViewController.dismiss), for: UIControlEvents.touchUpInside)
+            
+            
+            
+            self.nextBtn.addTarget(self, action: #selector(((BaseViewController.dismiss) as (BaseViewController) -> (Void) -> Void)), for: UIControlEvents.touchUpInside)
         }
     }
     
-    func changePickerViewFontSize(pickerText:String) -> UILabel {
+    func changePickerViewFontSize(_ pickerText:String) -> UILabel {
         let pickerLabel = UILabel()
-        pickerLabel.textColor = UIColor.whiteColor()
+        pickerLabel.textColor = UIColor.white
         pickerLabel.text = pickerText
         pickerLabel.font = UIFont(name: "Helvetica Neue", size: 28) // In this use your custom font
-        pickerLabel.textAlignment = NSTextAlignment.Center
+        pickerLabel.textAlignment = NSTextAlignment.center
         return pickerLabel
     }
     
-    func pickerView(pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
+    func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
         return 50.0
     }
 

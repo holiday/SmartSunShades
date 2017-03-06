@@ -30,21 +30,21 @@ class LocationViewController: BaseViewController, UIPickerViewDelegate, UIPicker
                           "Kitchen",
                           "Powder Room",
                           "Dining Room",
+                          "Loft",
+                          "Office",
                           "Hall",
                           "Laundry",
+                          "3rd Floor",
                           "French Door",
                           "Patio",
-                          "Room 1",
-                          "Room 2",
-                          "Room 3",
-                          "Room 4",
+                          "Garage",
                           "Master Bedroom",
                           "Ensuite",
                           "Washroom"]
         
     }
     
-    @IBAction func didPressNext(sender: AnyObject) {
+    @IBAction func didPressNext(_ sender: AnyObject) {
         self.saveItemLocation()
         
     }
@@ -55,11 +55,11 @@ class LocationViewController: BaseViewController, UIPickerViewDelegate, UIPicker
         
     }
     
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 2
     }
     
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         if component == 0{
             return self.locations.count
         }
@@ -67,7 +67,7 @@ class LocationViewController: BaseViewController, UIPickerViewDelegate, UIPicker
         return 6
     }
     
-    func pickerView(pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusingView view: UIView?) -> UIView {
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         
         if component == 0 {
             return self.changePickerViewFontSize(self.locations[row])
@@ -76,7 +76,7 @@ class LocationViewController: BaseViewController, UIPickerViewDelegate, UIPicker
         return self.changePickerViewFontSize("\(row + 1)")
     }
     
-    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         
         if component == 0 {
             self.currentLocation = row

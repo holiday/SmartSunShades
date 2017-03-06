@@ -21,7 +21,7 @@ class HeightViewController: WidthViewController {
         self.populateInchesData(&self.inchesData, from: 12, to: 120)
     }
     
-    @IBAction override func didPressNext(sender: AnyObject) {
+    @IBAction override func didPressNext(_ sender: AnyObject) {
         self.saveHeightData()
     }
     
@@ -31,7 +31,7 @@ class HeightViewController: WidthViewController {
         
     }
     
-    override func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    override func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         
         if component == 0 {
             self.currentIndex = row

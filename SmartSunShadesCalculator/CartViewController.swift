@@ -16,14 +16,16 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     let shoppingCartController = ShoppingCartController.sharedInstance
     var isKeyboardVisible:Bool = false
-    var indexPathToDelete:NSIndexPath?
-    var indexPathToEdit:NSIndexPath?
+    var indexPathToDelete:IndexPath?
+    var indexPathToEdit:IndexPath?
     var didMoveUpScreen:Bool = false
     
-    static var estimatedDeliveryDate:NSDate = NSDate()
+    static var estimatedDeliveryDate:Date = Date()
     static var estimatedDelivery:String?
     
     @IBOutlet weak var commentField: UITextView!
+    @IBOutlet weak var colorField: UITextField!
+    @IBOutlet weak var fabricField: UITextField!
     @IBOutlet weak var depositField: UITextField!
     @IBOutlet weak var taxField: UITextField!
     @IBOutlet weak var totalDiscountsField: UILabel!
@@ -50,34 +52,63 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.taxField.delegate = self
         self.depositField.delegate = self
         self.commentField.delegate = self
+        self.colorField.delegate = self
+        self.fabricField.delegate = self
         
         self.dateTextField.delegate = self
-        self.datePickerView.hidden = true
-        self.datePicker.date = NSDate()
-        self.datePicker.setValue(UIColor.blackColor(), forKeyPath: "textColor")
-        self.datePicker.addTarget(self, action: #selector(CartViewController.didSelectDate), forControlEvents: .ValueChanged)
+        self.datePickerView.isHidden = true
+        self.datePicker.date = Date()
+        self.datePicker.setValue(UIColor.black, forKeyPath: "textColor")
+        self.datePicker.addTarget(self, action: #selector(CartViewController.didSelectDate), for: .valueChanged)
         
         
-        CartViewController.estimatedDeliveryDate = NSDate()
+        CartViewController.estimatedDeliveryDate = Date()
         self.updateEstimatedDeliveryDate(CartViewController.estimatedDeliveryDate)
         
         
         let nib = UINib(nibName: "CartTableViewCell", bundle: nil)
         
-        self.tableView.registerNib(nib, forCellReuseIdentifier: "cartTableViewCell")
+        self.tableView.register(nib, forCellReuseIdentifier: "cartTableViewCell")
     }
     
-    func didSelectDate(datepicker:UIDatePicker) {
+    override func viewWillAppear(_ animated: Bool) {
+        
+        if let customer:Customers = DataController.sharedInstance.customer {
+            if let cart:Cart = customer.cart as? Cart {
+                self.commentField.text = "\(cart.comments!)"
+                self.subTotalField.text = "$\(cart.getRoundedDecimal(cart.getDiscountedTotal()))"
+                self.taxField.text = "\(cart.tax!)"
+                self.depositField.text = "\(cart.deposit!)"
+                self.discountedTotal.text = "$\(cart.getRoundedDecimal(cart.getTotal()))"
+                self.enterDiscountField.text = "\(cart.discountPercent!)"
+                let roundedSqft = cart.getRoundedDecimal(self.shoppingCartController.getTotalSqFootage()!)
+                self.totalSqInchesField.text = "Total Sq Footage: \(roundedSqft)"
+                self.fiftyPercentOffField.text = "-$\(cart.getRoundedDecimal(cart.getFiftyOff()))"
+                
+                if let color = (cart.items?.firstObject as! Item).color {
+                    self.colorField.text = color
+                }
+                
+                if let fabric = (cart.items?.firstObject as! Item).fabricName {
+                    self.fabricField.text = fabric
+                }
+                
+                self.updateCart()
+            }
+        }
+    }
+    
+    func didSelectDate(_ datepicker:UIDatePicker) {
         CartViewController.estimatedDeliveryDate = datepicker.date
         self.updateEstimatedDeliveryDate(datepicker.date)
     }
     
-    func updateEstimatedDeliveryDate(date:NSDate) {
-        let dateFormatter = NSDateFormatter()
+    func updateEstimatedDeliveryDate(_ date:Date) {
+        let dateFormatter = DateFormatter()
         
-        dateFormatter.dateStyle = NSDateFormatterStyle.MediumStyle
+        dateFormatter.dateStyle = DateFormatter.Style.medium
         
-        let strDate = dateFormatter.stringFromDate(date)
+        let strDate = dateFormatter.string(from: date)
         self.dateTextField.text = strDate
         CartViewController.estimatedDelivery = strDate
     }
@@ -89,9 +120,9 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
             view.endEditing(true)
         }
         
-        if self.datePickerView.hidden == false {
-            dispatch_async(dispatch_get_main_queue(), {
-                self.datePickerView.hidden = true
+        if self.datePickerView.isHidden == false {
+            DispatchQueue.main.async(execute: {
+                self.datePickerView.isHidden = true
             })
         }
         
@@ -99,7 +130,7 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func moveUpScreen() {
-        dispatch_async(dispatch_get_main_queue()) {
+        DispatchQueue.main.async {
             if self.didMoveUpScreen == false {
                 self.view.frame.origin.y -= 250
                 self.didMoveUpScreen = true
@@ -108,7 +139,7 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func moveDownScreen() {
-        dispatch_async(dispatch_get_main_queue()) {
+        DispatchQueue.main.async {
             if self.didMoveUpScreen == true {
                 self.didMoveUpScreen = false
                 self.view.frame.origin.y += 250
@@ -116,25 +147,25 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
-    func textViewDidBeginEditing(textView: UITextView) {
+    func textViewDidBeginEditing(_ textView: UITextView) {
         self.moveUpScreen()
     }
     
-    func textViewDidEndEditing(textView: UITextView) {
+    func textViewDidEndEditing(_ textView: UITextView) {
         self.moveDownScreen()
     }
     
-    func textViewShouldEndEditing(textView: UITextView) -> Bool {
+    func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
         self.commentField.resignFirstResponder()
         return true
     }
     
-    func textFieldDidBeginEditing(textField: UITextField) {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
         
         if textField == self.dateTextField {
             self.textFieldShouldReturn(self.dateTextField)
-            dispatch_async(dispatch_get_main_queue(), {
-                self.datePickerView.hidden = false
+            DispatchQueue.main.async(execute: {
+                self.datePickerView.isHidden = false
             })
             return
         }
@@ -144,7 +175,7 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         isKeyboardVisible = true
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
         if textField == self.dateTextField {
             self.dateTextField.resignFirstResponder()
@@ -156,10 +187,15 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         enterDiscountField.resignFirstResponder()
         taxField.resignFirstResponder()
         depositField.resignFirstResponder()
+        colorField.resignFirstResponder()
+        fabricField.resignFirstResponder()
         
         self.handleEnteredDiscount()
         if let tax = Double(self.taxField.text!) {
             self.setTax(tax)
+        }else{
+            self.taxField.text = "0"
+            self.setTax(0)
         }
         
         if let deposit = Double(self.depositField.text!) {
@@ -173,28 +209,23 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func handleEnteredDiscount() {
         
-        let enteredDiscountValue = Double(enterDiscountField.text!)
-        
-        if enteredDiscountValue != nil {
-            self.setDiscount(enteredDiscountValue!)
-        }else if (enterDiscountField.text == "") {
-            return
-        }else{
-            let alert:UIAlertView = UIAlertView(title: "You have entered an invalid discount amount", message: "Please enter a discount between 1-100 (do not include % symbol)", delegate: self, cancelButtonTitle: "Try Again")
-            
-            dispatch_async(dispatch_get_main_queue(), { 
-                alert.show()
-            })
-            self.enterDiscountField.text = ""
+        if let enteredDiscountValue = Double(enterDiscountField.text!) {
+            if Int(enteredDiscountValue) > 0 && Int(enteredDiscountValue) < 100 {
+                self.setDiscount(enteredDiscountValue)
+                return
+            }
         }
+        
+        self.enterDiscountField.text = "0"
+        self.setDiscount(0)
     }
     
     func updateCart() {
         
         if let customer:Customers = DataController.sharedInstance.customer {
             if let cart:Cart = customer.cart as? Cart {
-                if cart.subTotal!.intValue > 0 {
-                    dispatch_async(dispatch_get_main_queue(), { 
+                if cart.subTotal!.int32Value > 0 {
+                    DispatchQueue.main.async(execute: { 
                         self.totalDiscountsField.text = "-$\(cart.getRoundedDecimal(cart.getDiscountedTotal()))"
                         self.subTotalField.text = "$\(cart.getRoundedDecimal(cart.subTotal!.doubleValue))"
                         self.discountedTotal.text = "$\(cart.getRoundedDecimal(cart.getTotal()))"
@@ -205,27 +236,27 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
-    func setDepositAmount(deposit:Double) {
+    func setDepositAmount(_ deposit:Double) {
         if let customer:Customers = DataController.sharedInstance.customer {
             if let cart:Cart = customer.cart as? Cart {
-                cart.deposit = deposit
+                cart.deposit = deposit as NSNumber?
                 DataController.sharedInstance.save()
                 self.updateCart()
             }
         }
     }
     
-    func setTax(tax:Double) {
+    func setTax(_ tax:Double) {
         if let customer:Customers = DataController.sharedInstance.customer {
             if let cart:Cart = customer.cart as? Cart {
-                cart.tax = tax
+                cart.tax = tax as NSNumber?
                 DataController.sharedInstance.save()
                 self.updateCart()
             }
         }
     }
     
-    func setComments(comment:String) {
+    func setComments(_ comment:String) {
         if let customer:Customers = DataController.sharedInstance.customer {
             if let cart:Cart = customer.cart as? Cart {
                 cart.comments = comment
@@ -234,42 +265,60 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
-    func setDiscount(discount:Double) {
+    func setColor(_ color:String) {
+        if let customer:Customers = DataController.sharedInstance.customer {
+            if let cart:Cart = customer.cart as? Cart {
+                if let items:NSOrderedSet = cart.items {
+                    
+                    let itemsArray = Array(items)
+                    
+                    for item in itemsArray {
+                        (item as! Item).color = color
+                    }
+                    
+                    DataController.sharedInstance.save()
+                    self.tableView.reloadData()
+                }
+            }
+        }
+    }
+    
+    func setFabric(_ fabric:String) {
+        if let customer:Customers = DataController.sharedInstance.customer {
+            if let cart:Cart = customer.cart as? Cart {
+                if let items:NSOrderedSet = cart.items {
+                    
+                    let itemsArray = Array(items)
+                    
+                    for item in itemsArray {
+                        (item as! Item).fabricName = fabric
+                    }
+                    
+                    DataController.sharedInstance.save()
+                    self.tableView.reloadData()
+                }
+            }
+        }
+    }
+    
+    func setDiscount(_ discount:Double) {
         
         if let customer:Customers = DataController.sharedInstance.customer {
             if let cart:Cart = customer.cart as? Cart {
-                cart.discountPercent = discount
+                cart.discountPercent = discount as NSNumber?
                 DataController.sharedInstance.save()
                 self.updateCart()
             }
         }
     }
     
-    override func viewWillAppear(animated: Bool) {
-        
-        if let customer:Customers = DataController.sharedInstance.customer {
-            if let cart:Cart = customer.cart as? Cart {
-                self.commentField.text = "\(cart.comments!)"
-                self.subTotalField.text = "$\(cart.getRoundedDecimal(cart.getDiscountedTotal()))"
-                self.taxField.text = "\(cart.tax!)"
-                self.depositField.text = "\(cart.deposit!)"
-                self.discountedTotal.text = "$\(cart.getRoundedDecimal(cart.getTotal()))"
-                self.enterDiscountField.text = "\(cart.discountPercent!)"
-                let roundedSqft = cart.getRoundedDecimal(self.shoppingCartController.getTotalSqFootage()!)
-                self.totalSqInchesField.text = "Total Sq Footage: \(roundedSqft)"
-                self.fiftyPercentOffField.text = "-$\(cart.getRoundedDecimal(cart.getFiftyOff()))"
-                self.updateCart()
-            }
-        }
-    }
-    
-    @IBAction func didPressEmailQuote(sender: AnyObject) {
+    @IBAction func didPressEmailQuote(_ sender: AnyObject) {
         
         if let customer = DataController.sharedInstance.customer {
             
             let mailComposerVC = MFMailComposeViewController()
             mailComposerVC.mailComposeDelegate = self
-            mailComposerVC.setToRecipients(["innovativewc@gmail.com", "smartsunshades@gmail.com"])
+            mailComposerVC.setToRecipients(["innovativewchd@gmail.com", "smartsunshades@gmail.com"])
             
             mailComposerVC.setSubject("Quote for \(customer.email!)")
             
@@ -279,6 +328,34 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
             if let cart:Cart = customer.cart as? Cart {
                 
                 self.setComments(self.commentField.text)
+                
+                if self.colorField.text != "" {
+                    self.setColor(self.colorField.text!)
+                }else{
+                    let alertController = UIAlertController(title: "Enter a Color", message: "Please enter a valid color", preferredStyle: UIAlertControllerStyle.alert)
+                    
+                    let okAction = UIAlertAction(title: "ok", style: UIAlertActionStyle.default, handler: nil)
+                    
+                    alertController.addAction(okAction)
+                    
+                    self.present(alertController, animated: true, completion: nil)
+                    return
+                }
+                
+                if self.fabricField.text != "" {
+                    self.setFabric(self.fabricField.text!)
+                }else{
+                    let alertController = UIAlertController(title: "Enter a Fabric", message: "Please enter a valid fabric", preferredStyle: UIAlertControllerStyle.alert)
+                    
+                    let okAction = UIAlertAction(title: "ok", style: UIAlertActionStyle.default, handler: nil)
+                    
+                    alertController.addAction(okAction)
+                    
+                    self.present(alertController, animated: true, completion: nil)
+                    return
+                }
+                
+                
                 
                 if let items:NSOrderedSet = cart.items {
                     
@@ -327,7 +404,7 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
                     mailComposerVC.setMessageBody(htmlTable, isHTML: true)
                     
                     if MFMailComposeViewController.canSendMail() {
-                        self.presentViewController(mailComposerVC, animated: true, completion: nil)
+                        self.present(mailComposerVC, animated: true, completion: nil)
                     } else {
                         alert = UIAlertView(title: "Mail not setup", message: "It appears your mail app is not setup to send emails. Please add your email address into the mail app and try this again.", delegate: nil, cancelButtonTitle: "Done")
                         alert.show()
@@ -351,33 +428,33 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
-    @IBAction func didPressAddMoreItems(sender: AnyObject) {
+    @IBAction func didPressAddMoreItems(_ sender: AnyObject) {
         
         self.didPressHide(self)
     }
     
-    func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
-        print(error?.description)
-        self.dismissViewControllerAnimated(true, completion: nil)
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+//        print(error?.description)
+        self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func didPressHide(sender: AnyObject) {
+    @IBAction func didPressHide(_ sender: AnyObject) {
         
         self.setComments(self.commentField.text)
-        self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+        self.presentingViewController?.dismiss(animated: true, completion: nil)
         
     }
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if let customer = DataController.sharedInstance.customer {
             if let cart:Cart = customer.cart as? Cart {
                 if let items:NSOrderedSet = cart.items {
                     if items.count <= 0 {
-                        self.presentingViewController?.dismissViewControllerAnimated(true, completion: {
+                        self.presentingViewController?.dismiss(animated: true, completion: {
                             let alert = UIAlertView(title: "Cart Empty", message: "There are no items in the shopping cart to display", delegate: self, cancelButtonTitle: "ok")
                             
                             alert.show()
@@ -392,13 +469,13 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         return 0
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell:CartTableViewCell = self.tableView.dequeueReusableCellWithIdentifier("cartTableViewCell") as! CartTableViewCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell:CartTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "cartTableViewCell") as! CartTableViewCell
         
         if let customer = DataController.sharedInstance.customer {
             if let cart:Cart = customer.cart as? Cart {
                 if let items:NSOrderedSet = cart.items {
-                    let itemsArray:NSArray = Array(items)
+                    let itemsArray:NSArray = Array(items) as NSArray
                     cell.populateTableCell(itemsArray[indexPath.row] as! Item)
                 }
             }
@@ -407,28 +484,28 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         return cell
     }
     
-    func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
-        let cell:CartTableViewCell = tableView.cellForRowAtIndexPath(indexPath) as! CartTableViewCell
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let cell:CartTableViewCell = tableView.cellForRow(at: indexPath) as! CartTableViewCell
         
         cell.contentView.backgroundColor = UIColor(red: 28.0/255, green: 85.0/255, blue: 121.0/255, alpha: 1.0)
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let cell:CartTableViewCell = tableView.cellForRowAtIndexPath(indexPath) as! CartTableViewCell
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell:CartTableViewCell = tableView.cellForRow(at: indexPath) as! CartTableViewCell
         
         cell.contentView.backgroundColor = UIColor(red: 31.0/255, green: 96.0/255, blue: 137.0/255, alpha: 1.0)
         
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 170
     }
     
-    func getItemAtIndexPath(indexPath:NSIndexPath) -> Item? {
+    func getItemAtIndexPath(_ indexPath:IndexPath) -> Item? {
         if let customer = DataController.sharedInstance.customer {
             if let cart:Cart = customer.cart as? Cart {
                 if let items:NSOrderedSet = cart.items {
-                    let itemsArray:NSArray = Array(items)
+                    let itemsArray:NSArray = Array(items) as NSArray
                     let item:Item = itemsArray[indexPath.row] as! Item
                     return item
                     
@@ -439,19 +516,19 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         return nil
     }
     
-    func updateItemPrice(item:Item) {
+    func updateItemPrice(_ item:Item) {
         let pt = PriceTable(fileName: item.groupFileName!, fileExtension: "csv")
         
         let price = pt.getPrice(Double(item.itemWidth!), widthFineInchIndex: item.getWidthFineInch().index, height: Double(item.itemHeight!), heightFineInchIndex: item.getHeightFineInch().index)
         
         item.calculateSqFootage()
         
-        item.price = Double(item.quantity!) * price
+        item.price = CGFloat(Double(item.quantity!) * price) as NSNumber?
         
         self.updateCart()
     }
     
-    func didSelectColor(color: String, indexPath: NSIndexPath) {
+    func didSelectColor(_ color: String, indexPath: IndexPath) {
         
         if let item = self.getItemAtIndexPath(indexPath) {
             item.color = color
@@ -460,7 +537,7 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
-    func didGetLocation(location: String) {
+    func didGetLocation(_ location: String) {
         if let indexPath = self.indexPathToEdit {
             if let item = self.getItemAtIndexPath(indexPath) {
                 item.location = location
@@ -470,13 +547,13 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
-    func didGetWidthData(itemWidth: Double, itemWidthIndex: Int) {
+    func didGetWidthData(_ itemWidth: Double, itemWidthIndex: Int) {
         
         if let indexPath = self.indexPathToEdit {
             if let item = self.getItemAtIndexPath(indexPath) {
                 
-                item.itemWidth = itemWidth
-                item.itemWidthFineInchIndex = itemWidthIndex
+                item.itemWidth = itemWidth as NSNumber?
+                item.itemWidthFineInchIndex = itemWidthIndex as NSNumber?
                 
                 self.updateItemPrice(item)
                 
@@ -486,12 +563,12 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
-    func didGetHeightData(itemHeight: Double, itemHeightIndex: Int) {
+    func didGetHeightData(_ itemHeight: Double, itemHeightIndex: Int) {
         
         if let indexPath = self.indexPathToEdit {
             if let item = self.getItemAtIndexPath(indexPath) {
-                item.itemHeight = itemHeight
-                item.itemHeightFineInchIndex = itemHeightIndex
+                item.itemHeight = itemHeight as NSNumber?
+                item.itemHeightFineInchIndex = itemHeightIndex as NSNumber?
                 
                 self.updateItemPrice(item)
                 
@@ -501,10 +578,10 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
-    func didGetQuantity(quantity: Int) {
+    func didGetQuantity(_ quantity: Int) {
         if let indexPath = self.indexPathToEdit {
             if let item = self.getItemAtIndexPath(indexPath) {
-                item.quantity = quantity
+                item.quantity = quantity as NSNumber?
                 
                 self.updateItemPrice(item)
                 
@@ -514,7 +591,7 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
-    func didGetFabric(fabric: String) {
+    func didGetFabric(_ fabric: String) {
         if let indexPath = self.indexPathToEdit {
             if let item = self.getItemAtIndexPath(indexPath) {
                 item.fabricName = fabric
@@ -525,13 +602,13 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
-    func didGetCategory(groupName: String, groupFileName: String) {
+    func didGetCategory(_ groupName: String, groupFileName: String) {
         if let indexPath = self.indexPathToEdit {
             if let item = self.getItemAtIndexPath(indexPath) {
                 
-                let cell:CartTableViewCell = tableView.cellForRowAtIndexPath(indexPath) as! CartTableViewCell
+                let cell:CartTableViewCell = tableView.cellForRow(at: indexPath) as! CartTableViewCell
                 
-                dispatch_async(dispatch_get_main_queue(), { 
+                DispatchQueue.main.async(execute: { 
                     cell.groupName.text = groupName
                 })
                 
@@ -546,20 +623,20 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
-    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
-        let color = UITableViewRowAction(style: .Normal, title: "Color") { (action, indexPath) in
-            //Show color picker controller
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            
-            let colorVc = storyboard.instantiateViewControllerWithIdentifier("colorViewController") as! ColorViewController
-            colorVc.delegate = self
-            colorVc.indexPath = indexPath
-            self.presentViewController(colorVc, animated: true, completion: nil)
-            
-        }
+//        let color = UITableViewRowAction(style: .normal, title: "Color") { (action, indexPath) in
+//            //Show color picker controller
+//            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//            
+//            let colorVc = storyboard.instantiateViewController(withIdentifier: "colorViewController") as! ColorViewController
+//            colorVc.delegate = self
+//            colorVc.indexPath = indexPath
+//            self.present(colorVc, animated: true, completion: nil)
+//            
+//        }
         
-        let delete = UITableViewRowAction(style: .Normal, title: "Delete") { (action, indexPath) in
+        let delete = UITableViewRowAction(style: .normal, title: "Delete") { (action, indexPath) in
             
             self.indexPathToDelete = indexPath
             
@@ -568,78 +645,78 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
             alert.show()
         }
         
-        let location = UITableViewRowAction(style: .Normal, title: "Location") { (action, indexPath) in
+        let location = UITableViewRowAction(style: .normal, title: "Location") { (action, indexPath) in
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             
-            let locationVC = storyboard.instantiateViewControllerWithIdentifier("locationViewController") as! LocationViewController
+            let locationVC = storyboard.instantiateViewController(withIdentifier: "locationViewController") as! LocationViewController
             self.indexPathToEdit = indexPath
             locationVC.delegate = self
-            self.presentViewController(locationVC, animated: true, completion: nil)
+            self.present(locationVC, animated: true, completion: nil)
         }
         
         
-        let width = UITableViewRowAction(style: .Normal, title: "Width") { (action, indexPath) in
+        let width = UITableViewRowAction(style: .normal, title: "Width") { (action, indexPath) in
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             
-            let widthVC = storyboard.instantiateViewControllerWithIdentifier("widthViewController") as! WidthViewController
+            let widthVC = storyboard.instantiateViewController(withIdentifier: "widthViewController") as! WidthViewController
             self.indexPathToEdit = indexPath
             widthVC.delegate = self
-            self.presentViewController(widthVC, animated: true, completion: nil)
+            self.present(widthVC, animated: true, completion: nil)
         }
         
-        let height = UITableViewRowAction(style: .Normal, title: "Height") { (action, indexPath) in
+        let height = UITableViewRowAction(style: .normal, title: "Height") { (action, indexPath) in
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             
-            let heightVC = storyboard.instantiateViewControllerWithIdentifier("heightViewController") as! HeightViewController
+            let heightVC = storyboard.instantiateViewController(withIdentifier: "heightViewController") as! HeightViewController
             self.indexPathToEdit = indexPath
             heightVC.delegate = self
-            self.presentViewController(heightVC, animated: true, completion: nil)
+            self.present(heightVC, animated: true, completion: nil)
         }
         
-        let quantity = UITableViewRowAction(style: .Normal, title: "Qty") { (action, indexPath) in
+        let quantity = UITableViewRowAction(style: .normal, title: "Qty") { (action, indexPath) in
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             
-            let qtyVC = storyboard.instantiateViewControllerWithIdentifier("quantityViewController") as! QuantityViewController
+            let qtyVC = storyboard.instantiateViewController(withIdentifier: "quantityViewController") as! QuantityViewController
             self.indexPathToEdit = indexPath
             qtyVC.delegate = self
-            self.presentViewController(qtyVC, animated: true, completion: nil)
+            self.present(qtyVC, animated: true, completion: nil)
         }
+//        
+//        let category = UITableViewRowAction(style: .normal, title: "Category") { (action, indexPath) in
+//            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//            
+//            let categoryVC = storyboard.instantiateViewController(withIdentifier: "categoryViewController") as! CategoryViewController
+//            self.indexPathToEdit = indexPath
+//            categoryVC.delegate = self
+//            self.present(categoryVC, animated: true, completion: nil)
+//        }
         
-        let category = UITableViewRowAction(style: .Normal, title: "Category") { (action, indexPath) in
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            
-            let categoryVC = storyboard.instantiateViewControllerWithIdentifier("categoryViewController") as! CategoryViewController
-            self.indexPathToEdit = indexPath
-            categoryVC.delegate = self
-            self.presentViewController(categoryVC, animated: true, completion: nil)
-        }
+//        let fabric = UITableViewRowAction(style: .normal, title: "Fabric") { (action, indexPath) in
+//            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//            
+//            let fabricVC = storyboard.instantiateViewController(withIdentifier: "fabricViewController") as! FabricViewController
+//            self.indexPathToEdit = indexPath
+//            fabricVC.delegate = self
+//            self.present(fabricVC, animated: true, completion: nil)
+//        }
         
-        let fabric = UITableViewRowAction(style: .Normal, title: "Fabric") { (action, indexPath) in
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            
-            let fabricVC = storyboard.instantiateViewControllerWithIdentifier("fabricViewController") as! FabricViewController
-            self.indexPathToEdit = indexPath
-            fabricVC.delegate = self
-            self.presentViewController(fabricVC, animated: true, completion: nil)
-        }
-        
-        delete.backgroundColor = UIColor.redColor()
-        color.backgroundColor = UIColor(red: 147.0/255, green: 193.0/255, blue: 149.0/255, alpha: 1)
+        delete.backgroundColor = UIColor.red
+//        color.backgroundColor = UIColor(red: 147.0/255, green: 193.0/255, blue: 149.0/255, alpha: 1)
         location.backgroundColor = UIColor(red: 88.0/255, green: 193.0/255, blue: 91.0/255, alpha: 1)
         width.backgroundColor = UIColor(red: 147.0/255, green: 193.0/255, blue: 149.0/255, alpha: 1)
         height.backgroundColor = UIColor(red: 88.0/255, green: 193.0/255, blue: 91.0/255, alpha: 1)
         quantity.backgroundColor = UIColor(red: 147.0/255, green: 193.0/255, blue: 149.0/255, alpha: 1)
-        category.backgroundColor = UIColor(red: 88.0/255, green: 193.0/255, blue: 91.0/255, alpha: 1)
-        fabric.backgroundColor = UIColor(red: 147.0/255, green: 193.0/255, blue: 149.0/255, alpha: 1)
+//        category.backgroundColor = UIColor(red: 88.0/255, green: 193.0/255, blue: 91.0/255, alpha: 1)
+//        fabric.backgroundColor = UIColor(red: 147.0/255, green: 193.0/255, blue: 149.0/255, alpha: 1)
         
-        return [delete, color, location, width, height, quantity, category, fabric]
+        return [delete, location, width, height, quantity]
     }
     
-    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     
-    func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
+    func alertView(_ alertView: UIAlertView, clickedButtonAt buttonIndex: Int) {
         
         if self.indexPathToDelete == nil {
             return
@@ -652,10 +729,10 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
                 if let customer = DataController.sharedInstance.customer {
                     if let cart:Cart = customer.cart as? Cart {
                         if let items:NSOrderedSet = cart.items {
-                            let itemsArray:NSArray = Array(items)
+                            let itemsArray:NSArray = Array(items) as NSArray
                             let item:Item = itemsArray[self.indexPathToDelete!.row] as! Item
                             
-                            DataController.sharedInstance.managedObjectContext?.deleteObject(item)
+                            DataController.sharedInstance.managedObjectContext?.delete(item)
                             do {
                                 try DataController.sharedInstance.managedObjectContext?.save()
                                 self.tableView.reloadData()

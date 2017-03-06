@@ -14,9 +14,9 @@ struct Matrix {
     init(rows: Int, columns: Int) {
         self.rows = rows
         self.columns = columns
-        grid = Array(count: rows * columns, repeatedValue: 0.0)
+        grid = Array(repeating: 0.0, count: rows * columns)
     }
-    func indexIsValidForRow(row: Int, column: Int) -> Bool {
+    func indexIsValidForRow(_ row: Int, column: Int) -> Bool {
         return row >= 0 && row < rows && column >= 0 && column < columns
     }
     subscript(row: Int, column: Int) -> Double {
@@ -32,10 +32,10 @@ struct Matrix {
 }
 
 
-public class PriceTable: NSObject {
+open class PriceTable: NSObject {
     
-    enum ParsingError: ErrorType {
-        case FileNotFound(String)
+    enum ParsingError: Error {
+        case fileNotFound(String)
     }
 
     var rows = Array<Array<Double>>()
@@ -48,19 +48,19 @@ public class PriceTable: NSObject {
         super.init()
         
         //Open the file using its name and extension
-        let filePath = NSBundle.mainBundle().pathForResource(fileName,ofType:fileExtension)
+        let filePath = Bundle.main.path(forResource: fileName,ofType:fileExtension)
         
         do {
             
             if filePath == nil {
-                throw ParsingError.FileNotFound("Unable to find file \(fileName).\(fileExtension)")
+                throw ParsingError.fileNotFound("Unable to find file \(fileName).\(fileExtension)")
             }
             
             //Read the data from the file
-            let data = try String(contentsOfFile: filePath!, encoding: NSUTF8StringEncoding)
+            let data = try String(contentsOfFile: filePath!, encoding: String.Encoding.utf8)
             
             //Split out each line into an array
-            let rowsAsStrings = data.componentsSeparatedByString("\r")
+            let rowsAsStrings = data.components(separatedBy: "\r")
             
             self.generateArrayOfWidths(rowsAsStrings)
             self.generateArrayOfHeights(rowsAsStrings)
@@ -69,7 +69,7 @@ public class PriceTable: NSObject {
             self.generateMatrix(rowsAsStrings)
             
             
-        }catch ParsingError.FileNotFound{
+        }catch ParsingError.fileNotFound{
             
             print("Unable to parse \(fileName).\(fileExtension), please select another category.")
             
@@ -83,14 +83,14 @@ public class PriceTable: NSObject {
         
     }
     
-    func createMatrix(data:[String]) {
+    func createMatrix(_ data:[String]) {
         let rows = data.count
         let cols = self.splitRowDouble(data[0]).count
         
         self.matrix = Matrix(rows:rows, columns: cols)
     }
     
-    func generateMatrix(data:[String]) {
+    func generateMatrix(_ data:[String]) {
         var row = 0
         var col = 0
         for element in data {
@@ -103,11 +103,11 @@ public class PriceTable: NSObject {
         }
     }
     
-    func generateArrayOfWidths(data:[String]) {
+    func generateArrayOfWidths(_ data:[String]) {
         self.widths = self.splitRowInt(data[0])
     }
     
-    func generateArrayOfHeights(data:[String]) {
+    func generateArrayOfHeights(_ data:[String]) {
         var number:Int
         for element in data {
             number = self.splitRowInt(element)[0]
@@ -115,29 +115,29 @@ public class PriceTable: NSObject {
         }
     }
     
-    func splitRowDouble(row:String) -> [Double] {
-        let array = row.componentsSeparatedByString(",")
+    func splitRowDouble(_ row:String) -> [Double] {
+        let array = row.components(separatedBy: ",")
         var newArray = [Double]()
         for element in array {
-            newArray.append((NSNumberFormatter().numberFromString(element)?.doubleValue)!)
+            newArray.append((NumberFormatter().number(from: element)?.doubleValue)!)
         }
         
         return newArray
     }
     
-    func splitRowInt(row:String) -> [Int] {
-        let array = row.componentsSeparatedByString(",")
+    func splitRowInt(_ row:String) -> [Int] {
+        let array = row.components(separatedBy: ",")
         var newArray = [Int]()
         var number:Int
         for element in array {
-            number = (NSNumberFormatter().numberFromString(element)?.integerValue)!
+            number = (NumberFormatter().number(from: element)?.intValue)!
             newArray.append(number)
         }
         
         return newArray
     }
     
-    func getHighestWidthIndex(width:Double, widthFineInchIndex:Int) -> Int {
+    func getHighestWidthIndex(_ width:Double, widthFineInchIndex:Int) -> Int {
         
         var returnIndex:Int = self.matrix.rows
         
@@ -160,7 +160,7 @@ public class PriceTable: NSObject {
         return returnIndex
     }
     
-    func getHighestHeightIndex(height:Double, heightFineInchIndex:Int) -> Int {
+    func getHighestHeightIndex(_ height:Double, heightFineInchIndex:Int) -> Int {
         
         var returnIndex:Int = self.matrix.columns
         
@@ -183,7 +183,7 @@ public class PriceTable: NSObject {
         return returnIndex
     }
     
-    func getPrice(width:Double, widthFineInchIndex:Int, height:Double, heightFineInchIndex:Int) -> Double {
+    func getPrice(_ width:Double, widthFineInchIndex:Int, height:Double, heightFineInchIndex:Int) -> Double {
         
         return self.matrix[self.getHighestHeightIndex(height, heightFineInchIndex: heightFineInchIndex), self.getHighestWidthIndex(width, widthFineInchIndex: widthFineInchIndex)]
     }

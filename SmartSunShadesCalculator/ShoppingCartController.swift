@@ -10,16 +10,16 @@ import UIKit
 import CoreData
 
 protocol ShoppingCartControllerDelegate {
-    func didGetLocation(location:String)
-    func didGetFabric(fabric:String)
-    func didGetWidthData(itemWidth:Double, itemWidthIndex:Int)
-    func didGetHeightData(itemHeight:Double, itemHeightIndex:Int)
-    func didGetQuantity(quantity:Int)
-    func didGetCategory(groupName:String, groupFileName:String)
+    func didGetLocation(_ location:String)
+    func didGetFabric(_ fabric:String)
+    func didGetWidthData(_ itemWidth:Double, itemWidthIndex:Int)
+    func didGetHeightData(_ itemHeight:Double, itemHeightIndex:Int)
+    func didGetQuantity(_ quantity:Int)
+    func didGetCategory(_ groupName:String, groupFileName:String)
     
 }
 
-public class ShoppingCartController: NSObject, ShoppingCartControllerDelegate {
+open class ShoppingCartController: NSObject, ShoppingCartControllerDelegate {
     
     static let sharedInstance = ShoppingCartController()
     
@@ -30,29 +30,27 @@ public class ShoppingCartController: NSObject, ShoppingCartControllerDelegate {
         self.createTempItem()
     }
     
-    public func createTempItem() -> Bool {
+    open func createTempItem() {
         
         if self.tempItem == nil {
         
             if let context:NSManagedObjectContext = DataController.sharedInstance.managedObjectContext {
-                let ent = NSEntityDescription.entityForName("Item", inManagedObjectContext: context)
+                let ent = NSEntityDescription.entity(forEntityName: "Item", in: context)
                 
-                let newItem = Item(entity: ent!, insertIntoManagedObjectContext: nil)
+                let newItem = Item(entity: ent!, insertInto: nil)
                 newItem.price = 0.0
                 newItem.quantity = 0
                 newItem.sqFootage = 0.0
                 newItem.color = "N/A"
+                newItem.fabricName = "N/A"
                 self.tempItem = newItem
-                return true
             }else{
                 print("Failed to get managed object context: viewDidAppear")
             }
         }
-        
-        return false
     }
     
-    func didGetLocation(location: String) {
+    func didGetLocation(_ location: String) {
         if let tempItem:Item = ShoppingCartController.sharedInstance.tempItem {
             tempItem.location = location
             
@@ -60,7 +58,7 @@ public class ShoppingCartController: NSObject, ShoppingCartControllerDelegate {
         }
     }
     
-    func didGetFabric(fabric: String) {
+    func didGetFabric(_ fabric: String) {
         if let tempItem:Item = ShoppingCartController.sharedInstance.tempItem {
             tempItem.fabricName = fabric
             
@@ -68,33 +66,33 @@ public class ShoppingCartController: NSObject, ShoppingCartControllerDelegate {
         }
     }
     
-    func didGetWidthData(itemWidth: Double, itemWidthIndex: Int) {
+    func didGetWidthData(_ itemWidth: Double, itemWidthIndex: Int) {
         if let tempItem:Item = ShoppingCartController.sharedInstance.tempItem {
-            tempItem.itemWidth = itemWidth
-            tempItem.itemWidthFineInchIndex = itemWidthIndex
+            tempItem.itemWidth = itemWidth as NSNumber?
+            tempItem.itemWidthFineInchIndex = itemWidthIndex as NSNumber?
             
             print("Width Changed: \(tempItem.itemWidth) , \(tempItem.getWidthFineInch().stringValue)")
         }
     }
     
-    func didGetHeightData(itemHeight: Double, itemHeightIndex: Int) {
+    func didGetHeightData(_ itemHeight: Double, itemHeightIndex: Int) {
         if let tempItem:Item = ShoppingCartController.sharedInstance.tempItem {
-            tempItem.itemHeight = itemHeight
-            tempItem.itemHeightFineInchIndex = itemHeightIndex
+            tempItem.itemHeight = itemHeight as NSNumber?
+            tempItem.itemHeightFineInchIndex = itemHeightIndex as NSNumber?
             
             print("Height Changed: \(tempItem.itemHeight) , \(tempItem.getHeightFineInch().stringValue)")
         }
     }
     
-    func didGetQuantity(quantity: Int) {
+    func didGetQuantity(_ quantity: Int) {
         if let tempItem:Item = ShoppingCartController.sharedInstance.tempItem {
-            tempItem.quantity = quantity
+            tempItem.quantity = quantity as NSNumber?
             
             print("Quantity updated: \(quantity)")
         }
     }
     
-    func didGetCategory(groupName: String, groupFileName: String) {
+    func didGetCategory(_ groupName: String, groupFileName: String) {
         if let tempItem:Item = ShoppingCartController.sharedInstance.tempItem {
             tempItem.groupFileName = groupFileName
             tempItem.groupName = groupName

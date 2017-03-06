@@ -20,19 +20,16 @@ class CartTableViewCell: UITableViewCell {
     @IBOutlet weak var sqInchesLabel:UILabel!
     @IBOutlet weak var colorLabel:UILabel!
     @IBOutlet weak var fabricNameLabel:UILabel!
+    
+    //Other prices
+    @IBOutlet weak var twoInchBlindsPrice:UILabel!
+    @IBOutlet weak var rollerShadesPrice:UILabel!
+    @IBOutlet weak var tripleShades100:UILabel!
+    
+    
     var itemId:NSManagedObjectID!
     
-//    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-//        super.init(style: style, reuseIdentifier: reuseIdentifier)
-//        
-//        self.selectedBackgroundView = self.backgroundView
-//    }
-//    
-//    required init?(coder aDecoder: NSCoder) {
-//        super.init(coder: aDecoder)
-//    }
-    
-    func populateTableCell(item:Item){
+    func populateTableCell(_ item:Item){
         
         if let location = item.location {
             self.locationLabel.text = "Location: \(location)"
@@ -55,7 +52,20 @@ class CartTableViewCell: UITableViewCell {
         }
         
         if let price = item.price {
-            self.priceLabel.text = "$\(price)"
+            self.priceLabel.text = "Solar Shades 5: $\(price)"
+            
+            if let priceOne = item.getPrice(groupName: "2 Inch Faux Wood Blinds", groupFileName: "2_inch_faux_wood_blinds") {
+                self.twoInchBlindsPrice.text = "2 \" Blinds: $\(priceOne)"
+            }
+            
+            if let priceTwo = item.getPrice(groupName: "Roller Shades 3", groupFileName: "roller_shades_3") {
+                self.rollerShadesPrice.text = "Shades 3: $\(priceTwo)"
+            }
+            
+            if let priceThree = item.getPrice(groupName: "Triple Shades Sapphire 100", groupFileName: "triple_shades_sapphire_100") {
+                self.tripleShades100.text = "Vienna 100: $\(priceThree)"
+            }
+            
         }
         
         if item.sqFootage != nil {

@@ -21,5 +21,7 @@ extension Customers {
     @NSManaged var phoneNumber: String?
     @NSManaged var cart: NSManagedObject?
     @NSManaged var order: NSManagedObject?
+    @NSManaged var created_at:NSDate?
+    @NSManaged var updated_at:NSDate?
 
 }

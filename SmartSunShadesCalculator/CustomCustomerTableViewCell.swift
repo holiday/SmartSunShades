@@ -14,13 +14,13 @@ class CustomCustomerTableViewCell: UITableViewCell {
     @IBOutlet weak var phoneLabel:UILabel!
     @IBOutlet weak var addressLabel:UILabel!
     @IBOutlet weak var emailLabel:UILabel!
+    @IBOutlet weak var createdAtLabel:UILabel!
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
-        self.highlighted = false
-        self.selectionStyle = .None
-        
+        self.isHighlighted = false
+        self.selectionStyle = .none
         
     }
     

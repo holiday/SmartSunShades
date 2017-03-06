@@ -8,6 +8,30 @@
 
 import UIKit
 import CoreData
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 class CustomerViewController: UIViewController, UITextFieldDelegate, CustomersViewControllerDelegate {
 
@@ -35,7 +59,7 @@ class CustomerViewController: UIViewController, UITextFieldDelegate, CustomersVi
         self.view.addGestureRecognizer(tap)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         self.updateForm()
     }
     
@@ -43,29 +67,32 @@ class CustomerViewController: UIViewController, UITextFieldDelegate, CustomersVi
         if let customers = DataController.sharedInstance.loadCustomers() {
             if customers.count > 0 {
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                let customersVC:CustomersViewController = storyboard.instantiateViewControllerWithIdentifier("customersViewController") as! CustomersViewController
+                let customersVC:CustomersViewController = storyboard.instantiateViewController(withIdentifier: "customersViewController") as! CustomersViewController
                 customersVC.delegate = self
-                self.presentViewController(customersVC, animated: true, completion: nil)
+                self.present(customersVC, animated: true, completion: nil)
             }
         }else{
-            let alert = UIAlertController(title: "Customers", message: "There are no saved customers at this point.", preferredStyle: .Alert)
+            let alert = UIAlertController(title: "Customers", message: "There are no saved customers at this point.", preferredStyle: .alert)
             
-            let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
+            let action = UIAlertAction(title: "OK", style: .default, handler: nil)
             alert.addAction(action)
             
-            self.presentViewController(alert, animated: true, completion: nil)
+            self.present(alert, animated: true, completion: nil)
         }
     }
     
-    func didSelectCustomer(customer: Customers) {
+    func didSelectCustomer(_ customer: Customers) {
         self.firstNameField.text = customer.firstName
         self.lastNameField.text = customer.lastName
         self.addressField.text = customer.address
         self.phoneNumberField.text = customer.phoneNumber
         self.emailField.text = customer.email
+        
+        //Store the customer
+        DataController.sharedInstance.customer = customer
     }
     
-    @IBAction func didPressAddNewCustomer(sender:UIButton){
+    @IBAction func didPressAddNewCustomer(_ sender:UIButton){
         self.firstNameField.text = ""
         self.lastNameField.text = ""
         self.addressField.text = ""
@@ -73,7 +100,7 @@ class CustomerViewController: UIViewController, UITextFieldDelegate, CustomersVi
         self.emailField.text = ""
     }
     
-    @IBAction func didPressNext(sender: UIButton) {
+    @IBAction func didPressNext(_ sender: UIButton) {
         
         self.createNewCustomer()
         
@@ -102,12 +129,13 @@ class CustomerViewController: UIViewController, UITextFieldDelegate, CustomersVi
             customer.address = self.addressField.text
             customer.phoneNumber = self.phoneNumberField.text
             customer.email = self.emailField.text
+            customer.updated_at = NSDate()
         }
     }
     
     func validateCustomer() -> Bool {
         if let email = self.emailField.text {
-            if email != "" && email.characters.count > 8 && email.rangeOfString("@") != nil {
+            if email != "" && email.characters.count > 8 && email.range(of: "@") != nil {
                 return true
             }
         }
@@ -124,20 +152,20 @@ class CustomerViewController: UIViewController, UITextFieldDelegate, CustomersVi
                 return
             }
         }else{
-            let alert = UIAlertController(title: "Invalid Data", message: "Please ensure that the customer has a valid firstname, lastname, email and phone number", preferredStyle: .Alert)
-            let okAction = UIAlertAction(title: "ok", style: UIAlertActionStyle.Default, handler: nil)
+            let alert = UIAlertController(title: "Invalid Data", message: "Please ensure that the customer has a valid firstname, lastname, email and phone number", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "ok", style: UIAlertActionStyle.default, handler: nil)
             alert.addAction(okAction)
-            self.presentViewController(alert, animated: true, completion: nil)
+            self.present(alert, animated: true, completion: nil)
         }
         
         
         if let context = DataController.sharedInstance.managedObjectContext {
-            let ent = NSEntityDescription.entityForName("Customers", inManagedObjectContext: context)
-            let cartEnt = NSEntityDescription.entityForName("Cart", inManagedObjectContext: context)
+            let ent = NSEntityDescription.entity(forEntityName: "Customers", in: context)
+            let cartEnt = NSEntityDescription.entity(forEntityName: "Cart", in: context)
             
             if ent != nil {
-                let customer = Customers(entity: ent!, insertIntoManagedObjectContext: context)
-                let cart = Cart(entity: cartEnt!, insertIntoManagedObjectContext: context)
+                let customer = Customers(entity: ent!, insertInto: context)
+                let cart = Cart(entity: cartEnt!, insertInto: context)
                 
                 cart.tax = 0.0
                 cart.deposit = 0.0
@@ -150,6 +178,8 @@ class CustomerViewController: UIViewController, UITextFieldDelegate, CustomersVi
                 customer.address = self.addressField.text!
                 customer.email = self.emailField.text!
                 customer.phoneNumber = self.phoneNumberField.text!
+                customer.created_at = NSDate()
+                customer.updated_at = NSDate()
                 customer.cart = cart
                 
                 do{
@@ -167,13 +197,13 @@ class CustomerViewController: UIViewController, UITextFieldDelegate, CustomersVi
         
     }
     
-    func createNewCart(customer:Customers) {
+    func createNewCart(_ customer:Customers) {
         if let context = DataController.sharedInstance.managedObjectContext {
-            let ent = NSEntityDescription.entityForName("Customers", inManagedObjectContext: context)
-            let cartEnt = NSEntityDescription.entityForName("Cart", inManagedObjectContext: context)
+            let ent = NSEntityDescription.entity(forEntityName: "Customers", in: context)
+            let cartEnt = NSEntityDescription.entity(forEntityName: "Cart", in: context)
             
             if ent != nil {
-                let cart = Cart(entity: cartEnt!, insertIntoManagedObjectContext: context)
+                let cart = Cart(entity: cartEnt!, insertInto: context)
                 
                 cart.subTotal = 0.0
                 cart.discountPercent = 0.0
@@ -189,21 +219,21 @@ class CustomerViewController: UIViewController, UITextFieldDelegate, CustomersVi
         }
     }
     
-    @IBAction func showShoppingCart(sender: AnyObject) {
+    @IBAction func showShoppingCart(_ sender: AnyObject) {
         
         if let customer = DataController.sharedInstance.customer {
             if let cart:Cart = customer.cart as? Cart {
                 if cart.items?.count > 0 {
                     let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                    let vc = storyboard.instantiateViewControllerWithIdentifier("cartViewController") as! CartViewController
-                    self.presentViewController(vc, animated: true, completion: nil)
+                    let vc = storyboard.instantiateViewController(withIdentifier: "cartViewController") as! CartViewController
+                    self.present(vc, animated: true, completion: nil)
                 }else{
                     
                     
-                    let alert = UIAlertController(title: "Cart Empty", message: "Please add items to your card", preferredStyle: .Alert)
-                    let okAction = UIAlertAction(title: "ok", style: UIAlertActionStyle.Default, handler: nil)
+                    let alert = UIAlertController(title: "Cart Empty", message: "Please add items to your card", preferredStyle: .alert)
+                    let okAction = UIAlertAction(title: "ok", style: UIAlertActionStyle.default, handler: nil)
                     alert.addAction(okAction)
-                    self.presentViewController(alert, animated: true, completion: nil)
+                    self.present(alert, animated: true, completion: nil)
                 }
             }else{
                 print("Cart object is nil, creating one for this customer")
@@ -218,17 +248,17 @@ class CustomerViewController: UIViewController, UITextFieldDelegate, CustomersVi
         }
     }
     
-    func textFieldDidBeginEditing(textField: UITextField) {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
         self.currentFocusedTextField = textField
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == self.emailField {
             self.emailField.resignFirstResponder()
             
             self.initializeCustomer()
             
-            self.performSegueWithIdentifier("segueToLocation", sender: nil)
+            self.performSegue(withIdentifier: "segueToLocation", sender: nil)
             return true
         }
         return false

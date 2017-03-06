@@ -11,7 +11,7 @@ import CoreData
 
 class Cart: NSManagedObject {
     
-    func getRoundedDecimal(number:Double) -> Double {
+    func getRoundedDecimal(_ number:Double) -> Double {
         return Double(round(number*100)/100)
     }
     
@@ -44,12 +44,12 @@ class Cart: NSManagedObject {
     }
     
     func calculateSubtotal(){
-        self.subTotal = NSNumber(double: 0.0)
+        self.subTotal = NSNumber(value: 0.0 as Double)
         
         for item in self.items! {
             if let item = item as? Item {
                 if item.price != nil {
-                    self.subTotal = NSNumber(double: self.subTotal!.doubleValue + item.price!.doubleValue)
+                    self.subTotal = NSNumber(value: self.subTotal!.doubleValue + item.price!.doubleValue as Double)
                 }
             }
         }
@@ -83,7 +83,7 @@ class Cart: NSManagedObject {
         
         let dt:Double = (self.subTotal!.doubleValue/2.0) + ((self.discountPercent!.doubleValue/100) * (self.subTotal!.doubleValue/2.0))
         
-        self.discountedTotal = NSNumber(double: dt)
+        self.discountedTotal = NSNumber(value: dt as Double)
         return self.discountedTotal!.doubleValue
     }
 

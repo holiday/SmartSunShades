@@ -9,7 +9,7 @@
 import UIKit
 
 protocol ColorViewControllerDelegate {
-    func didSelectColor(color:String, indexPath:NSIndexPath)
+    func didSelectColor(_ color:String, indexPath:IndexPath)
 }
 
 class ColorViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
@@ -18,7 +18,7 @@ class ColorViewController: UIViewController, UIPickerViewDataSource, UIPickerVie
     @IBOutlet weak var colorPickerView: UIPickerView!
     var colorData:[String] = [String]()
     var delegate:ColorViewControllerDelegate?
-    var indexPath:NSIndexPath?
+    var indexPath:IndexPath?
 //    var delegate:ShoppingCartControllerDelegate = ShoppingCartController.sharedInstance
 
     override func viewDidLoad() {
@@ -30,36 +30,36 @@ class ColorViewController: UIViewController, UIPickerViewDataSource, UIPickerVie
         self.colorPickerView.dataSource = self
     }
     
-    @IBAction func didPressDone(sender: AnyObject) {
+    @IBAction func didPressDone(_ sender: AnyObject) {
         
-        self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+        self.presentingViewController?.dismiss(animated: true, completion: nil)
         
     }
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return self.colorData.count
     }
     
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return self.colorData[row]
     }
     
-    func pickerView(pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusingView view: UIView?) -> UIView {
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         
         let title = self.colorData[row]
         
         let pickerLabel = UILabel()
-        pickerLabel.textColor = UIColor.whiteColor()
+        pickerLabel.textColor = UIColor.white
         pickerLabel.text = title
         pickerLabel.font = UIFont(name: "Helvetica Neue", size: 28)
-        pickerLabel.textAlignment = NSTextAlignment.Center
+        pickerLabel.textAlignment = NSTextAlignment.center
         return pickerLabel
     }
     
-    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if (self.delegate != nil && self.indexPath != nil) {
             self.delegate?.didSelectColor(self.colorData[row], indexPath: self.indexPath!)
         }

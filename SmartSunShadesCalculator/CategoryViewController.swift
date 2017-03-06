@@ -15,29 +15,27 @@ protocol CategoryViewDelegate {
 class CategoryViewController: BaseViewController, UIPickerViewDelegate, UIPickerViewDataSource {
 
     @IBOutlet weak var categoryPickerView: UIPickerView!
-    var categoryTitles: [String]!
-    var categoryFileNames: [String]!
+    static var categoryTitles: [String] = ["Dual Solar Shades - Group 3",
+                                           "Dual Solar Shades - Group 4",
+                                           "Dual Solar Shades - Group 5",
+                                           "Roller Shades 3",
+                                           "Triple Shades Sapphire 75",
+                                           "Triple Shades Sapphire 100",
+                                           "2 Inch Faux Wood Blinds"]
+    
+    static var categoryFileNames: [String] = ["dual_solar_shades_3",
+                                        "dual_solar_shades_4",
+                                        "dual_solar_shades_5",
+                                        "roller_shades_3",
+                                        "triple_shades_sapphire_75",
+                                        "triple_shades_sapphire_100",
+                                        "2_inch_faux_wood_blinds"]
+    
     var currentSelectedCategory:String?
     var currentSelectedCategoryIndex:Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.categoryTitles = ["Dual Solar Shades - Group 3",
-                               "Dual Solar Shades - Group 4",
-                               "Dual Solar Shades - Group 5",
-                               "Roller Shades 3",
-                               "Triple Shades Sapphire 75",
-                               "Triple Shades Sapphire 100",
-                               "2 Inch Faux Wood Blinds"]
-        
-        self.categoryFileNames = ["dual_solar_shades_3",
-                               "dual_solar_shades_4",
-                               "dual_solar_shades_5",
-                               "roller_shades_3",
-                               "triple_shades_sapphire_75",
-                               "triple_shades_sapphire_100",
-                               "2_inch_faux_wood_blinds"]
         
         // Connect data:
         self.categoryPickerView.delegate = self
@@ -45,60 +43,59 @@ class CategoryViewController: BaseViewController, UIPickerViewDelegate, UIPicker
         
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         //compute the item price
-        self.computeItemPrice()
+//        self.computeItemPrice()
     }
     
-    override func viewWillDisappear(animated: Bool) {
-        self.delegate.didGetCategory(self.categoryTitles[self.currentSelectedCategoryIndex], groupFileName: self.categoryFileNames[self.currentSelectedCategoryIndex])
+    override func viewWillDisappear(_ animated: Bool) {
+        self.delegate.didGetCategory(CategoryViewController.categoryTitles[self.currentSelectedCategoryIndex], groupFileName: CategoryViewController.categoryFileNames[self.currentSelectedCategoryIndex])
     }
 
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return self.categoryTitles.count
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return CategoryViewController.categoryTitles.count
     }
     
-    func pickerView(pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusingView view: UIView?) -> UIView {
-        return self.changePickerViewFontSize(self.categoryTitles[row])
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+        return self.changePickerViewFontSize(CategoryViewController.categoryTitles[row])
     }
     
-    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         
         self.currentSelectedCategoryIndex = row
         
-        self.delegate.didGetCategory(self.categoryTitles[self.currentSelectedCategoryIndex], groupFileName: self.categoryFileNames[self.currentSelectedCategoryIndex])
-        self.computeItemPrice()
+        self.delegate.didGetCategory(CategoryViewController.categoryTitles[self.currentSelectedCategoryIndex], groupFileName: CategoryViewController.categoryFileNames[self.currentSelectedCategoryIndex])
+//        self.computeItemPrice()
         
     }
     
-    func computeItemPrice() {
-        self.currentSelectedCategory = self.categoryTitles[self.currentSelectedCategoryIndex]
-        
-        //updated the category in shopping cart
-        
-        if let tempItem = ShoppingCartController.sharedInstance.tempItem {
-            
-            let pt = PriceTable(fileName: self.categoryFileNames[self.currentSelectedCategoryIndex], fileExtension: "csv")
-            
-            tempItem.groupFileName = self.categoryFileNames[self.currentSelectedCategoryIndex]
-            
-            tempItem.groupName = self.categoryTitles[self.currentSelectedCategoryIndex]
-            
-            let price = pt.getPrice(Double(tempItem.itemWidth!), widthFineInchIndex: tempItem.getWidthFineInch().index, height: Double(tempItem.itemHeight!), heightFineInchIndex: tempItem.getHeightFineInch().index)
-            
-            tempItem.calculateSqFootage()
-            
-            tempItem.price = Double(tempItem.quantity!) * price
-            print(tempItem.price)
-        }else{
-            print("Failed to compute price, temp item not available")
-        }
-        
-    }
+//    func computeItemPrice() {
+//        self.currentSelectedCategory = CategoryViewController.categoryTitles[self.currentSelectedCategoryIndex]
+//        
+//        //updated the category in shopping cart
+//        
+//        if let tempItem = ShoppingCartController.sharedInstance.tempItem {
+//            
+//            let groupFileName = CategoryViewController.categoryFileNames[self.currentSelectedCategoryIndex]
+//            
+//            let groupName = CategoryViewController.categoryTitles[self.currentSelectedCategoryIndex]
+//            
+//            if let price = tempItem.getPrice(groupName: groupName, groupFileName: groupFileName) {
+//                tempItem.price = price as NSNumber?
+//            }else{
+//                tempItem.price = 0.0
+//            }
+//            
+//            tempItem.calculateSqFootage()
+//        }else{
+//            print("Failed to compute price, temp item not available")
+//        }
+//        
+//    }
     
 
 }

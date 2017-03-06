@@ -21,20 +21,20 @@ class ItemModelTests: XCTestCase {
         super.tearDown()
     }
     
-    func testCreateItem() {
-        let context:NSManagedObjectContext = DataController().managedObjectContext
-        
-        let ent = NSEntityDescription.entityForName("Item", inManagedObjectContext: context)
-        
-        var newItem = Item(entity: ent!, insertIntoManagedObjectContext: context)
-        newItem.groupName = "Hello World"
-        
-        do {
-            try context.save()
-        }catch {
-            print("Error saving")
-        }
-        
-    }
+//    func testCreateItem() {
+//        let context:NSManagedObjectContext = DataController().managedObjectContext as! NSManagedObjectContext
+//        
+//        let ent = NSEntityDescription.entity(forEntityName: "Item", in: context)
+//        
+//        let newItem = Item(entity: ent!, insertInto: context)
+//        newItem.groupName = "Hello World"
+//        
+//        do {
+//            try context.save()
+//        }catch {
+//            print("Error saving")
+//        }
+//        
+//    }
     
 }

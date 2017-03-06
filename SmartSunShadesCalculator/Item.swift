@@ -11,7 +11,35 @@ import CoreData
 
 class Item: NSManagedObject {
     
+    func calculateDefaultPrice() {
+        
+        //default price to group dual_solar_shades_5
+        
+        self.groupFileName = CategoryViewController.categoryFileNames[2]
+        
+        self.groupName = CategoryViewController.categoryTitles[2]
+
+        if let price = self.getPrice(groupName: self.groupName!, groupFileName: self.groupFileName!) {
+            self.price = price as NSNumber?
+        }else{
+            self.price = 0.0
+        }
+        
+        self.calculateSqFootage()
+    }
     
+    func getPrice(groupName: String, groupFileName:String) -> Double? {
+        if self.groupFileName != nil && self.groupName != nil {
+            let pt = PriceTable(fileName: groupFileName, fileExtension: "csv")
+            
+            let price = pt.getPrice(Double(self.itemWidth!), widthFineInchIndex: self.getWidthFineInch().index, height: Double(self.itemHeight!), heightFineInchIndex: self.getHeightFineInch().index)
+            
+            self.calculateSqFootage()
+            
+            return price
+        }
+        return nil
+    }
 
     func getHTMLTableString() -> String {
         return "<tr><td>\(self.groupName!)</td><td>\(self.location!)</td><td>\(Int(self.itemWidth!))\" \(self.getWidthFineInch().stringValue)\"</td><td>\(Int(self.itemHeight!))\" \(self.getHeightFineInch().stringValue)\"</td><td>\(self.quantity!)</td><td>\(self.color!)</td><td>\(self.fabricName!)</td></tr>"
@@ -41,7 +69,7 @@ class Item: NSManagedObject {
         let sqInches:Double =  ((width * height) / 144.0) * Double(self.quantity!)
         let roundedSqft = Double(round(sqInches*100)/100)
         
-        self.sqFootage = roundedSqft
+        self.sqFootage = roundedSqft as NSNumber?
     }
 
 }

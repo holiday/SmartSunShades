@@ -31,7 +31,7 @@ class DataController: NSObject {
     override init() {
         super.init()
         
-        let appDel:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let appDel:AppDelegate = UIApplication.shared.delegate as! AppDelegate
         managedObjectContext = appDel.managedObjectContext
     }
     
@@ -43,26 +43,25 @@ class DataController: NSObject {
         }
     }
     
-    func loadCustomerByEmail(email:String) -> Customers? {
+    func loadCustomerByEmail(_ email:String) -> Customers? {
         
         if let context = self.managedObjectContext {
-            let request = NSFetchRequest(entityName: "Customers")
+            let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Customers")
             request.returnsObjectsAsFaults = false
             request.predicate = NSPredicate(format: "email = %@", email)
             
             do {
-                let results:NSArray = try context.executeFetchRequest(request)
-                
-                if results.count > 0 {
-                    print("results found: \(results.count)")
-                    if let customer = results[0] as? Customers {
-                        self.customer = customer
-                        return customer
+                if let results:NSArray = try context.fetch(request) as? NSArray {
+                    if results.count > 0 {
+                        print("results found: \(results.count)")
+                        if let customer = results[0] as? Customers {
+                            self.customer = customer
+                            return customer
+                        }
+                    }else{
+                        print("No results found")
                     }
-                }else{
-                    print("No results found")
                 }
-                
             }catch {
                 print("Error getting results: \(error)")
             }
@@ -74,16 +73,16 @@ class DataController: NSObject {
     func loadCustomers() -> NSArray? {
         
         if let context = self.managedObjectContext {
-            let request = NSFetchRequest(entityName: "Customers")
+            let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Customers")
             request.returnsObjectsAsFaults = false
             
             do {
-                let results:NSArray = try context.executeFetchRequest(request)
-                
-                if results.count > 0 {
-                    return results
-                }else{
-                    print("No results found")
+                if let results:NSArray = try context.fetch(request) as? NSArray {
+                    if results.count > 0 {
+                        return results
+                    }else{
+                        print("No results found")
+                    }
                 }
                 
             }catch {

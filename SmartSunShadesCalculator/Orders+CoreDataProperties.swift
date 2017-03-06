@@ -14,8 +14,8 @@ import CoreData
 
 extension Orders {
 
-    @NSManaged var orderDate: NSDate?
-    @NSManaged var expectedDelivery: NSDate?
+    @NSManaged var orderDate: Date?
+    @NSManaged var expectedDelivery: Date?
     @NSManaged var customers: Customers?
     
 }
