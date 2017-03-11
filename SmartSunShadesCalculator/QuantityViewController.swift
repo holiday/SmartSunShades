@@ -32,7 +32,7 @@ class QuantityViewController: BaseViewController, UIPickerViewDelegate, UIPicker
                     if let tempItem = ShoppingCartController.sharedInstance.tempItem {
                         context.insert(tempItem)
                         tempItem.cart = cart
-                        tempItem.calculateDefaultPrice()
+                        tempItem.calculateDefaultPrice(groupFileName: CategoryViewController.categoryFileNames[0], groupName: CategoryViewController.categoryTitles[0])
                         do {
                             try context.save()
                             

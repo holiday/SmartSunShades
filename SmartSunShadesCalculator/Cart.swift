@@ -11,6 +11,8 @@ import CoreData
 
 class Cart: NSManagedObject {
     
+    var tempItems:NSMutableOrderedSet?
+    
     func getRoundedDecimal(_ number:Double) -> Double {
         return Double(round(number*100)/100)
     }

@@ -11,13 +11,13 @@ import CoreData
 
 class Item: NSManagedObject {
     
-    func calculateDefaultPrice() {
+    func calculateDefaultPrice(groupFileName:String, groupName:String) {
         
         //default price to group dual_solar_shades_5
         
-        self.groupFileName = CategoryViewController.categoryFileNames[2]
+        self.groupFileName = groupFileName
         
-        self.groupName = CategoryViewController.categoryTitles[2]
+        self.groupName = groupName
 
         if let price = self.getPrice(groupName: self.groupName!, groupFileName: self.groupFileName!) {
             self.price = price as NSNumber?

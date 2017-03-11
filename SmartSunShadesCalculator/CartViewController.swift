@@ -39,6 +39,12 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var dateTextField:UITextField!
     @IBOutlet weak var balanceField:UILabel!
     
+    //Other carts
+    var twoInchBlindsCart:Cart?
+    var shades3Cart:Cart?
+    var vienna100Cart:Cart?
+    
+    
     override func viewDidLoad() {
         
         self.setNeedsStatusBarAppearanceUpdate()
@@ -75,15 +81,107 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         if let customer:Customers = DataController.sharedInstance.customer {
             if let cart:Cart = customer.cart as? Cart {
+                
+                //Clone the other carts off this cart
+                if let context:NSManagedObjectContext = DataController.sharedInstance.managedObjectContext {
+                    let ent = NSEntityDescription.entity(forEntityName: "Cart", in: context)
+                    self.twoInchBlindsCart = Cart(entity: ent!, insertInto: nil)
+                    self.twoInchBlindsCart?.tax = cart.tax
+                    self.twoInchBlindsCart?.deposit = cart.deposit
+                    self.twoInchBlindsCart?.discountPercent = cart.discountPercent
+                    
+                    self.shades3Cart = Cart(entity: ent!, insertInto: nil)
+                    self.shades3Cart?.tax = cart.tax
+                    self.shades3Cart?.deposit = cart.deposit
+                    self.shades3Cart?.discountPercent = cart.discountPercent
+                    
+                    self.vienna100Cart = Cart(entity: ent!, insertInto: nil)
+                    self.vienna100Cart?.tax = cart.tax
+                    self.vienna100Cart?.deposit = cart.deposit
+                    self.vienna100Cart?.discountPercent = cart.discountPercent
+                    
+                    if cart.items != nil && cart.items!.count > 0 {
+                        
+                        let ent = NSEntityDescription.entity(forEntityName: "Item", in: context)
+                        
+                        var tempItems1:NSMutableOrderedSet = NSMutableOrderedSet()
+                        var tempItems2:NSMutableOrderedSet = NSMutableOrderedSet()
+                        var tempItems3:NSMutableOrderedSet = NSMutableOrderedSet()
+                        
+                        for item in cart.items! {
+                            
+                            let tempItem1 = Item(entity: ent!, insertInto: nil)
+                            let tempItem2 = Item(entity: ent!, insertInto: nil)
+                            let tempItem3 = Item(entity: ent!, insertInto: nil)
+                            
+                            tempItem1.itemHeight = (item as! Item).itemHeight
+                            tempItem1.itemHeightFineInchIndex = (item as! Item).itemHeightFineInchIndex
+                            tempItem1.itemWidth = (item as! Item).itemWidth
+                            tempItem1.itemWidthFineInchIndex = (item as! Item).itemWidthFineInchIndex
+                            tempItem1.location = (item as! Item).location
+                            tempItem1.quantity = (item as! Item).quantity
+                            tempItems1.add(tempItem1)
+                            
+                            tempItem1.calculateDefaultPrice(groupFileName: CategoryViewController.categoryFileNames[6], groupName: CategoryViewController.categoryTitles[6])
+                            
+                            tempItem2.itemHeight = (item as! Item).itemHeight
+                            tempItem2.itemHeightFineInchIndex = (item as! Item).itemHeightFineInchIndex
+                            tempItem2.itemWidth = (item as! Item).itemWidth
+                            tempItem2.itemWidthFineInchIndex = (item as! Item).itemWidthFineInchIndex
+                            tempItem2.location = (item as! Item).location
+                            tempItem2.quantity = (item as! Item).quantity
+                            tempItems2.add(tempItem2)
+                            
+                            tempItem2.calculateDefaultPrice(groupFileName: CategoryViewController.categoryFileNames[3], groupName: CategoryViewController.categoryTitles[3])
+                            
+                            tempItem3.itemHeight = (item as! Item).itemHeight
+                            tempItem3.itemHeightFineInchIndex = (item as! Item).itemHeightFineInchIndex
+                            tempItem3.itemWidth = (item as! Item).itemWidth
+                            tempItem3.itemWidthFineInchIndex = (item as! Item).itemWidthFineInchIndex
+                            tempItem3.location = (item as! Item).location
+                            tempItem3.quantity = (item as! Item).quantity
+                            tempItems3.add(tempItem3)
+                            
+                            tempItem3.calculateDefaultPrice(groupFileName: CategoryViewController.categoryFileNames[5], groupName: CategoryViewController.categoryTitles[5])
+                        }
+                        
+                        self.twoInchBlindsCart?.items = tempItems1
+                        self.shades3Cart?.items = tempItems2
+                        self.vienna100Cart?.items = tempItems3
+
+                        self.twoInchBlindsCart?.calculateSubtotal()
+                        self.shades3Cart?.calculateSubtotal()
+                        self.vienna100Cart?.calculateSubtotal()
+                    }
+                    
+                }
+                
+                
                 self.commentField.text = "\(cart.comments!)"
-                self.subTotalField.text = "$\(cart.getRoundedDecimal(cart.getDiscountedTotal()))"
+                
+                if let subtotal = self.getAggregateSubtotal() {
+                    self.subTotalField.text = subtotal
+                }
+                
                 self.taxField.text = "\(cart.tax!)"
                 self.depositField.text = "\(cart.deposit!)"
-                self.discountedTotal.text = "$\(cart.getRoundedDecimal(cart.getTotal()))"
+                
+                if let discountedTotal = self.getAggregateDiscountedTotal() {
+                    self.discountedTotal.text = discountedTotal
+                }else{
+                    self.discountedTotal.text = "N/A"
+                }
+                
+                
                 self.enterDiscountField.text = "\(cart.discountPercent!)"
                 let roundedSqft = cart.getRoundedDecimal(self.shoppingCartController.getTotalSqFootage()!)
                 self.totalSqInchesField.text = "Total Sq Footage: \(roundedSqft)"
-                self.fiftyPercentOffField.text = "-$\(cart.getRoundedDecimal(cart.getFiftyOff()))"
+                if let fiftyOff = self.getAggregateFiftyOff() {
+                    self.fiftyPercentOffField.text = fiftyOff
+                }else {
+                    self.fiftyPercentOffField.text = "N/A"
+                }
+                
                 
                 if let color = (cart.items?.firstObject as! Item).color {
                     self.colorField.text = color
@@ -220,16 +318,123 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.setDiscount(0)
     }
     
+    func getAggregateSubtotal() -> String? {
+        
+        if let customer:Customers = DataController.sharedInstance.customer {
+            if let cart:Cart = customer.cart as? Cart {
+                if cart.subTotal!.int32Value > 0 {
+                    
+                    let twoInchDiscountedTotal = self.twoInchBlindsCart!.getRoundedDecimal(self.twoInchBlindsCart!.getDiscountedTotal())
+                    let shades3DiscountedTotal = self.shades3Cart!.getRoundedDecimal(self.shades3Cart!.getDiscountedTotal())
+                    let vienna100DiscountedTotal = self.vienna100Cart!.getRoundedDecimal(self.vienna100Cart!.getDiscountedTotal())
+        
+                    return "$\(cart.getRoundedDecimal(cart.subTotal!.doubleValue)) | $\(twoInchDiscountedTotal) | $\(shades3DiscountedTotal) | $\(vienna100DiscountedTotal)"
+                }
+            }
+        }
+        
+        return nil
+    }
+    
+    func getAggregateDiscountedTotal() -> String? {
+        
+        if let customer:Customers = DataController.sharedInstance.customer {
+            if let cart:Cart = customer.cart as? Cart {
+                if cart.subTotal!.int32Value > 0 {
+                    
+                    let twoInchDiscountedTotal = self.twoInchBlindsCart!.getRoundedDecimal(self.twoInchBlindsCart!.getTotal())
+                    let shades3DiscountedTotal = self.shades3Cart!.getRoundedDecimal(self.shades3Cart!.getTotal())
+                    let vienna100DiscountedTotal = self.vienna100Cart!.getRoundedDecimal(self.vienna100Cart!.getTotal())
+                    
+                    return "$\(cart.getRoundedDecimal(cart.getTotal())) | $\(twoInchDiscountedTotal) | $\(shades3DiscountedTotal) | $\(vienna100DiscountedTotal)"
+                }
+            }
+        }
+        
+        return nil
+    }
+    
+    func getAggregateFiftyOff() -> String? {
+        if let customer:Customers = DataController.sharedInstance.customer {
+            if let cart:Cart = customer.cart as? Cart {
+                if cart.subTotal!.int32Value > 0 {
+                    
+                    let twoInchFiftyOff = self.twoInchBlindsCart!.getRoundedDecimal(self.twoInchBlindsCart!.getFiftyOff())
+                    let shades3FiftyOff = self.shades3Cart!.getRoundedDecimal(self.shades3Cart!.getFiftyOff())
+                    let vienna100FiftyOff = self.vienna100Cart!.getRoundedDecimal(self.vienna100Cart!.getFiftyOff())
+                    
+                    return "-$\(cart.getRoundedDecimal(cart.getFiftyOff())) | -$\(twoInchFiftyOff) | -$\(shades3FiftyOff) | -$\(vienna100FiftyOff)"
+                }
+            }
+        }
+        
+        return nil
+    }
+    
+    func getAggregateTotalDiscounts() -> String? {
+        if let customer:Customers = DataController.sharedInstance.customer {
+            if let cart:Cart = customer.cart as? Cart {
+                if cart.subTotal!.int32Value > 0 {
+                    
+                    let twoInchDiscountedTotal = self.twoInchBlindsCart!.getRoundedDecimal(self.twoInchBlindsCart!.getDiscountedTotal())
+                    let shades3DiscountedTotal = self.shades3Cart!.getRoundedDecimal(self.shades3Cart!.getDiscountedTotal())
+                    let vienna100DiscountedTotal = self.vienna100Cart!.getRoundedDecimal(self.vienna100Cart!.getDiscountedTotal())
+                    
+                    return "-$\(cart.getRoundedDecimal(cart.getDiscountedTotal())) | -$\(twoInchDiscountedTotal) | -$\(shades3DiscountedTotal) | -$\(vienna100DiscountedTotal)"
+                }
+            }
+        }
+        
+        return nil
+    }
+    
+    func getAggregateBalance() -> String? {
+        
+        if let customer:Customers = DataController.sharedInstance.customer {
+            if let cart:Cart = customer.cart as? Cart {
+                if cart.subTotal!.int32Value > 0 {
+                    
+                    let twoInchBalance = self.twoInchBlindsCart!.getRoundedDecimal(self.twoInchBlindsCart!.getBalance())
+                    let shades3Balance = self.shades3Cart!.getRoundedDecimal(self.shades3Cart!.getBalance())
+                    let vienna100Balance = self.vienna100Cart!.getRoundedDecimal(self.vienna100Cart!.getBalance())
+                    
+                    return "$\(cart.getRoundedDecimal(cart.getBalance())) | $\(twoInchBalance) | $\(shades3Balance) | $\(vienna100Balance)"
+                }
+            }
+        }
+        
+        return nil
+    }
+    
+    
+    
     func updateCart() {
         
         if let customer:Customers = DataController.sharedInstance.customer {
             if let cart:Cart = customer.cart as? Cart {
                 if cart.subTotal!.int32Value > 0 {
-                    DispatchQueue.main.async(execute: { 
-                        self.totalDiscountsField.text = "-$\(cart.getRoundedDecimal(cart.getDiscountedTotal()))"
-                        self.subTotalField.text = "$\(cart.getRoundedDecimal(cart.subTotal!.doubleValue))"
-                        self.discountedTotal.text = "$\(cart.getRoundedDecimal(cart.getTotal()))"
-                        self.balanceField.text = "$\(cart.getRoundedDecimal(cart.getBalance()))"
+                    DispatchQueue.main.async(execute: {
+                        
+                        if let totalDiscounts = self.getAggregateTotalDiscounts() {
+                            self.totalDiscountsField.text = totalDiscounts
+                        }
+                        
+                        if let subtotal = self.getAggregateSubtotal() {
+                            self.subTotalField.text = subtotal
+                        }
+                        
+                        if let discountedTotal = self.getAggregateDiscountedTotal() {
+                            self.discountedTotal.text = discountedTotal
+                        }else{
+                            self.discountedTotal.text = "N/A"
+                        }
+                        
+                        if let balance = self.getAggregateBalance() {
+                            self.balanceField.text = balance
+                        }else{
+                            self.balanceField.text = "N/A"
+                        }
+                        
                     })
                 }
             }
@@ -240,6 +445,9 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         if let customer:Customers = DataController.sharedInstance.customer {
             if let cart:Cart = customer.cart as? Cart {
                 cart.deposit = deposit as NSNumber?
+                self.twoInchBlindsCart?.deposit = deposit as NSNumber?
+                self.shades3Cart?.deposit = deposit as NSNumber?
+                self.vienna100Cart?.deposit = deposit as NSNumber?
                 DataController.sharedInstance.save()
                 self.updateCart()
             }
@@ -250,6 +458,9 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         if let customer:Customers = DataController.sharedInstance.customer {
             if let cart:Cart = customer.cart as? Cart {
                 cart.tax = tax as NSNumber?
+                self.twoInchBlindsCart?.tax = tax as NSNumber?
+                self.shades3Cart?.tax = tax as NSNumber?
+                self.vienna100Cart?.tax = tax as NSNumber?
                 DataController.sharedInstance.save()
                 self.updateCart()
             }
@@ -306,6 +517,9 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         if let customer:Customers = DataController.sharedInstance.customer {
             if let cart:Cart = customer.cart as? Cart {
                 cart.discountPercent = discount as NSNumber?
+                self.twoInchBlindsCart?.discountPercent = discount as NSNumber?
+                self.shades3Cart?.discountPercent = discount as NSNumber?
+                self.vienna100Cart?.discountPercent = discount as NSNumber?
                 DataController.sharedInstance.save()
                 self.updateCart()
             }
