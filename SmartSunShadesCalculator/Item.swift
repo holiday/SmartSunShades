@@ -20,7 +20,7 @@ class Item: NSManagedObject {
         self.groupName = groupName
 
         if let price = self.getPrice(groupName: self.groupName!, groupFileName: self.groupFileName!) {
-            self.price = price as NSNumber?
+            self.price = (price * Double(self.quantity!)) as NSNumber?
         }else{
             self.price = 0.0
         }
@@ -30,6 +30,7 @@ class Item: NSManagedObject {
     
     func getPrice(groupName: String, groupFileName:String) -> Double? {
         if self.groupFileName != nil && self.groupName != nil {
+            
             let pt = PriceTable(fileName: groupFileName, fileExtension: "csv")
             
             let price = pt.getPrice(Double(self.itemWidth!), widthFineInchIndex: self.getWidthFineInch().index, height: Double(self.itemHeight!), heightFineInchIndex: self.getHeightFineInch().index)

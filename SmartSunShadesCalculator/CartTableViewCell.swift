@@ -31,56 +31,60 @@ class CartTableViewCell: UITableViewCell {
     
     func populateTableCell(_ item:Item){
         
-        if let location = item.location {
-            self.locationLabel.text = "Location: \(location)"
-        }
-        
-        if let groupName = item.groupName {
-            self.groupName.text = groupName
-        }
-        
-        if item.itemWidth != nil {
-            self.widthLabel.text = "Width: \(Int(item.itemWidth!))\" \(WidthViewController.inchData[Int(item.itemWidthFineInchIndex!)])\""
-        }
-        
-        if item.itemHeight != nil {
-            self.heightLabel.text = "Height: \(Int(item.itemHeight!))\" \(WidthViewController.inchData[Int(item.itemHeightFineInchIndex!)])\""
-        }
-        
-        if item.quantity != nil {
-            self.quantityLabel.text = "Qty: \(item.quantity!)"
-        }
-        
-        if let price = item.price {
-            self.priceLabel.text = "Solar Shades 5: $\(price)"
-            
-            if let priceOne = item.getPrice(groupName: "2 Inch Faux Wood Blinds", groupFileName: "2_inch_faux_wood_blinds") {
-                self.twoInchBlindsPrice.text = "2 \" Blinds: $\(priceOne)"
+        DispatchQueue.global(qos: .background).async {
+            DispatchQueue.main.async {
+                if let location = item.location {
+                    self.locationLabel.text = "Location: \(location)"
+                }
+                
+                if let groupName = item.groupName {
+                    self.groupName.text = groupName
+                }
+                
+                if item.itemWidth != nil {
+                    self.widthLabel.text = "Width: \(Int(item.itemWidth!))\" \(WidthViewController.inchData[Int(item.itemWidthFineInchIndex!)])\""
+                }
+                
+                if item.itemHeight != nil {
+                    self.heightLabel.text = "Height: \(Int(item.itemHeight!))\" \(WidthViewController.inchData[Int(item.itemHeightFineInchIndex!)])\""
+                }
+                
+                if item.quantity != nil {
+                    self.quantityLabel.text = "Qty: \(item.quantity!)"
+                }
+                
+                if let price = item.price {
+                    self.priceLabel.text = "Solar Shades 5: $\(price)"
+                    
+                    if let priceOne = item.getPrice(groupName: "2 Inch Faux Wood Blinds", groupFileName: "2_inch_faux_wood_blinds") {
+                        self.twoInchBlindsPrice.text = "2 \" Blinds: $\(priceOne * Double(item.quantity!))"
+                    }
+                    
+                    if let priceTwo = item.getPrice(groupName: "Roller Shades 3", groupFileName: "roller_shades_3") {
+                        self.rollerShadesPrice.text = "Shades 3: $\(priceTwo * Double(item.quantity!))"
+                    }
+                    
+                    if let priceThree = item.getPrice(groupName: "Triple Shades Sapphire 100", groupFileName: "triple_shades_sapphire_100") {
+                        self.tripleShades100.text = "Vienna 100: $\(priceThree * Double(item.quantity!))"
+                    }
+                    
+                }
+
+                if item.sqFootage != nil {
+                    self.sqInchesLabel.text = "Square Footage: \(item.sqFootage!)"
+                }
+                
+                if item.color != nil {
+                    self.colorLabel.text = "Color: \(item.color!)"
+                }
+                
+                if item.fabricName != nil {
+                    self.fabricNameLabel.text = "Fabric Name: \(item.fabricName!)"
+                }
+                
+                self.itemId = item.objectID
             }
-            
-            if let priceTwo = item.getPrice(groupName: "Roller Shades 3", groupFileName: "roller_shades_3") {
-                self.rollerShadesPrice.text = "Shades 3: $\(priceTwo)"
-            }
-            
-            if let priceThree = item.getPrice(groupName: "Triple Shades Sapphire 100", groupFileName: "triple_shades_sapphire_100") {
-                self.tripleShades100.text = "Vienna 100: $\(priceThree)"
-            }
-            
         }
-        
-        if item.sqFootage != nil {
-            self.sqInchesLabel.text = "Square Footage: \(item.sqFootage!)"
-        }
-        
-        if item.color != nil {
-            self.colorLabel.text = "Color: \(item.color!)"
-        }
-        
-        if item.fabricName != nil {
-            self.fabricNameLabel.text = "Fabric Name: \(item.fabricName!)"
-        }
-        
-        self.itemId = item.objectID
     }
     
 }

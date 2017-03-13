@@ -13,6 +13,8 @@
 		470404401D29B59B0045C93F /* Orders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4704043E1D29B59B0045C93F /* Orders.swift */; };
 		470404411D29C5420045C93F /* PriceTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 648677691CE4D90D00EDF8FD /* PriceTable.swift */; };
 		470404421D29D48A0045C93F /* CartTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47459DF01CE942AB00E5EA65 /* CartTableViewCell.swift */; };
+		4705C7D61E761FF000F987F2 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4705C7D41E761FF000F987F2 /* Fabric.framework */; };
+		4705C7D71E761FF000F987F2 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4705C7D51E761FF000F987F2 /* Crashlytics.framework */; };
 		472864A91D503098005491BB /* 2_inch_faux_wood_blinds.csv in Resources */ = {isa = PBXBuildFile; fileRef = 472864A81D503098005491BB /* 2_inch_faux_wood_blinds.csv */; };
 		473C11091D3FFA800090231D /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 479E92BD1D3FFA0300859EB0 /* BaseViewController.swift */; };
 		473EF87A1D29441500C5CB99 /* Item+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473EF8791D29441500C5CB99 /* Item+CoreDataProperties.swift */; };
@@ -86,6 +88,8 @@
 /* Begin PBXFileReference section */
 		4704043D1D29B59B0045C93F /* Orders+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Orders+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		4704043E1D29B59B0045C93F /* Orders.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Orders.swift; sourceTree = "<group>"; };
+		4705C7D41E761FF000F987F2 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
+		4705C7D51E761FF000F987F2 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		472864A81D503098005491BB /* 2_inch_faux_wood_blinds.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 2_inch_faux_wood_blinds.csv; sourceTree = "<group>"; };
 		473EF8791D29441500C5CB99 /* Item+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Item+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		473EF87B1D29444400C5CB99 /* Cart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cart.swift; sourceTree = "<group>"; };
@@ -144,6 +148,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				47ED76BF1D11D9E5003653C6 /* MessageUI.framework in Frameworks */,
+				4705C7D71E761FF000F987F2 /* Crashlytics.framework in Frameworks */,
+				4705C7D61E761FF000F987F2 /* Fabric.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -237,6 +243,8 @@
 				64218EB61CD9447E005AE58A /* AppDelegate.swift */,
 				64218EBD1CD9447E005AE58A /* Assets.xcassets */,
 				64218EBF1CD9447E005AE58A /* LaunchScreen.storyboard */,
+				4705C7D41E761FF000F987F2 /* Fabric.framework */,
+				4705C7D51E761FF000F987F2 /* Crashlytics.framework */,
 				64218EC21CD9447E005AE58A /* Info.plist */,
 			);
 			path = SmartSunShadesCalculator;
@@ -285,6 +293,7 @@
 				64218EAF1CD9447E005AE58A /* Sources */,
 				64218EB01CD9447E005AE58A /* Frameworks */,
 				64218EB11CD9447E005AE58A /* Resources */,
+				47AEA3DD1E761F9D002E7BF8 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -314,6 +323,7 @@
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = T2JXQB2ACU;
 						LastSwiftMigration = 0820;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -364,6 +374,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		47AEA3DD1E761F9D002E7BF8 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Fabric.framework/run 5dd90cf1a14f4bef26afcfd0f1be72e418b7aa51 fc8796fc2e492849b7b3de150dd75b0ad8c4216756577f149a0a60bc975e2014";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		641295091CF499FE001EFB98 /* Sources */ = {
@@ -577,12 +603,17 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = T2JXQB2ACU;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SmartSunShadesCalculator",
+				);
 				INFOPLIST_FILE = SmartSunShadesCalculator/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.rocketfuse.smartsunshades;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "9077029a-e2e8-4a58-8389-4d48f720c850";
+				PROVISIONING_PROFILE_SPECIFIER = "Smart Sun Shades Dev";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -595,13 +626,19 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				DEVELOPMENT_TEAM = T2JXQB2ACU;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SmartSunShadesCalculator",
+				);
 				INFOPLIST_FILE = SmartSunShadesCalculator/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.rocketfuse.smartsunshades;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "f9ae1423-3b7a-4565-b0e1-f283e1f2d8d1";
+				PROVISIONING_PROFILE_SPECIFIER = "Smart Sun Shades Prod Ad-Hoc";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

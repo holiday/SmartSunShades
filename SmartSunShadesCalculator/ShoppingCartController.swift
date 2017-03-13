@@ -41,8 +41,8 @@ open class ShoppingCartController: NSObject, ShoppingCartControllerDelegate {
                 newItem.price = 0.0
                 newItem.quantity = 0
                 newItem.sqFootage = 0.0
-                newItem.color = "N/A"
-                newItem.fabricName = "N/A"
+                newItem.color = ""
+                newItem.fabricName = ""
                 self.tempItem = newItem
             }else{
                 print("Failed to get managed object context: viewDidAppear")

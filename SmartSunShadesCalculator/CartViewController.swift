@@ -14,6 +14,8 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     @IBOutlet weak var tableView: UITableView!
     
+    var itemsArray:NSArray?
+    
     let shoppingCartController = ShoppingCartController.sharedInstance
     var isKeyboardVisible:Bool = false
     var indexPathToDelete:IndexPath?
@@ -23,21 +25,45 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
     static var estimatedDeliveryDate:Date = Date()
     static var estimatedDelivery:String?
     
+    @IBOutlet weak var footerView:UIView!
+    
     @IBOutlet weak var commentField: UITextView!
     @IBOutlet weak var colorField: UITextField!
     @IBOutlet weak var fabricField: UITextField!
     @IBOutlet weak var depositField: UITextField!
     @IBOutlet weak var taxField: UITextField!
-    @IBOutlet weak var totalDiscountsField: UILabel!
-    @IBOutlet weak var subTotalField: UILabel!
-    @IBOutlet weak var discountedTotal:UILabel!
+    
+    @IBOutlet weak var totalDiscountsField1: UILabel!
+    @IBOutlet weak var totalDiscountsField2: UILabel!
+    @IBOutlet weak var totalDiscountsField3: UILabel!
+    @IBOutlet weak var totalDiscountsField4: UILabel!
+    
+    @IBOutlet weak var subTotalField1: UILabel!
+    @IBOutlet weak var subTotalField2: UILabel!
+    @IBOutlet weak var subTotalField3: UILabel!
+    @IBOutlet weak var subTotalField4: UILabel!
+    
+    @IBOutlet weak var discountedTotal1:UILabel!
+    @IBOutlet weak var discountedTotal2:UILabel!
+    @IBOutlet weak var discountedTotal3:UILabel!
+    @IBOutlet weak var discountedTotal4:UILabel!
+    
     @IBOutlet weak var enterDiscountField: UITextField!
     @IBOutlet weak var totalSqInchesField:UILabel!
-    @IBOutlet weak var fiftyPercentOffField:UILabel!
+    
+    @IBOutlet weak var fiftyPercentOffField1:UILabel!
+    @IBOutlet weak var fiftyPercentOffField2:UILabel!
+    @IBOutlet weak var fiftyPercentOffField3:UILabel!
+    @IBOutlet weak var fiftyPercentOffField4:UILabel!
+    
     @IBOutlet weak var datePickerView:UIView!
     @IBOutlet weak var datePicker:UIDatePicker!
     @IBOutlet weak var dateTextField:UITextField!
-    @IBOutlet weak var balanceField:UILabel!
+    
+    @IBOutlet weak var balanceField1:UILabel!
+    @IBOutlet weak var balanceField2:UILabel!
+    @IBOutlet weak var balanceField3:UILabel!
+    @IBOutlet weak var balanceField4:UILabel!
     
     //Other carts
     var twoInchBlindsCart:Cart?
@@ -67,7 +93,6 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.datePicker.setValue(UIColor.black, forKeyPath: "textColor")
         self.datePicker.addTarget(self, action: #selector(CartViewController.didSelectDate), for: .valueChanged)
         
-        
         CartViewController.estimatedDeliveryDate = Date()
         self.updateEstimatedDeliveryDate(CartViewController.estimatedDeliveryDate)
         
@@ -75,9 +100,12 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         let nib = UINib(nibName: "CartTableViewCell", bundle: nil)
         
         self.tableView.register(nib, forCellReuseIdentifier: "cartTableViewCell")
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        
+        self.reloadCartData()
         
         if let customer:Customers = DataController.sharedInstance.customer {
             if let cart:Cart = customer.cart as? Cart {
@@ -104,9 +132,9 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
                         
                         let ent = NSEntityDescription.entity(forEntityName: "Item", in: context)
                         
-                        var tempItems1:NSMutableOrderedSet = NSMutableOrderedSet()
-                        var tempItems2:NSMutableOrderedSet = NSMutableOrderedSet()
-                        var tempItems3:NSMutableOrderedSet = NSMutableOrderedSet()
+                        let tempItems1:NSMutableOrderedSet = NSMutableOrderedSet()
+                        let tempItems2:NSMutableOrderedSet = NSMutableOrderedSet()
+                        let tempItems3:NSMutableOrderedSet = NSMutableOrderedSet()
                         
                         for item in cart.items! {
                             
@@ -156,30 +184,49 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
                     
                 }
                 
-                
                 self.commentField.text = "\(cart.comments!)"
                 
                 if let subtotal = self.getAggregateSubtotal() {
-                    self.subTotalField.text = subtotal
+                    
+                    let subtotalArr = subtotal.components(separatedBy: ",")
+                    
+                    if subtotalArr.count == 4{
+                        self.subTotalField1.text = subtotalArr[0]
+                        self.subTotalField2.text = subtotalArr[1]
+                        self.subTotalField3.text = subtotalArr[2]
+                        self.subTotalField4.text = subtotalArr[3]
+                    }
                 }
                 
                 self.taxField.text = "\(cart.tax!)"
                 self.depositField.text = "\(cart.deposit!)"
                 
                 if let discountedTotal = self.getAggregateDiscountedTotal() {
-                    self.discountedTotal.text = discountedTotal
-                }else{
-                    self.discountedTotal.text = "N/A"
+                    
+                    let discountedTotalArr = discountedTotal.components(separatedBy: ",")
+                    
+                    if discountedTotalArr.count == 4{
+                        self.discountedTotal1.text = discountedTotalArr[0]
+                        self.discountedTotal2.text = discountedTotalArr[1]
+                        self.discountedTotal3.text = discountedTotalArr[2]
+                        self.discountedTotal4.text = discountedTotalArr[3]
+                    }
                 }
-                
                 
                 self.enterDiscountField.text = "\(cart.discountPercent!)"
                 let roundedSqft = cart.getRoundedDecimal(self.shoppingCartController.getTotalSqFootage()!)
                 self.totalSqInchesField.text = "Total Sq Footage: \(roundedSqft)"
+
                 if let fiftyOff = self.getAggregateFiftyOff() {
-                    self.fiftyPercentOffField.text = fiftyOff
-                }else {
-                    self.fiftyPercentOffField.text = "N/A"
+                    
+                    let fiftyOffArr = fiftyOff.components(separatedBy: ",")
+                    
+                    if fiftyOffArr.count == 4{
+                        self.fiftyPercentOffField1.text = fiftyOffArr[0]
+                        self.fiftyPercentOffField2.text = fiftyOffArr[1]
+                        self.fiftyPercentOffField3.text = fiftyOffArr[2]
+                        self.fiftyPercentOffField4.text = fiftyOffArr[3]
+                    }
                 }
                 
                 
@@ -192,6 +239,16 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
                 }
                 
                 self.updateCart()
+            }
+        }
+    }
+    
+    func reloadCartData() {
+        if let customer = DataController.sharedInstance.customer {
+            if let cart:Cart = customer.cart as? Cart {
+                if let items:NSOrderedSet = cart.items {
+                    self.itemsArray = Array(items) as NSArray
+                }
             }
         }
     }
@@ -230,8 +287,12 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
     func moveUpScreen() {
         DispatchQueue.main.async {
             if self.didMoveUpScreen == false {
-                self.view.frame.origin.y -= 250
-                self.didMoveUpScreen = true
+                
+                UIView.animate(withDuration: 0.3, delay: 0.1, options: UIViewAnimationOptions.curveEaseInOut, animations: {
+                    self.view.frame.origin.y -= 250
+                }, completion: { (finished) in
+                    self.didMoveUpScreen = true
+                })
             }
         }
     }
@@ -239,8 +300,12 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
     func moveDownScreen() {
         DispatchQueue.main.async {
             if self.didMoveUpScreen == true {
-                self.didMoveUpScreen = false
-                self.view.frame.origin.y += 250
+                
+                UIView.animate(withDuration: 0.3, delay: 0.1, options: UIViewAnimationOptions.curveEaseInOut, animations: {
+                    self.view.frame.origin.y += 250
+                }, completion: { (finished) in
+                    self.didMoveUpScreen = false
+                })
             }
         }
     }
@@ -324,11 +389,11 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
             if let cart:Cart = customer.cart as? Cart {
                 if cart.subTotal!.int32Value > 0 {
                     
-                    let twoInchDiscountedTotal = self.twoInchBlindsCart!.getRoundedDecimal(self.twoInchBlindsCart!.getDiscountedTotal())
-                    let shades3DiscountedTotal = self.shades3Cart!.getRoundedDecimal(self.shades3Cart!.getDiscountedTotal())
-                    let vienna100DiscountedTotal = self.vienna100Cart!.getRoundedDecimal(self.vienna100Cart!.getDiscountedTotal())
+                    let twoInchDiscountedTotal = self.twoInchBlindsCart!.getRoundedDecimal(self.twoInchBlindsCart!.calculateSubtotal())
+                    let shades3DiscountedTotal = self.shades3Cart!.getRoundedDecimal(self.shades3Cart!.calculateSubtotal())
+                    let vienna100DiscountedTotal = self.vienna100Cart!.getRoundedDecimal(self.vienna100Cart!.calculateSubtotal())
         
-                    return "$\(cart.getRoundedDecimal(cart.subTotal!.doubleValue)) | $\(twoInchDiscountedTotal) | $\(shades3DiscountedTotal) | $\(vienna100DiscountedTotal)"
+                    return "$\(cart.getRoundedDecimal(cart.subTotal!.doubleValue)), $\(twoInchDiscountedTotal), $\(shades3DiscountedTotal), $\(vienna100DiscountedTotal)"
                 }
             }
         }
@@ -346,7 +411,7 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
                     let shades3DiscountedTotal = self.shades3Cart!.getRoundedDecimal(self.shades3Cart!.getTotal())
                     let vienna100DiscountedTotal = self.vienna100Cart!.getRoundedDecimal(self.vienna100Cart!.getTotal())
                     
-                    return "$\(cart.getRoundedDecimal(cart.getTotal())) | $\(twoInchDiscountedTotal) | $\(shades3DiscountedTotal) | $\(vienna100DiscountedTotal)"
+                    return "$\(cart.getRoundedDecimal(cart.getTotal())), $\(twoInchDiscountedTotal), $\(shades3DiscountedTotal), $\(vienna100DiscountedTotal)"
                 }
             }
         }
@@ -363,7 +428,7 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
                     let shades3FiftyOff = self.shades3Cart!.getRoundedDecimal(self.shades3Cart!.getFiftyOff())
                     let vienna100FiftyOff = self.vienna100Cart!.getRoundedDecimal(self.vienna100Cart!.getFiftyOff())
                     
-                    return "-$\(cart.getRoundedDecimal(cart.getFiftyOff())) | -$\(twoInchFiftyOff) | -$\(shades3FiftyOff) | -$\(vienna100FiftyOff)"
+                    return "$\(cart.getRoundedDecimal(cart.getFiftyOff())), $\(twoInchFiftyOff), $\(shades3FiftyOff), $\(vienna100FiftyOff)"
                 }
             }
         }
@@ -380,7 +445,7 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
                     let shades3DiscountedTotal = self.shades3Cart!.getRoundedDecimal(self.shades3Cart!.getDiscountedTotal())
                     let vienna100DiscountedTotal = self.vienna100Cart!.getRoundedDecimal(self.vienna100Cart!.getDiscountedTotal())
                     
-                    return "-$\(cart.getRoundedDecimal(cart.getDiscountedTotal())) | -$\(twoInchDiscountedTotal) | -$\(shades3DiscountedTotal) | -$\(vienna100DiscountedTotal)"
+                    return "-$\(cart.getRoundedDecimal(cart.getDiscountedTotal())), -$\(twoInchDiscountedTotal), -$\(shades3DiscountedTotal), -$\(vienna100DiscountedTotal)"
                 }
             }
         }
@@ -398,7 +463,7 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
                     let shades3Balance = self.shades3Cart!.getRoundedDecimal(self.shades3Cart!.getBalance())
                     let vienna100Balance = self.vienna100Cart!.getRoundedDecimal(self.vienna100Cart!.getBalance())
                     
-                    return "$\(cart.getRoundedDecimal(cart.getBalance())) | $\(twoInchBalance) | $\(shades3Balance) | $\(vienna100Balance)"
+                    return "$\(cart.getRoundedDecimal(cart.getBalance())), $\(twoInchBalance), $\(shades3Balance), $\(vienna100Balance)"
                 }
             }
         }
@@ -416,23 +481,51 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
                     DispatchQueue.main.async(execute: {
                         
                         if let totalDiscounts = self.getAggregateTotalDiscounts() {
-                            self.totalDiscountsField.text = totalDiscounts
+                            
+                            let totalDiscountsArr = totalDiscounts.components(separatedBy: ",")
+                            
+                            if totalDiscountsArr.count == 4{
+                                self.totalDiscountsField1.text = totalDiscountsArr[0]
+                                self.totalDiscountsField2.text = totalDiscountsArr[1]
+                                self.totalDiscountsField3.text = totalDiscountsArr[2]
+                                self.totalDiscountsField4.text = totalDiscountsArr[3]
+                            }
                         }
                         
                         if let subtotal = self.getAggregateSubtotal() {
-                            self.subTotalField.text = subtotal
+                            
+                            let subtotalArr = subtotal.components(separatedBy: ",")
+                            
+                            if subtotalArr.count == 4{
+                                self.subTotalField1.text = subtotalArr[0]
+                                self.subTotalField2.text = subtotalArr[1]
+                                self.subTotalField3.text = subtotalArr[2]
+                                self.subTotalField4.text = subtotalArr[3]
+                            }
                         }
                         
                         if let discountedTotal = self.getAggregateDiscountedTotal() {
-                            self.discountedTotal.text = discountedTotal
-                        }else{
-                            self.discountedTotal.text = "N/A"
+                            
+                            let discountedTotalArr = discountedTotal.components(separatedBy: ",")
+                            
+                            if discountedTotalArr.count == 4{
+                                self.discountedTotal1.text = discountedTotalArr[0]
+                                self.discountedTotal2.text = discountedTotalArr[1]
+                                self.discountedTotal3.text = discountedTotalArr[2]
+                                self.discountedTotal4.text = discountedTotalArr[3]
+                            }
                         }
                         
                         if let balance = self.getAggregateBalance() {
-                            self.balanceField.text = balance
-                        }else{
-                            self.balanceField.text = "N/A"
+                            
+                            let balanceArr = balance.components(separatedBy: ",")
+                            
+                            if balanceArr.count == 4{
+                                self.balanceField1.text = balanceArr[0]
+                                self.balanceField2.text = balanceArr[1]
+                                self.balanceField3.text = balanceArr[2]
+                                self.balanceField4.text = balanceArr[3]
+                            }
                         }
                         
                     })
@@ -526,6 +619,83 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
+    func returnEmailStringBase64EncodedImage(image:UIImage) -> String? {
+        if let imgData:Data = UIImagePNGRepresentation(image) {
+            
+            let strBase64 = imgData.base64EncodedString(options: Data.Base64EncodingOptions.init(rawValue: 0))
+            return strBase64
+        }
+        return nil
+    }
+    
+    func imageWithView(view:UIView, size:CGSize) -> UIImage?{
+        
+        var img:UIImage?
+        
+        if let tableView = view as? UITableView {
+            let oldFrame = tableView.frame
+            self.tableView.frame = CGRect(x: 0, y: 0, width: tableView.contentSize.width, height: tableView.contentSize.height)
+            UIGraphicsBeginImageContextWithOptions(tableView.contentSize, view.isOpaque, 1.0)
+            
+            tableView.layer.render(in: UIGraphicsGetCurrentContext()!)
+            img = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            
+            self.tableView.frame = oldFrame
+            
+        }else{
+            UIGraphicsBeginImageContextWithOptions(view.bounds.size, view.isOpaque, 1.0)
+            view.layer.render(in: UIGraphicsGetCurrentContext()!)
+            img = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+        }
+        
+        if img != nil {
+            return img!
+        }
+        
+        return nil
+    }
+    
+    /*
+     Image Resizing Techniques: http://bit.ly/1Hv0T6i
+     */
+    class func scaleUIImageToSize( image: UIImage, size: CGSize) -> UIImage? {
+        let hasAlpha = false
+        let scale: CGFloat = 0.0 // Automatically use scale factor of main screen
+        
+        UIGraphicsBeginImageContextWithOptions(size, !hasAlpha, scale)
+        image.draw(in: CGRect(origin: CGPoint.zero, size: size))
+        
+        let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return scaledImage
+    }
+    
+    func getScreenshotForView(view:UIView) -> UIImage? {
+        //Snapshot image of cart footer view
+        let screenSize: CGRect = UIScreen.main.bounds
+        let screenWidth = screenSize.width
+        let aspectRatio:CGFloat?
+        
+        if let tableView = view as? UITableView {
+            aspectRatio = tableView.contentSize.width / tableView.contentSize.height
+        }else{
+            aspectRatio = view.bounds.size.width / view.bounds.size.height
+        }
+        
+        let size = CGSize(width: screenWidth - 100, height: (screenWidth/aspectRatio!) - 100)
+        
+        if let screenshot = self.imageWithView(view: view, size: size) {
+            if let scaledScreenshot = CartViewController.scaleUIImageToSize(image: screenshot, size: size) {
+                return scaledScreenshot
+            }
+        }
+        
+        return nil
+    }
+    
     @IBAction func didPressEmailQuote(_ sender: AnyObject) {
         
         if let customer = DataController.sharedInstance.customer {
@@ -591,6 +761,13 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
                         CartViewController.estimatedDelivery = "N/A"
                     }
                     
+                    
+                    let footerScreenshot = self.getScreenshotForView(view: self.footerView)
+                    let imageStringFooter = returnEmailStringBase64EncodedImage(image: footerScreenshot!)!
+                    
+                    let tableViewScreenshot = self.getScreenshotForView(view: self.tableView)
+                    let imageStringTableview = returnEmailStringBase64EncodedImage(image: tableViewScreenshot!)!
+                    
                     htmlTable = "Dear \(customerFirstName!) \(customerLastName!),<br/><br/>" +
                         "Email: \(customer.email!) <br/>" +
                         "Address: \(customer.address!) <br/>" +
@@ -599,17 +776,10 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
                         "Expected delivery: \(CartViewController.estimatedDelivery!) <br/><br/>" +
                         
                         "Here the quote you requested. <br/><br/>" +
-                        "<table border=\"1\"><col width=\"100\"><thead><tr><th>Category</th><th>Location</th><th>Width</th><th>Height</th><th>Quantity</th><th>Color</th><th>Fabric</th></tr></thead>\(htmlTable)</table><br/>" +
-                        "Total Square Footage: \(cart.getTotalSquareFootage())<br/>" +
-                        "Total Quantity: \(cart.getTotalQuantity())<br/>" +
-                        "Sub-Total: $\(cart.subTotal!)<br/>" +
-                        "50% Discount: -\(cart.getFiftyOff())<br/>" +
-                        "Additional Discount (%): \(cart.discountPercent!)%<br/>" +
-                        "You Saved: $\(cart.getDiscountedTotal())<br/>" +
-                        "Taxes (%): \(cart.tax!)% <br/>" +
-                        "Final Total: $\(cart.getTotal()) <br/>" +
-                        "Deposit: $\(cart.deposit!) <br/>" +
-                        "Balance: $\(cart.getBalance())</br/></br/>" +
+                        
+                        "<img src='data:image/png;base64,\(imageStringTableview)' width='\(tableViewScreenshot!.size.width)' height='\(tableViewScreenshot!.size.height)'><br/><br/>" +
+                        
+                        "<img src='data:image/png;base64,\(imageStringFooter)' width='\(footerScreenshot!.size.width)' height='\(footerScreenshot!.size.height)'><br/><br/>" +
                         
                         "Comments: \(cart.comments!) <br/><br/>" +
                         
@@ -686,13 +856,8 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell:CartTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "cartTableViewCell") as! CartTableViewCell
         
-        if let customer = DataController.sharedInstance.customer {
-            if let cart:Cart = customer.cart as? Cart {
-                if let items:NSOrderedSet = cart.items {
-                    let itemsArray:NSArray = Array(items) as NSArray
-                    cell.populateTableCell(itemsArray[indexPath.row] as! Item)
-                }
-            }
+        if self.itemsArray != nil && self.itemsArray!.count > 0 {
+            cell.populateTableCell(self.itemsArray![indexPath.row] as! Item)
         }
         
         return cell
@@ -713,6 +878,112 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 170
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        
+        //        let color = UITableViewRowAction(style: .normal, title: "Color") { (action, indexPath) in
+        //            //Show color picker controller
+        //            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        //
+        //            let colorVc = storyboard.instantiateViewController(withIdentifier: "colorViewController") as! ColorViewController
+        //            colorVc.delegate = self
+        //            colorVc.indexPath = indexPath
+        //            self.present(colorVc, animated: true, completion: nil)
+        //
+        //        }
+        
+        let delete = UITableViewRowAction(style: .normal, title: "Delete") { (action, indexPath) in
+            
+            self.indexPathToDelete = indexPath
+            
+            let alert = UIAlertView(title: "Delete item", message: "Are you sure you want to delete this item?", delegate: self, cancelButtonTitle: "cancel", otherButtonTitles: "delete")
+            
+            alert.show()
+        }
+        
+        let location = UITableViewRowAction(style: .normal, title: "Location") { (action, indexPath) in
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            
+            let locationVC = storyboard.instantiateViewController(withIdentifier: "locationViewController") as! LocationViewController
+            self.indexPathToEdit = indexPath
+            locationVC.delegate = self
+            self.present(locationVC, animated: true, completion: nil)
+        }
+        
+        
+        let width = UITableViewRowAction(style: .normal, title: "Width") { (action, indexPath) in
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            
+            let widthVC = storyboard.instantiateViewController(withIdentifier: "widthViewController") as! WidthViewController
+            self.indexPathToEdit = indexPath
+            widthVC.delegate = self
+            self.present(widthVC, animated: true, completion: nil)
+        }
+        
+        let height = UITableViewRowAction(style: .normal, title: "Height") { (action, indexPath) in
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            
+            let heightVC = storyboard.instantiateViewController(withIdentifier: "heightViewController") as! HeightViewController
+            self.indexPathToEdit = indexPath
+            heightVC.delegate = self
+            self.present(heightVC, animated: true, completion: nil)
+        }
+        
+        let quantity = UITableViewRowAction(style: .normal, title: "Qty") { (action, indexPath) in
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            
+            let qtyVC = storyboard.instantiateViewController(withIdentifier: "quantityViewController") as! QuantityViewController
+            self.indexPathToEdit = indexPath
+            qtyVC.delegate = self
+            self.present(qtyVC, animated: true, completion: nil)
+        }
+        
+        delete.backgroundColor = UIColor.red
+        location.backgroundColor = UIColor(red: 88.0/255, green: 193.0/255, blue: 91.0/255, alpha: 1)
+        width.backgroundColor = UIColor(red: 147.0/255, green: 193.0/255, blue: 149.0/255, alpha: 1)
+        height.backgroundColor = UIColor(red: 88.0/255, green: 193.0/255, blue: 91.0/255, alpha: 1)
+        quantity.backgroundColor = UIColor(red: 147.0/255, green: 193.0/255, blue: 149.0/255, alpha: 1)
+        
+        return [delete, location, width, height, quantity]
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func alertView(_ alertView: UIAlertView, clickedButtonAt buttonIndex: Int) {
+        
+        if self.indexPathToDelete == nil {
+            return
+        }
+        
+        if alertView.title == "Delete item" {
+            if buttonIndex == 1 {
+                
+                //Delete item
+                if let customer = DataController.sharedInstance.customer {
+                    if let cart:Cart = customer.cart as? Cart {
+                        if let items:NSOrderedSet = cart.items {
+                            let itemsArray:NSArray = Array(items) as NSArray
+                            let item:Item = itemsArray[self.indexPathToDelete!.row] as! Item
+                            
+                            DataController.sharedInstance.managedObjectContext?.delete(item)
+                            do {
+                                try DataController.sharedInstance.managedObjectContext?.save()
+                                self.reloadCartData()
+                                self.tableView.reloadData()
+                                self.updateCart()
+                            }catch {
+                                print("Error deleting item from cart: \(error)")
+                            }
+                            
+                        }
+                    }
+                }
+                
+            }
+        }
     }
     
     func getItemAtIndexPath(_ indexPath:IndexPath) -> Item? {
@@ -837,130 +1108,4 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
-    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        
-//        let color = UITableViewRowAction(style: .normal, title: "Color") { (action, indexPath) in
-//            //Show color picker controller
-//            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//            
-//            let colorVc = storyboard.instantiateViewController(withIdentifier: "colorViewController") as! ColorViewController
-//            colorVc.delegate = self
-//            colorVc.indexPath = indexPath
-//            self.present(colorVc, animated: true, completion: nil)
-//            
-//        }
-        
-        let delete = UITableViewRowAction(style: .normal, title: "Delete") { (action, indexPath) in
-            
-            self.indexPathToDelete = indexPath
-            
-            let alert = UIAlertView(title: "Delete item", message: "Are you sure you want to delete this item?", delegate: self, cancelButtonTitle: "cancel", otherButtonTitles: "delete")
-            
-            alert.show()
-        }
-        
-        let location = UITableViewRowAction(style: .normal, title: "Location") { (action, indexPath) in
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            
-            let locationVC = storyboard.instantiateViewController(withIdentifier: "locationViewController") as! LocationViewController
-            self.indexPathToEdit = indexPath
-            locationVC.delegate = self
-            self.present(locationVC, animated: true, completion: nil)
-        }
-        
-        
-        let width = UITableViewRowAction(style: .normal, title: "Width") { (action, indexPath) in
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            
-            let widthVC = storyboard.instantiateViewController(withIdentifier: "widthViewController") as! WidthViewController
-            self.indexPathToEdit = indexPath
-            widthVC.delegate = self
-            self.present(widthVC, animated: true, completion: nil)
-        }
-        
-        let height = UITableViewRowAction(style: .normal, title: "Height") { (action, indexPath) in
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            
-            let heightVC = storyboard.instantiateViewController(withIdentifier: "heightViewController") as! HeightViewController
-            self.indexPathToEdit = indexPath
-            heightVC.delegate = self
-            self.present(heightVC, animated: true, completion: nil)
-        }
-        
-        let quantity = UITableViewRowAction(style: .normal, title: "Qty") { (action, indexPath) in
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            
-            let qtyVC = storyboard.instantiateViewController(withIdentifier: "quantityViewController") as! QuantityViewController
-            self.indexPathToEdit = indexPath
-            qtyVC.delegate = self
-            self.present(qtyVC, animated: true, completion: nil)
-        }
-//        
-//        let category = UITableViewRowAction(style: .normal, title: "Category") { (action, indexPath) in
-//            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//            
-//            let categoryVC = storyboard.instantiateViewController(withIdentifier: "categoryViewController") as! CategoryViewController
-//            self.indexPathToEdit = indexPath
-//            categoryVC.delegate = self
-//            self.present(categoryVC, animated: true, completion: nil)
-//        }
-        
-//        let fabric = UITableViewRowAction(style: .normal, title: "Fabric") { (action, indexPath) in
-//            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//            
-//            let fabricVC = storyboard.instantiateViewController(withIdentifier: "fabricViewController") as! FabricViewController
-//            self.indexPathToEdit = indexPath
-//            fabricVC.delegate = self
-//            self.present(fabricVC, animated: true, completion: nil)
-//        }
-        
-        delete.backgroundColor = UIColor.red
-//        color.backgroundColor = UIColor(red: 147.0/255, green: 193.0/255, blue: 149.0/255, alpha: 1)
-        location.backgroundColor = UIColor(red: 88.0/255, green: 193.0/255, blue: 91.0/255, alpha: 1)
-        width.backgroundColor = UIColor(red: 147.0/255, green: 193.0/255, blue: 149.0/255, alpha: 1)
-        height.backgroundColor = UIColor(red: 88.0/255, green: 193.0/255, blue: 91.0/255, alpha: 1)
-        quantity.backgroundColor = UIColor(red: 147.0/255, green: 193.0/255, blue: 149.0/255, alpha: 1)
-//        category.backgroundColor = UIColor(red: 88.0/255, green: 193.0/255, blue: 91.0/255, alpha: 1)
-//        fabric.backgroundColor = UIColor(red: 147.0/255, green: 193.0/255, blue: 149.0/255, alpha: 1)
-        
-        return [delete, location, width, height, quantity]
-    }
-    
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    
-    func alertView(_ alertView: UIAlertView, clickedButtonAt buttonIndex: Int) {
-        
-        if self.indexPathToDelete == nil {
-            return
-        }
-        
-        if alertView.title == "Delete item" {
-            if buttonIndex == 1 {
-                
-                //Delete item
-                if let customer = DataController.sharedInstance.customer {
-                    if let cart:Cart = customer.cart as? Cart {
-                        if let items:NSOrderedSet = cart.items {
-                            let itemsArray:NSArray = Array(items) as NSArray
-                            let item:Item = itemsArray[self.indexPathToDelete!.row] as! Item
-                            
-                            DataController.sharedInstance.managedObjectContext?.delete(item)
-                            do {
-                                try DataController.sharedInstance.managedObjectContext?.save()
-                                self.tableView.reloadData()
-                                self.updateCart()
-                            }catch {
-                                print("Error deleting item from cart: \(error)")
-                            }
-                            
-                        }
-                    }
-                }
-                
-            }
-        }
-    }
-
 }

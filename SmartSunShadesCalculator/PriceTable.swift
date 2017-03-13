@@ -38,14 +38,25 @@ open class PriceTable: NSObject {
         case fileNotFound(String)
     }
 
-    var rows = Array<Array<Double>>()
+//    var rows = Array<Array<Double>>()
     var widths = [Int]()
     var heights = [Int]()
     
     var matrix:Matrix!
     
+    static var cachedMatrix:[String:Matrix] = [String:Matrix]()
+    static var cachedWidths:[String:[Int]] = [String:[Int]]()
+    static var cachedHeights:[String:[Int]] = [String:[Int]]()
+    
     init(fileName:String, fileExtension:String) {
         super.init()
+        
+        if PriceTable.cachedMatrix.index(forKey: fileName) != nil {
+            self.matrix = PriceTable.cachedMatrix[fileName]
+            self.widths = PriceTable.cachedWidths[fileName]!
+            self.heights = PriceTable.cachedHeights[fileName]!
+            return
+        }
         
         //Open the file using its name and extension
         let filePath = Bundle.main.path(forResource: fileName,ofType:fileExtension)
@@ -59,14 +70,19 @@ open class PriceTable: NSObject {
             //Read the data from the file
             let data = try String(contentsOfFile: filePath!, encoding: String.Encoding.utf8)
             
-            //Split out each line into an array
-            let rowsAsStrings = data.components(separatedBy: "\r")
+            var rowsAsStrings:[String]?
             
-            self.generateArrayOfWidths(rowsAsStrings)
-            self.generateArrayOfHeights(rowsAsStrings)
+            rowsAsStrings = data.components(separatedBy: "\r")
             
-            self.createMatrix(rowsAsStrings)
-            self.generateMatrix(rowsAsStrings)
+            self.generateArrayOfWidths(rowsAsStrings!)
+            self.generateArrayOfHeights(rowsAsStrings!)
+            
+            self.createMatrix(rowsAsStrings!)
+            self.generateMatrix(rowsAsStrings!)
+            
+            PriceTable.cachedMatrix[fileName] = self.matrix
+            PriceTable.cachedWidths[fileName] = self.widths
+            PriceTable.cachedHeights[fileName] = self.heights
             
             
         }catch ParsingError.fileNotFound{

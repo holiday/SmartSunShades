@@ -45,7 +45,7 @@ class Cart: NSManagedObject {
         return totalQuantity
     }
     
-    func calculateSubtotal(){
+    func calculateSubtotal() -> Double{
         self.subTotal = NSNumber(value: 0.0 as Double)
         
         for item in self.items! {
@@ -55,6 +55,8 @@ class Cart: NSManagedObject {
                 }
             }
         }
+        
+        return self.subTotal as! Double
     }
   
     func getFiftyOff() -> Double {
