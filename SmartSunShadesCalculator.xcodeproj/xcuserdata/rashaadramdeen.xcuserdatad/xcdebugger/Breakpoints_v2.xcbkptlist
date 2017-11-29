@@ -394,12 +394,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SmartSunShadesCalculator/CartViewController.swift"
-            timestampString = "511056767.085915"
+            timestampString = "531020805.611055"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "867"
-            endingLineNumber = "867"
-            landmarkName = "tableView(_:cellForRowAt:)"
+            startingLineNumber = "873"
+            endingLineNumber = "873"
+            landmarkName = "tableView(_:didDeselectRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

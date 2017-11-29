@@ -49,7 +49,7 @@ class QuantityViewController: BaseViewController, UIPickerViewDelegate, UIPicker
                             self.present(vc, animated: true) {
                                 
                                 //self.navigationController?.popToRootViewControllerAnimated(false)
-                                let vc = self.navigationController?.viewControllers[1]
+                                let vc = self.navigationController?.viewControllers[2]
                                 self.navigationController?.popToViewController(vc!, animated: true)
                             }
                             

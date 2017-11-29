@@ -34,6 +34,7 @@
 		47459DF21CE942AB00E5EA65 /* CartTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47459DF01CE942AB00E5EA65 /* CartTableViewCell.swift */; };
 		47459DF31CE942AB00E5EA65 /* CartTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 47459DF11CE942AB00E5EA65 /* CartTableViewCell.xib */; };
 		476495B91CE954CD00430A94 /* ShoppingCartController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476495B81CE954CD00430A94 /* ShoppingCartController.swift */; };
+		47711DB91F942A9600BE75AD /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47711DB81F942A9600BE75AD /* LoginViewController.swift */; };
 		479E92BE1D3FFA0300859EB0 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 479E92BD1D3FFA0300859EB0 /* BaseViewController.swift */; };
 		47D79BD11D2419860016AD22 /* SmartSunShadesCalculator.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 47D79BCF1D2419860016AD22 /* SmartSunShadesCalculator.xcdatamodeld */; };
 		47D79BD31D241F000016AD22 /* FabricViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D79BD21D241F000016AD22 /* FabricViewController.swift */; };
@@ -102,6 +103,7 @@
 		47459DF01CE942AB00E5EA65 /* CartTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartTableViewCell.swift; sourceTree = "<group>"; };
 		47459DF11CE942AB00E5EA65 /* CartTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CartTableViewCell.xib; sourceTree = "<group>"; };
 		476495B81CE954CD00430A94 /* ShoppingCartController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShoppingCartController.swift; sourceTree = "<group>"; };
+		47711DB81F942A9600BE75AD /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		479E92BD1D3FFA0300859EB0 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		47D79BD01D2419860016AD22 /* SmartSunShadesCalculator.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SmartSunShadesCalculator.xcdatamodel; sourceTree = "<group>"; };
 		47D79BD21D241F000016AD22 /* FabricViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FabricViewController.swift; sourceTree = "<group>"; };
@@ -178,10 +180,11 @@
 				47D79C641D24803C0016AD22 /* CustomersViewController.swift */,
 				47D79BD41D2438690016AD22 /* DataController.swift */,
 				47D79BD21D241F000016AD22 /* FabricViewController.swift */,
-				476495B81CE954CD00430A94 /* ShoppingCartController.swift */,
 				64B47E0F1CDD32AF009C5792 /* HeightViewController.swift */,
 				648677171CE0F64100EDF8FD /* LocationViewController.swift */,
+				47711DB81F942A9600BE75AD /* LoginViewController.swift */,
 				64B47E111CDD3693009C5792 /* QuantityViewController.swift */,
+				476495B81CE954CD00430A94 /* ShoppingCartController.swift */,
 				64B47E0D1CDD0316009C5792 /* WidthViewController.swift */,
 			);
 			name = Controllers;
@@ -311,7 +314,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = "Ramdeen, Rashaad";
 				TargetAttributes = {
 					6412950C1CF499FE001EFB98 = {
@@ -428,6 +431,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				47711DB91F942A9600BE75AD /* LoginViewController.swift in Sources */,
 				473EF87A1D29441500C5CB99 /* Item+CoreDataProperties.swift in Sources */,
 				64218EB91CD9447E005AE58A /* CategoryViewController.swift in Sources */,
 				64B47E101CDD32AF009C5792 /* HeightViewController.swift in Sources */,
@@ -527,8 +531,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -572,8 +578,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -592,6 +600,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -602,6 +611,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = T2JXQB2ACU;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -612,11 +622,11 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.rocketfuse.smartsunshades;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "9077029a-e2e8-4a58-8389-4d48f720c850";
-				PROVISIONING_PROFILE_SPECIFIER = "Smart Sun Shades Dev";
+				PROVISIONING_PROFILE = "6af10bcd-116a-4f62-b4ef-a7fcce4fd1a4";
+				PROVISIONING_PROFILE_SPECIFIER = "SmartSunShades Dev";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
 		};
@@ -637,10 +647,10 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.rocketfuse.smartsunshades;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "f9ae1423-3b7a-4565-b0e1-f283e1f2d8d1";
-				PROVISIONING_PROFILE_SPECIFIER = "Smart Sun Shades Prod Ad-Hoc";
+				PROVISIONING_PROFILE = "def37583-e80c-40f9-b91e-4bdc5e52ca9d";
+				PROVISIONING_PROFILE_SPECIFIER = SmartSunShadesAppStore;
 				SWIFT_VERSION = 3.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Release;
 		};

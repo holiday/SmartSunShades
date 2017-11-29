@@ -177,9 +177,9 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
                         self.shades3Cart?.items = tempItems2
                         self.vienna100Cart?.items = tempItems3
 
-                        self.twoInchBlindsCart?.calculateSubtotal()
-                        self.shades3Cart?.calculateSubtotal()
-                        self.vienna100Cart?.calculateSubtotal()
+                        _ = self.twoInchBlindsCart?.calculateSubtotal()
+                        _ = self.shades3Cart?.calculateSubtotal()
+                        _ = self.vienna100Cart?.calculateSubtotal()
                     }
                     
                 }
@@ -763,10 +763,12 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
                     
                     
                     let footerScreenshot = self.getScreenshotForView(view: self.footerView)
-                    let imageStringFooter = returnEmailStringBase64EncodedImage(image: footerScreenshot!)!
+//                    let imageStringFooter = returnEmailStringBase64EncodedImage(image: footerScreenshot!)!
+                    let footerScreenshotData = UIImageJPEGRepresentation(footerScreenshot!, 1.0)
                     
                     let tableViewScreenshot = self.getScreenshotForView(view: self.tableView)
-                    let imageStringTableview = returnEmailStringBase64EncodedImage(image: tableViewScreenshot!)!
+//                    let imageStringTableview = returnEmailStringBase64EncodedImage(image: tableViewScreenshot!)!
+                    let tableViewScreenshotData = UIImageJPEGRepresentation(tableViewScreenshot!, 1.0)
                     
                     htmlTable = "Dear \(customerFirstName!) \(customerLastName!),<br/><br/>" +
                         "Email: \(customer.email!) <br/>" +
@@ -775,17 +777,21 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
                         
                         "Expected delivery: \(CartViewController.estimatedDelivery!) <br/><br/>" +
                         
-                        "Here the quote you requested. <br/><br/>" +
+                        "Please see the image attachments for the quotes you requested. <br/><br/>" +
                         
-                        "<img src='data:image/png;base64,\(imageStringTableview)' width='\(tableViewScreenshot!.size.width)' height='\(tableViewScreenshot!.size.height)'><br/><br/>" +
-                        
-                        "<img src='data:image/png;base64,\(imageStringFooter)' width='\(footerScreenshot!.size.width)' height='\(footerScreenshot!.size.height)'><br/><br/>" +
+//                        "<img src='data:image/png;base64,\(imageStringTableview)' width='\(tableViewScreenshot!.size.width)' height='\(tableViewScreenshot!.size.height)'><br/><br/>" +
+//                        
+//                        "<img src='data:image/png;base64,\(imageStringFooter)' width='\(footerScreenshot!.size.width)' height='\(footerScreenshot!.size.height)'><br/><br/>" +
                         
                         "Comments: \(cart.comments!) <br/><br/>" +
                         
                         "Thank you, <br/> SmartSunShades"
                     
                     mailComposerVC.setMessageBody(htmlTable, isHTML: true)
+                    
+                    
+                    mailComposerVC.addAttachmentData(tableViewScreenshotData!, mimeType: "image/jpeg", fileName:"quote.jpeg")
+                    mailComposerVC.addAttachmentData(footerScreenshotData!, mimeType: "image/jpeg", fileName: "footerScreenshot.jpeg")
                     
                     if MFMailComposeViewController.canSendMail() {
                         self.present(mailComposerVC, animated: true, completion: nil)

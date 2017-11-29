@@ -71,7 +71,7 @@ open class ShoppingCartController: NSObject, ShoppingCartControllerDelegate {
             tempItem.itemWidth = itemWidth as NSNumber?
             tempItem.itemWidthFineInchIndex = itemWidthIndex as NSNumber?
             
-            print("Width Changed: \(tempItem.itemWidth) , \(tempItem.getWidthFineInch().stringValue)")
+            //print("Width Changed: \(tempItem.itemWidth) , \(tempItem.getWidthFineInch().stringValue)")
         }
     }
     
@@ -80,7 +80,7 @@ open class ShoppingCartController: NSObject, ShoppingCartControllerDelegate {
             tempItem.itemHeight = itemHeight as NSNumber?
             tempItem.itemHeightFineInchIndex = itemHeightIndex as NSNumber?
             
-            print("Height Changed: \(tempItem.itemHeight) , \(tempItem.getHeightFineInch().stringValue)")
+            //print("Height Changed: \(tempItem.itemHeight) , \(tempItem.getHeightFineInch().stringValue)")
         }
     }
     

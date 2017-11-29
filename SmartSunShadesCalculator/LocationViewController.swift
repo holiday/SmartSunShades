@@ -25,7 +25,12 @@ class LocationViewController: BaseViewController, UIPickerViewDelegate, UIPicker
         self.locationPicker.delegate = self
         self.locationPicker.dataSource = self
         
-        self.locations = ["Family Room",
+        self.locations = ["Room 1",
+                          "Room 2",
+                          "Room 3",
+                          "Room 4",
+                          "Room 5",
+                          "Family Room",
                           "Living Room",
                           "Kitchen",
                           "Powder Room",

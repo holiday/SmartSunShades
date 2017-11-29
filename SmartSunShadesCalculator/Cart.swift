@@ -64,7 +64,7 @@ class Cart: NSManagedObject {
     }
     
     func getBalance() -> Double{
-        self.getDiscountedTotal()
+        _ = self.getDiscountedTotal()
         
         let priceBeforeTax = self.subTotal!.doubleValue - self.discountedTotal!.doubleValue
         let priceAfterTax = priceBeforeTax * (1 + (self.tax!.doubleValue/100.0))
@@ -74,7 +74,7 @@ class Cart: NSManagedObject {
     }
     
     func getTotal() -> Double{
-        self.getDiscountedTotal()
+        _ = self.getDiscountedTotal()
         
         let priceBeforeTax = self.subTotal!.doubleValue - self.discountedTotal!.doubleValue
         let priceAfterTax = priceBeforeTax * (1 + (self.tax!.doubleValue/100.0))
@@ -83,7 +83,7 @@ class Cart: NSManagedObject {
     }
 
     func getDiscountedTotal() -> Double {
-        self.calculateSubtotal()
+        _ = self.calculateSubtotal()
         
         let dt:Double = (self.subTotal!.doubleValue/2.0) + ((self.discountPercent!.doubleValue/100) * (self.subTotal!.doubleValue/2.0))
         
